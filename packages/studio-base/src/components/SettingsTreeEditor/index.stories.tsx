@@ -19,6 +19,10 @@ export default {
 };
 
 const DefaultSettings: SettingsTreeNode = {
+  fields: {
+    firstRootField: { input: "string", label: "First Root Field" },
+    secondRootField: { input: "string", label: "Second Root Field" },
+  },
   children: {
     complex_inputs: {
       label: "Complex Inputs",
@@ -72,10 +76,16 @@ For ROS users, we also support package:// URLs
           value: "Open Street Maps",
           input: "select",
           options: [
-            "Open Street Maps",
-            "Stadia Maps (Adelaide Smooth Light)",
-            "Stadia Maps (Adelaide Smooth Dark)",
-            "Custom",
+            { label: "Open Street Maps", value: "Open Street Maps" },
+            {
+              label: "Stadia Maps (Adelaide Smooth Light)",
+              value: "Stadia Maps (Adelaide Smooth Light)",
+            },
+            {
+              label: "Stadia Maps (Adelaide Smooth Dark)",
+              value: "Stadia Maps (Adelaide Smooth Dark)",
+            },
+            { label: "Custom", value: "Custom" },
           ],
         },
         api_key: {
@@ -158,7 +168,10 @@ For ROS users, we also support package:// URLs
               label: "Selection mode",
               value: "Line",
               input: "select",
-              options: ["Line", "Enclosed polygons"],
+              options: [
+                { value: "Line", label: "Line" },
+                { value: "Enclosed polygons", label: "Enclosed polygons" },
+              ],
               help: `Treating line markers as polygons. Clicking inside the lines in the
                 marker selects the marker. The default behavior for line markers requires the
                 user to click exactly on the line to select the line marker.

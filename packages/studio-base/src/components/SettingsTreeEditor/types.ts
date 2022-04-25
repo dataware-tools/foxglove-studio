@@ -9,23 +9,33 @@ export type SettingsTreeFieldValue =
   | { input: "gradient"; value?: string }
   | { input: "messagepath"; value?: string; validTypes?: string[] }
   | { input: "number"; value?: number; step?: number }
-  | { input: "select"; value?: string; options: string[] }
+  | {
+      input: "select";
+      value?: number | readonly number[];
+      options: Array<{ label: string; value: undefined | number }>;
+    }
+  | {
+      input: "select";
+      value?: string | readonly string[];
+      options: Array<{ label: string; value: undefined | string }>;
+    }
   | { input: "string"; value?: string }
   | { input: "toggle"; value?: string; options: string[] };
 
 export type SettingsTreeField = SettingsTreeFieldValue & {
-  label: string;
   help?: string;
+  label: string;
   placeholder?: string;
 };
 
 export type SettingsTreeFields = Record<string, SettingsTreeField>;
+
 export type SettingsTreeChildren = Record<string, SettingsTreeNode>;
 
 export type SettingsTreeNode = {
-  label?: string;
-  fields?: SettingsTreeFields;
   children?: SettingsTreeChildren;
+  fields?: SettingsTreeFields;
+  label?: string;
 };
 
 /**
@@ -51,6 +61,19 @@ export type SettingsTreeAction = {
  * a default user interface in Studio.
  */
 export type SettingsTree = {
+  /**
+   * Handler to process all actions on the settings tree initiated by the UI.
+   */
   actionHandler: (action: SettingsTreeAction) => void;
+
+  /**
+   * True if the editor should not show the filter control.
+   */
+  disableFilter?: boolean;
+
+  /**
+   * The actual settings tree. Updates to this will automatically be reflected in the
+   * editor UI.
+   */
   settings: SettingsTreeNode;
 };

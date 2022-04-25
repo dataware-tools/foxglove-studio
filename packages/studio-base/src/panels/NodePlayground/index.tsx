@@ -14,14 +14,13 @@
 import { useTheme, Link, Spinner, SpinnerSize } from "@fluentui/react";
 import ArrowLeftIcon from "@mdi/svg/svg/arrow-left.svg";
 import PlusIcon from "@mdi/svg/svg/plus.svg";
-import { Box, Stack } from "@mui/material";
-import { Suspense } from "react";
+import { Box, Input, Stack } from "@mui/material";
+import { Suspense, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
 import Button from "@foxglove/studio-base/components/Button";
 import Icon from "@foxglove/studio-base/components/Icon";
-import { LegacyInput } from "@foxglove/studio-base/components/LegacyStyledComponents";
 import Panel from "@foxglove/studio-base/components/Panel";
 import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
 import TextContent from "@foxglove/studio-base/components/TextContent";
@@ -37,7 +36,6 @@ import BottomBar from "@foxglove/studio-base/panels/NodePlayground/BottomBar";
 import Sidebar from "@foxglove/studio-base/panels/NodePlayground/Sidebar";
 import Playground from "@foxglove/studio-base/panels/NodePlayground/playground-icon.svg";
 import { PanelConfigSchema, UserNodes } from "@foxglove/studio-base/types/panels";
-import { DEFAULT_STUDIO_NODE_PREFIX } from "@foxglove/studio-base/util/globalConstants";
 import { colors } from "@foxglove/studio-base/util/sharedStyleConstants";
 
 import Config from "./Config";
@@ -177,16 +175,20 @@ function NodePlayground(props: Props) {
   const selectedNodeLogs =
     (selectedNodeId != undefined ? userNodeDiagnostics[selectedNodeId]?.logs : undefined) ?? [];
 
-  const inputTitle = currentScript
-    ? currentScript.filePath + (currentScript.readOnly ? " (READONLY)" : "")
-    : "node name";
+  // The current node name is editable via the "tab". The tab uses a controlled input. React requires
+  // that we render the new text on the next render for the controlled input to retain the cursor position.
+  // For this we use setInputTitle within the onChange event of the input control.
+  //
+  // We also update the input title when the script changes using a layout effect below.
+  const [inputTitle, setInputTitle] = useState<string>(() => {
+    return currentScript
+      ? currentScript.filePath + (currentScript.readOnly ? " (READONLY)" : "")
+      : "node name";
+  });
 
   const inputStyle = {
-    borderRadius: 0,
-    margin: 0,
     backgroundColor: theme.semanticColors.bodyBackground,
-    padding: "4px 20px",
-    width: `${inputTitle.length + 4}ch`, // Width based on character count of title + padding
+    width: `${Math.max(inputTitle.length + 4, 10)}ch`, // Width based on character count of title + padding
   };
 
   React.useLayoutEffect(() => {
@@ -199,6 +201,14 @@ function NodePlayground(props: Props) {
     }
   }, [props.config.additionalBackStackItems, selectedNode]);
 
+  React.useLayoutEffect(() => {
+    setInputTitle(() => {
+      return currentScript
+        ? currentScript.filePath + (currentScript.readOnly ? " (READONLY)" : "")
+        : "node name";
+    });
+  }, [currentScript]);
+
   const addNewNode = React.useCallback(
     (code?: string) => {
       const newNodeId = uuidv4();
@@ -206,7 +216,7 @@ function NodePlayground(props: Props) {
       setUserNodes({
         [newNodeId]: {
           sourceCode,
-          name: `${DEFAULT_STUDIO_NODE_PREFIX}${newNodeId.split("-")[0]}`,
+          name: `${newNodeId.split("-")[0]}`,
         },
       });
       saveConfig({ selectedNodeId: newNodeId });
@@ -299,20 +309,21 @@ function NodePlayground(props: Props) {
             )}
             {selectedNodeId != undefined && selectedNode && (
               <div style={{ position: "relative" }}>
-                <LegacyInput
-                  type="text"
+                <Input
+                  size="small"
+                  disableUnderline
                   placeholder="node name"
                   value={inputTitle}
                   disabled={!currentScript || currentScript.readOnly}
-                  style={inputStyle}
-                  spellCheck={false}
-                  onChange={(e) => {
-                    const newNodeName = e.target.value;
+                  onChange={(ev) => {
+                    const newNodeName = ev.target.value;
+                    setInputTitle(newNodeName);
                     setUserNodes({
                       ...userNodes,
                       [selectedNodeId]: { ...selectedNode, name: newNodeName },
                     });
                   }}
+                  inputProps={{ spellCheck: false, style: inputStyle }}
                 />
                 <UnsavedDot isSaved={isNodeSaved} />
               </div>

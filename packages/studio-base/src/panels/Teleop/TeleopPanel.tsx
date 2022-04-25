@@ -22,12 +22,12 @@ type TeleopPanelProps = {
 };
 
 const geometryMsgOptions = [
-  "linear-x",
-  "linear-y",
-  "linear-z",
-  "angular-x",
-  "angular-y",
-  "angular-z",
+  { label: "linear-x", value: "linear-x" },
+  { label: "linear-y", value: "linear-y" },
+  { label: "linear-z", value: "linear-z" },
+  { label: "angular-x", value: "angular-x" },
+  { label: "angular-y", value: "angular-y" },
+  { label: "angular-z", value: "angular-z" },
 ];
 
 type Config = {
@@ -41,6 +41,7 @@ type Config = {
 
 function buildSettingsTree(config: Config, topics: readonly Topic[]): SettingsTreeNode {
   return {
+    label: "General",
     fields: {
       publishRate: { label: "Publish Rate", input: "number", value: config.publishRate },
       topic: {
@@ -181,8 +182,9 @@ function TeleopPanel(props: TeleopPanelProps): JSX.Element {
     const tree = buildSettingsTree(config, topics);
     // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-explicit-any
     (context as unknown as any).__updatePanelSettingsTree({
-      settings: tree,
       actionHandler: settingsActionHandler,
+      disableFilter: true,
+      settings: tree,
     });
     saveState(config);
   }, [config, context, saveState, settingsActionHandler, topics]);
