@@ -10,10 +10,8 @@ storybook-static/
 
 # Yarn
 .yarn/*
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-.pnp.*
+yarn.lock
+.yarnrc.yml
 
 # Extensions
 *.foxe
