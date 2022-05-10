@@ -1,4 +1,4 @@
-import { useRosLib, MapPanel as Map } from "scene-viewer-panels";
+import { useRosLib, MapPanel as Map, PinLocations } from "scene-viewer-panels";
 import styled from "styled-components";
 
 import Panel from "@foxglove/studio-base/components/Panel";
@@ -20,7 +20,7 @@ function MapPanel() {
   });
 
   const { globalVariables } = useGlobalVariables();
-  const pinLocations = globalVariables.pinLocations || [];
+  const pinLocations = (globalVariables.pinLocations ?? []) as PinLocations;
 
   return (
     <Container>

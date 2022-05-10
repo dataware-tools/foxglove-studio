@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { useRosLib, SceneSelector } from "scene-viewer-panels";
+import { useRosLib, SceneSelector, PinLocations } from "scene-viewer-panels";
 import Panel from "@foxglove/studio-base/components/Panel";
 import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
 import useGlobalVariables from "@foxglove/studio-base/hooks/useGlobalVariables";
@@ -21,7 +21,7 @@ function SceneSelectorPanel() {
   const { setGlobalVariables } = useGlobalVariables();
 
   const setPinLocations = React.useCallback(
-    (pinLocations) => {
+    (pinLocations: PinLocations) => {
       setGlobalVariables({ pinLocations });
     },
     [setGlobalVariables],

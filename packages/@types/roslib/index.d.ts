@@ -30,6 +30,19 @@ declare module "roslib" {
     ): void;
 
     close(): void;
+
+    /**
+     * Retrieves list of active service names in ROS.
+     *
+     * @param callback - function with the following params:
+     *   * services - array of service names
+     * @param failedCallback - the callback function when the ros call failed (optional). Params:
+     *   * error - the error message reported by ROS
+     */
+    getServices(
+      callback: (services: string[]) => void,
+      failedCallback?: (error: any) => void,
+    ): void;
   }
 
   type Message = Record<string, unknown>;
@@ -49,6 +62,61 @@ declare module "roslib" {
     unsubscribe(): void;
     unadvertise(): void;
   }
+  export class ServiceRequest {
+    /**
+     * A ServiceRequest is passed into the service call.
+     *
+     * @constructor
+     * @param values - object matching the fields defined in the .srv definition file
+     */
+    constructor(values?: any);
+  }
 
+  export class Service<TServiceRequest = any, TServiceResponse = any> {
+    /**
+     * A ROS service client.
+     *
+     * @constructor
+     * @params options - possible keys include:
+     *   * ros - the ROSLIB.Ros connection handle
+     *   * name - the service name, like /add_two_ints
+     *   * serviceType - the service type, like 'rospy_tutorials/AddTwoInts'
+     */
+    constructor(data: { ros: Ros; name: string; serviceType: string });
+
+    // getter
+    public name: string;
+    // getter
+    public serviceType: string;
+
+    /**
+     * Calls the service. Returns the service response in the callback.
+     *
+     * @param request - the ROSLIB.ServiceRequest to send
+     * @param callback - function with params:
+     *   * response - the response from the service request
+     * @param failedCallback - the callback function when the service call failed (optional). Params:
+     *   * error - the error message reported by ROS
+     */
+    callService(
+      request: TServiceRequest,
+      callback: (response: TServiceResponse) => void,
+      failedCallback?: (error: any) => void,
+    ): void;
+
+    /**
+     * Advertise this service and call the callback each time a client calls it.
+     *
+     * @param callback - function with the following params:
+     *   * request - the service request data
+     *   * response - the data which should be sent back to the caller
+     */
+    advertise(callback: (request: TServiceRequest, response: TServiceResponse) => void): void;
+
+    /**
+     * Unadvertise a previously advertised service
+     */
+    unadvertise(): void;
+  }
   export { Ros, Topic };
 }
