@@ -82,13 +82,20 @@ const features: Feature[] = [
       </>
     ),
   },
-];
-if (process.env.NODE_ENV === "development") {
-  features.push({
+  {
+    key: AppSetting.EXPERIMENTAL_MCAP_PLAYER,
+    name: "Experimental mcap player",
+    description: (
+      <>The experimental mcap player uses a new approach to loading messages from mcap files.</>
+    ),
+  },
+  {
     key: AppSetting.EXPERIMENTAL_3D_PANEL,
     name: "Experimental 3D panel",
     description: <>Enable the experimental 3D panel.</>,
-  });
+  },
+];
+if (process.env.NODE_ENV === "development") {
   features.push({
     key: AppSetting.ENABLE_LAYOUT_DEBUGGING,
     name: "Layout debugging",
@@ -104,6 +111,16 @@ if (process.env.NODE_ENV === "development") {
           Strict Mode
         </Link>
         . Changing this setting requires a restart.
+      </>
+    ),
+  });
+  features.push({
+    key: AppSetting.EXPERIMENTAL_MESSAGE_ORDER,
+    name: "Configurable message playback order",
+    description: (
+      <>
+        Allow messages to be sorted by either receive time or header.stamp during playback. Playback
+        with header.stamp mode is experimental and not fully implemented.
       </>
     ),
   });

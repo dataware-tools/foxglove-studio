@@ -87,6 +87,7 @@ export default class RosbridgePlayer implements Player {
   private _presence: PlayerPresence = PlayerPresence.NOT_PRESENT;
   private _problems = new PlayerProblemManager();
   private _emitTimer?: ReturnType<typeof setTimeout>;
+  private readonly _sourceId: string;
 
   // additional properties for supporting playbackControl and setSpeed
   private _isPlaying: boolean = false;
@@ -100,9 +101,11 @@ export default class RosbridgePlayer implements Player {
   constructor({
     url,
     metricsCollector,
+    sourceId,
   }: {
     url: string;
     metricsCollector: PlayerMetricsCollectorInterface;
+    sourceId: string;
   }) {
     this._presence = PlayerPresence.INITIALIZING;
     this._metricsCollector = metricsCollector;
@@ -112,6 +115,7 @@ export default class RosbridgePlayer implements Player {
     this._currentTime = fromMillis(Date.now());
     this._startTime = fromMillis(0);
     this._endTime = fromMillis(Date.now());
+    this._sourceId = sourceId;
     this._open();
   }
 
@@ -374,7 +378,8 @@ export default class RosbridgePlayer implements Player {
         activeData: undefined,
         problems: this._problems.problems(),
         urlState: {
-          url: this._url,
+          sourceId: this._sourceId,
+          parameters: { url: this._url },
         },
       });
     }
@@ -399,7 +404,8 @@ export default class RosbridgePlayer implements Player {
       playerId: this._id,
       problems: this._problems.problems(),
       urlState: {
-        url: this._url,
+        sourceId: this._sourceId,
+        parameters: { url: this._url },
       },
 
       activeData: {
