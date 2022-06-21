@@ -72,7 +72,7 @@ export default function muiComponents(theme: Theme): ThemeOptions["components"] 
             paddingBottom: 0,
 
             ".MuiAutocomplete-input.MuiInputBase-inputSizeSmall": {
-              padding: theme.spacing(0.75, 1),
+              padding: theme.spacing(0.5, 1),
             },
           },
           ".MuiInputBase-root .MuiAutocomplete-endAdornment": {
@@ -89,9 +89,14 @@ export default function muiComponents(theme: Theme): ThemeOptions["components"] 
         disableElevation: true,
       },
       styleOverrides: {
-        colorInherit: {
+        containedInherit: {
           backgroundColor: theme.palette.action.focus,
         },
+      },
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
       },
     },
     MuiCard: {
@@ -286,14 +291,8 @@ export default function muiComponents(theme: Theme): ThemeOptions["components"] 
         disableRipple: true,
       },
       styleOverrides: {
-        dense: {
-          minHeight: theme.spacing(3),
-          paddingTop: 0,
-          paddingBottom: 0,
-
-          "& .MuiSvgIcon-root.MuiSvgIcon-fontSizeSmall": {
-            fontSize: "1rem",
-          },
+        root: {
+          minHeight: 32,
         },
       },
     },
