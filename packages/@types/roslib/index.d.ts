@@ -29,6 +29,12 @@ declare module "roslib" {
       errorCallback: (error: Error) => void,
     ): void;
 
+    getServiceType(
+      service: string,
+      cb: (result: string) => void,
+      errorCallback: (error: Error) => void,
+    ): void;
+
     close(): void;
 
     /**
@@ -89,34 +95,20 @@ declare module "roslib" {
     // getter
     public serviceType: string;
 
-    /**
-     * Calls the service. Returns the service response in the callback.
-     *
-     * @param request - the ROSLIB.ServiceRequest to send
-     * @param callback - function with params:
-     *   * response - the response from the service request
-     * @param failedCallback - the callback function when the service call failed (optional). Params:
-     *   * error - the error message reported by ROS
-     */
+  type ServiceOptions = {
+    ros: Ros;
+    name: string;
+    serviceType: string;
+  };
+
+  class Service {
+    constructor(options: ServiceOptions);
     callService(
-      request: TServiceRequest,
-      callback: (response: TServiceResponse) => void,
-      failedCallback?: (error: any) => void,
+      request: Message,
+      cb: (response: Message) => void,
+      errorCallback: (error: Error) => void,
     ): void;
-
-    /**
-     * Advertise this service and call the callback each time a client calls it.
-     *
-     * @param callback - function with the following params:
-     *   * request - the service request data
-     *   * response - the data which should be sent back to the caller
-     */
-    advertise(callback: (request: TServiceRequest, response: TServiceResponse) => void): void;
-
-    /**
-     * Unadvertise a previously advertised service
-     */
-    unadvertise(): void;
   }
-  export { Ros, Topic };
+
+  export { Ros, Topic, Service };
 }

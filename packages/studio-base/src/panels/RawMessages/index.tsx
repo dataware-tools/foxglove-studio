@@ -57,6 +57,7 @@ import getDiff, {
 } from "@foxglove/studio-base/panels/RawMessages/getDiff";
 import { Topic } from "@foxglove/studio-base/players/types";
 import { usePanelSettingsTreeUpdate } from "@foxglove/studio-base/providers/PanelSettingsEditorContextProvider";
+import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import { useJsonTreeTheme } from "@foxglove/studio-base/util/globalConstants";
 import { enumValuesByDatatypeAndField } from "@foxglove/studio-base/util/selectors";
 import { fonts } from "@foxglove/studio-base/util/sharedStyleConstants";
@@ -80,7 +81,7 @@ export const PREV_MSG_METHOD = "previous message";
 
 type Props = {
   config: Immutable<RawMessagesPanelConfig>;
-  saveConfig: (arg0: Partial<RawMessagesPanelConfig>) => void;
+  saveConfig: SaveConfig<RawMessagesPanelConfig>;
 };
 
 const isSingleElemArray = (obj: unknown): obj is unknown[] => {
@@ -151,7 +152,6 @@ function RawMessages(props: Props) {
   const { openSiblingPanel } = usePanelContext();
   const { topicPath, diffMethod, diffTopicPath, diffEnabled, showFullMessageForDiff } = config;
   const { topics, datatypes } = useDataSourceInfo();
-  const { id: panelId } = usePanelContext();
 
   const defaultGetItemString = useGetItemStringWithTimezone();
   const getItemString = useMemo(
@@ -215,6 +215,10 @@ function RawMessages(props: Props) {
 
   const settingsActionHandler = useCallback(
     (action: SettingsTreeAction) => {
+      if (action.action !== "update") {
+        return;
+      }
+
       if (action.payload.input === "select") {
         saveConfig({
           autoExpandMode: action.payload.value as RawMessagesPanelConfig["autoExpandMode"],
@@ -225,11 +229,11 @@ function RawMessages(props: Props) {
   );
 
   useEffect(() => {
-    updateSettingsTree(panelId, {
+    updateSettingsTree({
       actionHandler: settingsActionHandler,
-      settings: buildSettingsTree(config),
+      roots: buildSettingsTree(config),
     });
-  }, [config, panelId, settingsActionHandler, updateSettingsTree]);
+  }, [config, settingsActionHandler, updateSettingsTree]);
 
   const onTopicPathChange = useCallback(
     (newTopicPath: string) => {

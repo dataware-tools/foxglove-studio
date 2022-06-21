@@ -347,13 +347,12 @@ function PanelExtensionAdapter(props: PanelExtensionAdapterProps): JSX.Element {
   useMessagePipeline(messagePipelineSelector);
 
   const updatePanelSettingsTree = usePanelSettingsTreeUpdate();
-  const { id: panelLayoutId } = usePanelContext();
 
   const updateSettings = useCallback(
     (settings: SettingsTree) => {
-      updatePanelSettingsTree(panelLayoutId, settings);
+      updatePanelSettingsTree(settings);
     },
-    [panelLayoutId, updatePanelSettingsTree],
+    [updatePanelSettingsTree],
   );
 
   type PartialPanelExtensionContext = Omit<PanelExtensionContext, "panelElement">;
@@ -477,6 +476,16 @@ function PanelExtensionAdapter(props: PanelExtensionAdapterProps): JSX.Element {
           }
         : undefined,
 
+      callService: capabilities.includes(PlayerCapabilities.callServices)
+        ? async (service, request): Promise<unknown> => {
+            const ctx = latestPipelineContextRef.current;
+            if (!ctx) {
+              throw new Error("Unable to call service. There is no active connection.");
+            }
+            return await ctx.callService(service, request);
+          }
+        : undefined,
+
       unsubscribeAll: () => {
         subscribedTopicsRef.current.clear();
         setSubscriptions(panelId, []);
@@ -557,9 +566,20 @@ function PanelExtensionAdapter(props: PanelExtensionAdapterProps): JSX.Element {
   }
 
   return (
-    <div style={{ width: "100%", height: "100%", overflow: "hidden", zIndex: 0, ...style }}>
-      <PanelToolbar floating helpContent={props.help} />
-      <div style={{ width: "100%", height: "100%", overflow: "hidden" }} ref={panelContainerRef} />
+    <div
+      style={{
+        alignItems: "stretch",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        overflow: "hidden",
+        width: "100%",
+        zIndex: 0,
+        ...style,
+      }}
+    >
+      <PanelToolbar helpContent={props.help} />
+      <div style={{ flex: 1, overflow: "hidden" }} ref={panelContainerRef} />
     </div>
   );
 }

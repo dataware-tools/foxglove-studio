@@ -37,6 +37,11 @@ const StyledTab = muiStyled(Tab)(({ theme }) => ({
   minHeight: "auto",
   minWidth: theme.spacing(8),
   padding: theme.spacing(1.5, 2),
+  color: theme.palette.text.secondary,
+
+  "&.Mui-selected": {
+    color: theme.palette.text.primary,
+  },
 }));
 
 const StyledTabs = muiStyled(Tabs)({
@@ -111,8 +116,8 @@ export default function DataSourceSidebar(props: Props): JSX.Element {
       disablePadding
       trailingItems={[
         isLoading && (
-          <Stack alignItems="center" justifyContent="center" padding={1}>
-            <CircularProgress size={20} variant="indeterminate" />
+          <Stack key="loading" alignItems="center" justifyContent="center" padding={1}>
+            <CircularProgress size={18} variant="indeterminate" />
           </Stack>
         ),
         enableOpenDialog === true && (

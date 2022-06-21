@@ -15,6 +15,7 @@ import { isEqual, sortBy } from "lodash";
 import roslib from "roslib";
 import { v4 as uuidv4 } from "uuid";
 
+import { debouncePromise } from "@foxglove/den/async";
 import Log from "@foxglove/log";
 import type { RosGraph } from "@foxglove/ros1";
 import { parse as parseMessageDefinition } from "@foxglove/rosmsg";
@@ -38,7 +39,6 @@ import {
 } from "@foxglove/studio-base/players/types";
 import { RosDatatypes } from "@foxglove/studio-base/types/RosDatatypes";
 import { bagConnectionsToDatatypes } from "@foxglove/studio-base/util/bagConnectionsHelper";
-import debouncePromise from "@foxglove/studio-base/util/debouncePromise";
 import { getTopicsByTopicName } from "@foxglove/studio-base/util/selectors";
 import { TimestampMethod } from "@foxglove/studio-base/util/time";
 
@@ -48,7 +48,17 @@ const CAPABILITIES = [
   PlayerCapabilities.advertise,
   PlayerCapabilities.playbackControl,
   PlayerCapabilities.setSpeed,
+  PlayerCapabilities.callServices,
 ];
+
+function isClockMessage(topic: string, msg: unknown): msg is { clock: Time } {
+  const maybeClockMsg = msg as { clock?: Time };
+  return topic === "/clock" && maybeClockMsg.clock != undefined && !isNaN(maybeClockMsg.clock.sec);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value != undefined;
+}
 
 // Connects to `rosbridge_server` instance using `roslibjs`. Currently doesn't support seeking or
 // showing simulated time, so current time from Date.now() is always used instead. Also doesn't yet
@@ -87,6 +97,7 @@ export default class RosbridgePlayer implements Player {
   private _presence: PlayerPresence = PlayerPresence.NOT_PRESENT;
   private _problems = new PlayerProblemManager();
   private _emitTimer?: ReturnType<typeof setTimeout>;
+  private _serviceTypeCache = new Map<string, Promise<string>>();
   private readonly _sourceId: string;
 
   // additional properties for supporting playbackControl and setSpeed
@@ -447,7 +458,7 @@ export default class RosbridgePlayer implements Player {
       serviceType,
     });
     rosClient.getServices((services) => {
-      if (services.indexOf(serviceName) !== -1) {
+      if (services.includes(serviceName)) {
         targetService.callService(request, (result) => {
           this._isServiceBusy = false;
           if (result.success) {
@@ -634,6 +645,56 @@ export default class RosbridgePlayer implements Player {
     publisher.publish(msg);
   }
 
+  // Query the type name for this service. Cache the query to avoid looking it up again.
+  private async getServiceType(service: string): Promise<string> {
+    if (!this._rosClient) {
+      throw new Error("Not connected");
+    }
+
+    const existing = this._serviceTypeCache.get(service);
+    if (existing) {
+      return await existing;
+    }
+
+    const rosClient = this._rosClient;
+    const serviceTypePromise = new Promise<string>((resolve, reject) => {
+      rosClient.getServiceType(service, resolve, reject);
+    });
+
+    this._serviceTypeCache.set(service, serviceTypePromise);
+
+    return await serviceTypePromise;
+  }
+
+  async callService(service: string, request: unknown): Promise<unknown> {
+    if (!this._rosClient) {
+      throw new Error("Not connected");
+    }
+
+    if (!isRecord(request)) {
+      throw new Error("RosbridgePlayer#callService request must be an object");
+    }
+
+    const serviceType = await this.getServiceType(service);
+
+    // Create a proxy object for dispatching our service call
+    const proxy = new roslib.Service({
+      ros: this._rosClient,
+      name: service,
+      serviceType,
+    });
+
+    // Send the service request
+    return await new Promise<Record<string, unknown>>((resolve, reject) => {
+      proxy.callService(
+        request,
+        (response: Record<string, unknown>) => resolve(response),
+        (error: Error) => reject(error),
+      );
+    });
+  }
+
+  // Bunch of unsupported stuff. Just don't do anything for these.
   startPlayback(): void {
     if (this._isServiceBusy) {
       return;
