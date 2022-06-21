@@ -70,6 +70,7 @@ export default function PanelCatalogProvider(
       ...panels.debug,
       ...panels.hidden,
       ...panels.legacyPlot,
+      ...panels.hdlDeveloped,
       ...wrappedExtensionPanels,
     ];
   }, [wrappedExtensionPanels]);
@@ -84,10 +85,17 @@ export default function PanelCatalogProvider(
           ...new3DPanels,
           ...panels.builtin,
           ...panels.debug,
+          ...panels.hdlDeveloped,
           ...legacyPlotPanels,
           ...wrappedExtensionPanels,
         ]
-      : [...new3DPanels, ...panels.builtin, ...legacyPlotPanels, ...wrappedExtensionPanels];
+      : [
+          ...new3DPanels,
+          ...panels.builtin,
+          ...panels.hdlDeveloped,
+          ...legacyPlotPanels,
+          ...wrappedExtensionPanels,
+        ];
   }, [enableNew3DPanel, enableLegacyPlotPanel, showDebugPanels, wrappedExtensionPanels]);
 
   const panelsByType = useMemo(() => {

@@ -251,4 +251,38 @@ const new3DPanel: PanelInfo[] = [
   },
 ];
 
-export default { builtin, debug, hidden, legacyPlot, new3DPanel };
+const hdlDeveloped: PanelInfo[] = [
+  {
+    title: "Sample",
+    type: "Sample",
+    description: "This is Sample",
+    help: ThreeDimensionalVizHelp,
+    thumbnail: threeDimensionalVizThumbnail,
+    module: async () => await import("./Sample"),
+  },
+  {
+    title: "CurrentCaption",
+    type: "CurrentCaption",
+    description: "show current caption",
+    help: ThreeDimensionalVizHelp,
+    thumbnail: threeDimensionalVizThumbnail,
+    module: async () => await import("./CurrentCaption"),
+  },
+  {
+    title: "TrajectoryMap",
+    type: "TrajectoryMap",
+    description: "show trajectory map",
+    help: ThreeDimensionalVizHelp,
+    thumbnail: threeDimensionalVizThumbnail,
+    module: async () => await import("./TrajectoryMap"),
+  },
+  {
+    title: "SceneSelector",
+    type: "SceneSelector",
+    description: "show scene selector",
+    help: ThreeDimensionalVizHelp,
+    thumbnail: threeDimensionalVizThumbnail,
+    module: async () => await import("./SceneSelector"),
+  },
+];
+export default { builtin, debug, hidden, legacyPlot, new3DPanel, hdlDeveloped };

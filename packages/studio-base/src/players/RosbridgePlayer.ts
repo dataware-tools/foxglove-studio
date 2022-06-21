@@ -20,7 +20,7 @@ import type { RosGraph } from "@foxglove/ros1";
 import { parse as parseMessageDefinition } from "@foxglove/rosmsg";
 import { LazyMessageReader } from "@foxglove/rosmsg-serialization";
 import { MessageReader as ROS2MessageReader } from "@foxglove/rosmsg2-serialization";
-import { Time, fromMillis, toSec, isGreaterThan } from "@foxglove/rostime";
+import { Time, fromMillis, toSec, toMicroSec, isGreaterThan } from "@foxglove/rostime";
 import { ParameterValue } from "@foxglove/studio";
 import PlayerProblemManager from "@foxglove/studio-base/players/PlayerProblemManager";
 import {
@@ -44,12 +44,11 @@ import { TimestampMethod } from "@foxglove/studio-base/util/time";
 
 const log = Log.getLogger(__dirname);
 
-const CAPABILITIES = [PlayerCapabilities.advertise];
-
-function isClockMessage(topic: string, msg: unknown): msg is { clock: Time } {
-  const maybeClockMsg = msg as { clock?: Time };
-  return topic === "/clock" && maybeClockMsg.clock != undefined && !isNaN(maybeClockMsg.clock.sec);
-}
+const CAPABILITIES = [
+  PlayerCapabilities.advertise,
+  PlayerCapabilities.playbackControl,
+  PlayerCapabilities.setSpeed,
+];
 
 // Connects to `rosbridge_server` instance using `roslibjs`. Currently doesn't support seeking or
 // showing simulated time, so current time from Date.now() is always used instead. Also doesn't yet
@@ -71,7 +70,6 @@ export default class RosbridgePlayer implements Player {
     [datatype: string]: LazyMessageReader | ROS2MessageReader;
   } = {};
   private _start?: Time; // The time at which we started playing.
-  private _clockTime?: Time; // The most recent published `/clock` time, if available
   // active subscriptions
   private _topicSubscriptions = new Map<string, roslib.Topic>();
   private _requestedSubscriptions: SubscribePayload[] = []; // Requested subscriptions by setSubscriptions()
@@ -91,6 +89,15 @@ export default class RosbridgePlayer implements Player {
   private _emitTimer?: ReturnType<typeof setTimeout>;
   private readonly _sourceId: string;
 
+  // additional properties for supporting playbackControl and setSpeed
+  private _isPlaying: boolean = false;
+  private _currentTime: Time;
+  private _startTime: Time;
+  private _endTime: Time;
+  private _playbackSpeed: number = 1.0;
+  private _isServiceBusy: boolean = true;
+  private _lastSeekTime: number = 1;
+
   constructor({
     url,
     metricsCollector,
@@ -105,6 +112,9 @@ export default class RosbridgePlayer implements Player {
     this._url = url;
     this._start = fromMillis(Date.now());
     this._metricsCollector.playerConstructed();
+    this._currentTime = fromMillis(Date.now());
+    this._startTime = fromMillis(0);
+    this._endTime = fromMillis(Date.now());
     this._sourceId = sourceId;
     this._open();
   }
@@ -337,6 +347,26 @@ export default class RosbridgePlayer implements Player {
       return Promise.resolve();
     }
 
+    // Parse messages and get current-time and rosbag information
+    for (const msg of this._parsedMessages) {
+      if (msg.topic === "/clock") {
+        // @ts-expect-error msg.message is not unknown
+        const nextCurrentTime = { sec: msg.message.clock.secs, nsec: msg.message.clock.nsecs };
+        this._isPlaying = toMicroSec(this._currentTime) !== toMicroSec(nextCurrentTime);
+        this._currentTime = nextCurrentTime;
+      }
+      if (msg.topic === "/rosbag_player_controller/rosbag_start_time") {
+        // @ts-expect-error msg.message is not unknown
+        this._startTime = msg.message.clock;
+        this._isServiceBusy = false;
+      }
+      if (msg.topic === "/rosbag_player_controller/rosbag_end_time") {
+        // @ts-expect-error msg.message is not unknown
+        this._endTime = msg.message.clock;
+        this._isServiceBusy = false;
+      }
+    }
+
     const { _providerTopics, _providerDatatypes, _start } = this;
     if (!_providerTopics || !_providerDatatypes || !_start) {
       return this._listener({
@@ -363,7 +393,7 @@ export default class RosbridgePlayer implements Player {
       this._emitTimer = setTimeout(this._emitState, 100);
     }
 
-    const currentTime = this._getCurrentTime();
+    const { _startTime, _endTime, _currentTime, _isPlaying, _playbackSpeed, _lastSeekTime } = this;
     const messages = this._parsedMessages;
     this._parsedMessages = [];
     return this._listener({
@@ -382,14 +412,12 @@ export default class RosbridgePlayer implements Player {
         messages,
         totalBytesReceived: this._receivedBytes,
         messageOrder: this._messageOrder,
-        startTime: _start,
-        endTime: currentTime,
-        currentTime,
-        isPlaying: true,
-        speed: 1,
-        // We don't support seeking, so we need to set this to any fixed value. Just avoid 0 so
-        // that we don't accidentally hit falsy checks.
-        lastSeekTime: 1,
+        currentTime: _currentTime,
+        startTime: _startTime,
+        endTime: _endTime,
+        isPlaying: _isPlaying,
+        speed: _playbackSpeed,
+        lastSeekTime: _lastSeekTime,
         topics: _providerTopics,
         // Always copy topic stats since message counts and timestamps are being updated
         topicStats: new Map(this._providerTopicsStats),
@@ -400,6 +428,45 @@ export default class RosbridgePlayer implements Player {
       },
     });
   });
+
+  _callService = (
+    serviceName: string,
+    serviceType: string,
+    request: roslib.ServiceRequest,
+    onSuccess?: (result: any) => void,
+    onFail?: (result: any) => void,
+  ): void => {
+    const rosClient = this._rosClient;
+    if (!rosClient || this._closed) {
+      return;
+    }
+    this._isServiceBusy = true;
+    const targetService = new roslib.Service({
+      ros: rosClient,
+      name: serviceName,
+      serviceType,
+    });
+    rosClient.getServices((services) => {
+      if (services.indexOf(serviceName) !== -1) {
+        targetService.callService(request, (result) => {
+          this._isServiceBusy = false;
+          if (result.success) {
+            if (onSuccess) {
+              onSuccess(result);
+            }
+          } else {
+            if (onFail) {
+              onFail(result);
+            }
+          }
+        });
+      } else {
+        if (onFail) {
+          onFail({});
+        }
+      }
+    });
+  };
 
   setListener(listener: (arg0: PlayerState) => Promise<void>): void {
     this._listener = listener;
@@ -445,7 +512,7 @@ export default class RosbridgePlayer implements Player {
       const topic = new roslib.Topic({
         ros: this._rosClient,
         name: topicName,
-        compression: "cbor-raw",
+        compression: topicName === "/clock" ? "cbor" : "cbor-raw",
       });
       const availTopic = availableTopicsByTopicName[topicName];
       if (!availTopic) {
@@ -468,36 +535,23 @@ export default class RosbridgePlayer implements Player {
           const bytes = new Uint8Array(buffer);
 
           // This conditional can be removed when the ROS2 deserializer supports size()
-          if (messageReader instanceof LazyMessageReader) {
-            const msgSize = messageReader.size(bytes);
-            if (msgSize > bytes.byteLength) {
-              this._problems.addProblem(problemId, {
-                severity: "error",
-                message: `Message buffer not large enough on ${topicName}`,
-                error: new Error(
-                  `Cannot read ${msgSize} byte message from ${bytes.byteLength} byte buffer`,
-                ),
-              });
-              this._emitState();
-              return;
-            }
-          }
+          // if (messageReader instanceof LazyMessageReader) {
+          //   const msgSize = messageReader.size(bytes);
+          //   if (msgSize > bytes.byteLength) {
+          //     this._problems.addProblem(problemId, {
+          //       severity: "error",
+          //       message: `Message buffer not large enough on ${topicName}`,
+          //       error: new Error(
+          //         `Cannot read ${msgSize} byte message from ${bytes.byteLength} byte buffer`,
+          //       ),
+          //     });
+          //     this._emitState();
+          //     return;
+          //   }
+          // }
 
-          const innerMessage = messageReader.readMessage(bytes);
-
-          // handle clock messages before choosing receiveTime so the clock can set its own receive time
-          if (isClockMessage(topicName, innerMessage)) {
-            const time = innerMessage.clock;
-            const seconds = toSec(innerMessage.clock);
-            if (!isNaN(seconds)) {
-              if (this._clockTime == undefined) {
-                this._start = time;
-              }
-
-              this._clockTime = time;
-            }
-          }
-          const receiveTime = this._getCurrentTime();
+          const innerMessage = topicName === "/clock" ? message : messageReader.readMessage(bytes);
+          const receiveTime = this._currentTime;
 
           if (!this._hasReceivedMessage) {
             this._hasReceivedMessage = true;
@@ -580,18 +634,58 @@ export default class RosbridgePlayer implements Player {
     publisher.publish(msg);
   }
 
-  // Bunch of unsupported stuff. Just don't do anything for these.
   startPlayback(): void {
-    // no-op
+    if (this._isServiceBusy) {
+      return;
+    }
+    const request = new roslib.ServiceRequest({});
+    this._callService("/rosbag_player_controller/play", "std_srv/Trigger", request, () => {
+      this._isPlaying = true;
+    });
   }
   pausePlayback(): void {
-    // no-op
+    if (this._isServiceBusy) {
+      return;
+    }
+
+    const request = new roslib.ServiceRequest({});
+    this._callService("/rosbag_player_controller/pause", "std_srv/Trigger", request, () => {
+      this._isPlaying = false;
+    });
   }
-  seekPlayback(_time: Time): void {
-    // no-op
+  seekPlayback(time: Time): void {
+    if (this._isServiceBusy) {
+      return;
+    }
+
+    const request = new roslib.ServiceRequest({
+      time: toSec(time),
+    });
+    this._callService(
+      "/rosbag_player_controller/seek",
+      "controllable_rosbag_player/Seek",
+      request,
+      () => {
+        this._lastSeekTime = toSec(time);
+      },
+    );
   }
-  setPlaybackSpeed(_speedFraction: number): void {
-    // no-op
+  setPlaybackSpeed(speedFraction: number): void {
+    if (this._isServiceBusy) {
+      return;
+    }
+
+    const request = new roslib.ServiceRequest({
+      speed: speedFraction,
+    });
+    this._callService(
+      "/rosbag_player_controller/set_playback_speed",
+      "controllable_rosbag_player/SetPlaybackSpeed",
+      request,
+      () => {
+        this._playbackSpeed = speedFraction;
+      },
+    );
   }
   requestBackfill(): void {
     // no-op
@@ -624,17 +718,20 @@ export default class RosbridgePlayer implements Player {
   }
 
   private _addInternalSubscriptions(subscriptions: SubscribePayload[]): void {
+    const internalTopics = [
+      "/clock",
+      "/rosbag_player_controller/rosbag_start_time",
+      "/rosbag_player_controller/rosbag_end_time",
+    ];
     // Always subscribe to /clock if available
-    if (subscriptions.find((sub) => sub.topic === "/clock") == undefined) {
-      subscriptions.unshift({
-        topic: "/clock",
-        requester: { type: "other", name: "Ros1Player" },
-      });
+    for (const topic of internalTopics) {
+      if (subscriptions.find((sub) => sub.topic === topic) == undefined) {
+        subscriptions.unshift({
+          topic,
+          requester: { type: "other", name: "Ros1Player" },
+        });
+      }
     }
-  }
-
-  private _getCurrentTime(): Time {
-    return this._clockTime ?? fromMillis(Date.now());
   }
 
   private async _getSystemState(): Promise<RosGraph> {
