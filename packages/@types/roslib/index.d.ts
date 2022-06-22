@@ -75,25 +75,9 @@ declare module "roslib" {
      * @constructor
      * @param values - object matching the fields defined in the .srv definition file
      */
+    [key: string]: unknown;
     constructor(values?: any);
   }
-
-  export class Service<TServiceRequest = any, TServiceResponse = any> {
-    /**
-     * A ROS service client.
-     *
-     * @constructor
-     * @params options - possible keys include:
-     *   * ros - the ROSLIB.Ros connection handle
-     *   * name - the service name, like /add_two_ints
-     *   * serviceType - the service type, like 'rospy_tutorials/AddTwoInts'
-     */
-    constructor(data: { ros: Ros; name: string; serviceType: string });
-
-    // getter
-    public name: string;
-    // getter
-    public serviceType: string;
 
   type ServiceOptions = {
     ros: Ros;

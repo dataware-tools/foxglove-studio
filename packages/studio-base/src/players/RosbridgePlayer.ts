@@ -51,11 +51,6 @@ const CAPABILITIES = [
   PlayerCapabilities.callServices,
 ];
 
-function isClockMessage(topic: string, msg: unknown): msg is { clock: Time } {
-  const maybeClockMsg = msg as { clock?: Time };
-  return topic === "/clock" && maybeClockMsg.clock != undefined && !isNaN(maybeClockMsg.clock.sec);
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value != undefined;
 }
@@ -459,18 +454,22 @@ export default class RosbridgePlayer implements Player {
     });
     rosClient.getServices((services) => {
       if (services.includes(serviceName)) {
-        targetService.callService(request, (result) => {
-          this._isServiceBusy = false;
-          if (result.success) {
-            if (onSuccess) {
-              onSuccess(result);
+        targetService.callService(
+          request,
+          (result) => {
+            this._isServiceBusy = false;
+            if (result.success) {
+              if (onSuccess) {
+                onSuccess(result);
+              }
+            } else {
+              if (onFail) {
+                onFail(result);
+              }
             }
-          } else {
-            if (onFail) {
-              onFail(result);
-            }
-          }
-        });
+          },
+          () => {},
+        );
       } else {
         if (onFail) {
           onFail({});
@@ -787,10 +786,7 @@ export default class RosbridgePlayer implements Player {
     // Always subscribe to /clock if available
     for (const topic of internalTopics) {
       if (subscriptions.find((sub) => sub.topic === topic) == undefined) {
-        subscriptions.unshift({
-          topic,
-          requester: { type: "other", name: "Ros1Player" },
-        });
+        subscriptions.unshift({ topic });
       }
     }
   }
