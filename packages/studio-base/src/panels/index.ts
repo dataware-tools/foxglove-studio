@@ -284,5 +284,11 @@ const hdlDeveloped: PanelInfo[] = [
     thumbnail: threeDimensionalVizThumbnail,
     module: async () => await import("./SceneSelector"),
   },
+  {
+    title: "Experiment",
+    type: "Experiment",
+    description: "experiment",
+    module: async () => await import("./Experiment"),
+  },
 ];
 export default { builtin, debug, hidden, legacyPlot, new3DPanel, hdlDeveloped };
