@@ -39,5 +39,9 @@ export function buildEnvironmentDefaults(
     SENTRY_PROJECT: process.env.SENTRY_PROJECT ?? null, // eslint-disable-line no-restricted-syntax
     SIGNUP_API_URL: "https://foxglove.dev/api/signup",
     SLACK_INVITE_URL: "https://foxglove.dev/join-slack",
+    DATAWARE_TOOLS_BACKEND_API_PREFIX: "/api/latest",
+    DATAWARE_TOOLS_AUTH_CONFIG_DOMAIN: "dataware-tools.us.auth0.com",
+    DATAWARE_TOOLS_AUTH_CONFIG_CLIENT_ID: "ETb1RhJEbtXlFgWtaHzl5kPCkaYqhTVl",
+    DATAWARE_TOOLS_AUTH_CONFIG_API_URL: "https://demo.dataware-tools.com/",
   };
 }
