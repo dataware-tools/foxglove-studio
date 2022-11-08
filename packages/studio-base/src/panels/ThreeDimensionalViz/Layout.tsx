@@ -666,8 +666,29 @@ export default function Layout({
           setShowTopicTree(false);
         }
       },
-      onDoubleClick: (ev: React.MouseEvent, args?: ReglClickInfo) =>
-        handleEvent("onDoubleClick", ev, args),
+      onDoubleClick: (ev: React.MouseEvent, args?: ReglClickInfo) => {
+        handleEvent("onDoubleClick", ev, args);
+        const newClickedObjects =
+          (args?.objects as MouseEventObject[] | undefined) ?? ([] as MouseEventObject[]);
+
+        // With multiple objects we update the selection state with all possible objects
+        if (newClickedObjects.length > 1) {
+          setSelectionState((prevState) => {
+            return {
+              ...prevState,
+              selectedObject: undefined,
+              clickedObjects: newClickedObjects,
+              clickedPosition: {
+                clientX: ev.clientX,
+                clientY: ev.clientY,
+              },
+            };
+          });
+          return;
+        }
+
+        selectObject(newClickedObjects[0]);
+      },
       onExitTopicTreeFocus: () => {
         if (containerRef.current) {
           containerRef.current.focus();

@@ -223,7 +223,7 @@ function World(
       // Rendering the hitmap is an expensive operation and we want to avoid
       // doing it when the user is dragging the view with the mouse. By ignoring
       // these events, the only way to select an object is when receiving an "onClick" event.
-      disableHitmapForEvents={["onMouseDown", "onMouseMove", "onMouseUp"]}
+      disableHitmapForEvents={["onMouseDown", "onMouseMove", "onMouseUp", "onClick"]}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       onMouseDown={onMouseDown}
