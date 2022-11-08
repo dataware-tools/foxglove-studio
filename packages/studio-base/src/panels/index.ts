@@ -282,5 +282,17 @@ const hdlDeveloped: PanelInfo[] = [
     description: "show comment list",
     module: async () => await import("./CommentList"),
   },
+  {
+    title: "TopicToggleButton",
+    type: "TopicToggleButton",
+    description: "Button for toggle visibility of topic in 3D panel",
+    module: async () => await import("./TopicToggleButton"),
+  },
+  {
+    title: "TrajectoryTrackButton",
+    type: "TrajectoryTrackButton",
+    description: "Button for tracking trajectory marker on 3D panel",
+    module: async () => await import("./TrajectoryTrackButton"),
+  },
 ];
 export default { builtin, debug, hidden, legacyPlot, new3DPanel, hdlDeveloped };
