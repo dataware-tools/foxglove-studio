@@ -294,5 +294,11 @@ const hdlDeveloped: PanelInfo[] = [
     description: "Button for tracking trajectory marker on 3D panel",
     module: async () => await import("./TrajectoryTrackButton"),
   },
+  {
+    title: "CommentManagement",
+    type: "CommentManagement",
+    description: "manage comments",
+    module: async () => await import("./CommentManagement"),
+  },
 ];
 export default { builtin, debug, hidden, legacyPlot, new3DPanel, hdlDeveloped };
