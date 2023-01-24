@@ -97,6 +97,7 @@ export default class RosbridgePlayer implements Player {
   private _playbackSpeed: number = 1.0;
   private _isServiceBusy: boolean = true;
   private _lastSeekTime: number = 1;
+  private _rosVersion?: number = 1 | 2;
 
   constructor({
     url,
@@ -245,6 +246,7 @@ export default class RosbridgePlayer implements Player {
           message: "Unable to detect ROS version, assuming ROS 1",
         });
       }
+      this._rosVersion = rosVersion;
 
       for (let i = 0; i < result.topics.length; i++) {
         const topicName = result.topics[i]!;
@@ -350,8 +352,12 @@ export default class RosbridgePlayer implements Player {
     // Parse messages and get current-time and rosbag information
     for (const msg of this._parsedMessages) {
       if (msg.topic === "/clock") {
-        // @ts-expect-error msg.message is not unknown
-        const nextCurrentTime = { sec: msg.message.clock.secs, nsec: msg.message.clock.nsecs };
+        const nextCurrentTime =
+          this._rosVersion === 1
+            ? // @ts-expect-error msg.message is not unknown
+              { sec: msg.message.clock.secs, nsec: msg.message.clock.nsecs }
+            : // @ts-expect-error msg.message is not unknown
+              { sec: msg.message.secs, nsec: msg.message.nsecs };
         this._isPlaying = toMicroSec(this._currentTime) !== toMicroSec(nextCurrentTime);
         this._currentTime = nextCurrentTime;
       }
@@ -361,6 +367,16 @@ export default class RosbridgePlayer implements Player {
         this._isServiceBusy = false;
       }
       if (msg.topic === "/rosbag_player_controller/rosbag_end_time") {
+        // @ts-expect-error msg.message is not unknow
+        this._endTime = msg.message.clock;
+        this._isServiceBusy = false;
+      }
+      if (msg.topic === "/rosbag2_player_contoller/rosbag2_start_time") {
+        // @ts-expect-error msg.message is not unknown
+        this._startTime = msg.message.clock;
+        this._isServiceBusy = false;
+      }
+      if (msg.topic === "/rosbag2_player_contoller/rosbag2_end_time") {
         // @ts-expect-error msg.message is not unknown
         this._endTime = msg.message.clock;
         this._isServiceBusy = false;
@@ -512,7 +528,9 @@ export default class RosbridgePlayer implements Player {
       const topic = new roslib.Topic({
         ros: this._rosClient,
         name: topicName,
-        compression: topicName === "/clock" ? "cbor" : "cbor-raw",
+        // NOTE(kan-bayashi): Not sure the compression is correct
+        compression:
+          this._rosVersion === 2 ? "cbor-raw" : topicName === "/clock" ? "cbor" : "cbor-raw",
       });
       const availTopic = availableTopicsByTopicName[topicName];
       if (!availTopic) {
@@ -639,9 +657,31 @@ export default class RosbridgePlayer implements Player {
       return;
     }
     const request = new roslib.ServiceRequest({});
-    this._callService("/rosbag_player_controller/play", "std_srv/Trigger", request, () => {
-      this._isPlaying = true;
-    });
+    if (this._rosVersion === 1) {
+      this._callService("/rosbag_player_controller/play", "std_srv/Trigger", request, () => {
+        this._isPlaying = true;
+      });
+    } else {
+      this._callService(
+        "/rosbag2_player/resume",
+        "rosbag2_interfaces/srv/Resume",
+        request,
+        // NOTE(kan-bayashi): Resume return empty response
+        () => {},
+        () => {
+          this._callService(
+            "/rosbag2_player/is_paused",
+            "rosbag2_interfaces/srv/IsPaused",
+            request,
+            // NOTE(kan-bayashi): IsPaused response does not include .success
+            () => {},
+            (result) => {
+              this._isPlaying = !result.paused;
+            },
+          );
+        },
+      );
+    }
   }
   pausePlayback(): void {
     if (this._isServiceBusy) {
@@ -649,43 +689,93 @@ export default class RosbridgePlayer implements Player {
     }
 
     const request = new roslib.ServiceRequest({});
-    this._callService("/rosbag_player_controller/pause", "std_srv/Trigger", request, () => {
-      this._isPlaying = false;
-    });
+    if (this._rosVersion === 1) {
+      this._callService("/rosbag_player_controller/pause", "std_srv/Trigger", request, () => {
+        this._isPlaying = false;
+      });
+    } else {
+      this._callService(
+        "/rosbag2_player/pause",
+        "rosbag2_interfaces/srv/Pause",
+        request,
+        // NOTE(kan-bayashi): Pause return empty response
+        () => {},
+        () => {
+          this._callService(
+            "/rosbag2_player/is_paused",
+            "rosbag2_interfaces/srv/IsPaused",
+            request,
+            // NOTE(kan-bayashi): IsPaused response does not include .success
+            () => {},
+            (result) => {
+              this._isPlaying = !result.paused;
+            },
+          );
+        },
+      );
+    }
   }
   seekPlayback(time: Time): void {
     if (this._isServiceBusy) {
       return;
     }
 
-    const request = new roslib.ServiceRequest({
-      time: toSec(time),
-    });
-    this._callService(
-      "/rosbag_player_controller/seek",
-      "controllable_rosbag_player/Seek",
-      request,
-      () => {
-        this._lastSeekTime = toSec(time);
-      },
-    );
+    if (this._rosVersion === 1) {
+      const request = new roslib.ServiceRequest({
+        time: toSec(time),
+      });
+      this._callService(
+        "/rosbag_player_controller/seek",
+        "controllable_rosbag_player/Seek",
+        request,
+        () => {
+          this._lastSeekTime = toSec(time);
+        },
+      );
+    } else {
+      const request = new roslib.ServiceRequest({
+        time: time,
+      });
+      this._callService(
+        "/rosbag2_player/seek",
+        "rosbag2_interfaces/srv/Seek",
+        request,
+        () => {
+          this._lastSeekTime = toSec(time);
+        },
+      );
+    }
   }
   setPlaybackSpeed(speedFraction: number): void {
     if (this._isServiceBusy) {
       return;
     }
 
-    const request = new roslib.ServiceRequest({
-      speed: speedFraction,
-    });
-    this._callService(
-      "/rosbag_player_controller/set_playback_speed",
-      "controllable_rosbag_player/SetPlaybackSpeed",
-      request,
-      () => {
-        this._playbackSpeed = speedFraction;
-      },
-    );
+    if (this._rosVersion === 1) {
+      const request = new roslib.ServiceRequest({
+        speed: speedFraction,
+      });
+      this._callService(
+        "/rosbag_player_controller/set_playback_speed",
+        "controllable_rosbag_player/SetPlaybackSpeed",
+        request,
+        () => {
+          this._playbackSpeed = speedFraction;
+        },
+      );
+    } else {
+      const request = new roslib.ServiceRequest({
+        rate: speedFraction,
+      });
+      this._callService(
+        "/rosbag2_player/set_rate",
+        "rosbag2_interfaces/srv/SetRate",
+        request,
+        () => {
+          this._playbackSpeed = speedFraction;
+        },
+      );
+    }
   }
   requestBackfill(): void {
     // no-op
@@ -722,6 +812,8 @@ export default class RosbridgePlayer implements Player {
       "/clock",
       "/rosbag_player_controller/rosbag_start_time",
       "/rosbag_player_controller/rosbag_end_time",
+      "/rosbag2_player_contoller/rosbag2_start_time",
+      "/rosbag2_player_contoller/rosbag2_end_time",
     ];
     // Always subscribe to /clock if available
     for (const topic of internalTopics) {
