@@ -295,10 +295,16 @@ const hdlDeveloped: PanelInfo[] = [
     module: async () => await import("./TrajectoryTrackButton"),
   },
   {
-    title: "CommentManagement",
-    type: "CommentManagement",
-    description: "manage comments",
-    module: async () => await import("./CommentManagement"),
+    title: "ImageAnnotator",
+    type: "ImageAnnotator",
+    description: "image annotator",
+    module: async () => await import("./ImageAnnotator"),
+  },
+  {
+    title: "AnnotationList",
+    type: "AnnotationList",
+    description: "annotation list",
+    module: async () => await import("./AnnotationList"),
   },
 ];
 export default { builtin, debug, hidden, legacyPlot, new3DPanel, hdlDeveloped };
