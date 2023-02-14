@@ -371,12 +371,12 @@ export default class RosbridgePlayer implements Player {
         this._endTime = msg.message.clock;
         this._isServiceBusy = false;
       }
-      if (msg.topic === "/rosbag2_player_contoller/rosbag2_start_time") {
+      if (msg.topic === "/rosbag2_player_controller/rosbag2_start_time") {
         // @ts-expect-error msg.message is not unknown
         this._startTime = msg.message.clock;
         this._isServiceBusy = false;
       }
-      if (msg.topic === "/rosbag2_player_contoller/rosbag2_end_time") {
+      if (msg.topic === "/rosbag2_player_controller/rosbag2_end_time") {
         // @ts-expect-error msg.message is not unknown
         this._endTime = msg.message.clock;
         this._isServiceBusy = false;
@@ -812,8 +812,8 @@ export default class RosbridgePlayer implements Player {
       "/clock",
       "/rosbag_player_controller/rosbag_start_time",
       "/rosbag_player_controller/rosbag_end_time",
-      "/rosbag2_player_contoller/rosbag2_start_time",
-      "/rosbag2_player_contoller/rosbag2_end_time",
+      "/rosbag2_player_controller/rosbag2_start_time",
+      "/rosbag2_player_controller/rosbag2_end_time",
     ];
     // Always subscribe to /clock if available
     for (const topic of internalTopics) {
