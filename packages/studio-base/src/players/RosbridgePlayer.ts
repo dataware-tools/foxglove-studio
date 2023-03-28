@@ -698,20 +698,8 @@ export default class RosbridgePlayer implements Player {
         "/rosbag2_player/pause",
         "rosbag2_interfaces/srv/Pause",
         request,
-        // NOTE(kan-bayashi): Pause return empty response
         () => {},
-        () => {
-          this._callService(
-            "/rosbag2_player/is_paused",
-            "rosbag2_interfaces/srv/IsPaused",
-            request,
-            // NOTE(kan-bayashi): IsPaused response does not include .success
-            () => {},
-            (result) => {
-              this._isPlaying = !result.paused;
-            },
-          );
-        },
+        () => {},
       );
     }
   }
@@ -736,14 +724,9 @@ export default class RosbridgePlayer implements Player {
       const request = new roslib.ServiceRequest({
         time: time,
       });
-      this._callService(
-        "/rosbag2_player/seek",
-        "rosbag2_interfaces/srv/Seek",
-        request,
-        () => {
-          this._lastSeekTime = toSec(time);
-        },
-      );
+      this._callService("/rosbag2_player/seek", "rosbag2_interfaces/srv/Seek", request, () => {
+        this._lastSeekTime = toSec(time);
+      });
     }
   }
   setPlaybackSpeed(speedFraction: number): void {
