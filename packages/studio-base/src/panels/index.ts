@@ -306,5 +306,11 @@ const hdlDeveloped: PanelInfo[] = [
     description: "annotation list",
     module: async () => await import("./AnnotationList"),
   },
+  {
+    title: "HDLMap",
+    type: "HDLMap",
+    description: "map panel improved by hdl",
+    module: async () => await import("./HDLMap"),
+  },
 ];
 export default { builtin, debug, hidden, legacyPlot, new3DPanel, hdlDeveloped };
