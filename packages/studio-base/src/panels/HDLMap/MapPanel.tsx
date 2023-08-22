@@ -438,7 +438,7 @@ function MapPanel(props: MapPanelProps): JSX.Element {
     });
   }, [allNavMessages, currentNavMessages]);
 
-  const filteredAnnotation = useAnnotationsState((state) =>  state.filteredAnnotations)
+  const filteredAnnotation = useAnnotationsState((state) => state.filteredAnnotations);
   useEffect(() => {
     if (!currentMap) {
       return;
@@ -478,7 +478,7 @@ function MapPanel(props: MapPanelProps): JSX.Element {
     onClick,
     onHover,
     topicLayers,
-    filteredAnnotation
+    filteredAnnotation,
   ]);
 
   // create a filtered marker layer for the current nav messages

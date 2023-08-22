@@ -1,7 +1,16 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
-import { Map, LatLngBounds, FeatureGroup, Circle, CircleMarker, PathOptions, tooltip, latLng } from "leaflet";
+import {
+  Map,
+  LatLngBounds,
+  FeatureGroup,
+  Circle,
+  CircleMarker,
+  PathOptions,
+  tooltip,
+  latLng,
+} from "leaflet";
 import { eigs } from "mathjs";
 import { Annotation } from "scene-viewer-panels/dist/AnnotationManagement/types";
 
@@ -20,7 +29,7 @@ type Args = {
   navSatMessageEvents: readonly MessageEvent<NavSatFixMsg>[];
   onHover?: (event: MessageEvent<NavSatFixMsg> | undefined) => void;
   onClick?: (event: MessageEvent<NavSatFixMsg>) => void;
-  annotations?: Annotation[]
+  annotations?: Annotation[];
 };
 
 class PointMarker extends CircleMarker {
@@ -64,25 +73,33 @@ function FilteredPointLayer(args: Args): FeatureGroup {
 
     (sparse2d[x] = sparse2d[x] ?? [])[y] = true;
 
-    const marker =  new PointMarker([lat, lon], { ...defaultStyle, radius: POINT_MARKER_RADIUS });
+    const marker = new PointMarker([lat, lon], { ...defaultStyle, radius: POINT_MARKER_RADIUS });
     marker.messageEvent = messageEvent;
     marker.addTo(markersLayer);
     if (args.annotations) {
       const annotationIndex = args.annotations.findIndex((annotation) => {
-        // @ts-expect-error aaa
-        if (annotation.type === "arbitrary" && annotation.timestamp_from < messageEvent.message.header.stamp.sec &&
-          // @ts-expect-error aaa
-          messageEvent.message.header.stamp.sec < annotation.timestamp_to) {
-          return true
+        if (
+          annotation.type === "arbitrary" &&
+          // @ts-expect-error message may have header
+          annotation.timestamp_from < messageEvent.message.header?.stamp?.sec &&
+          // @ts-expect-error message may have header
+          messageEvent.message.header?.stamp?.sec < annotation.timestamp_to
+        ) {
+          return true;
         } else {
-          return false
+          return false;
         }
-      })
-      if (annotationIndex !== -1 ) {
-        marker.bindTooltip(String(args.annotations[annotationIndex]?.comment),{direction: "top",})
+      });
+      if (annotationIndex !== -1) {
+        marker.bindTooltip(String(args.annotations[annotationIndex]?.comment), {
+          direction: "top",
+        });
         if (!usedIndexes.includes(annotationIndex)) {
-          tooltip({ permanent: true, direction: "top" }).setLatLng(latLng(lat, lon)).setContent(String(annotationIndex + 1)).addTo(markersLayer)
-          usedIndexes.push(annotationIndex)
+          tooltip({ permanent: true, direction: "top" })
+            .setLatLng(latLng(lat, lon))
+            .setContent(String(annotationIndex + 1))
+            .addTo(markersLayer);
+          usedIndexes.push(annotationIndex);
         }
       }
     }
@@ -109,7 +126,7 @@ function FilteredPointLayer(args: Args): FeatureGroup {
       args.onHover?.(marker.messageEvent);
     });
     markersLayer.on("mouseout", (event) => {
-      const marker = event.sourceTarget as PointMarker
+      const marker = event.sourceTarget as PointMarker;
       marker.setStyle(defaultStyle);
       args.onHover?.(undefined);
     });
