@@ -97,7 +97,7 @@ function FilteredPointLayer(args: Args): FeatureGroup {
         if (!usedIndexes.includes(annotationIndex)) {
           tooltip({ permanent: true, direction: "top" })
             .setLatLng(latLng(lat, lon))
-            .setContent(String(String(args.annotations[annotationIndex]?.index)))
+            .setContent(String(args.annotations[annotationIndex]?.index))
             .addTo(markersLayer);
           usedIndexes.push(annotationIndex);
         }
