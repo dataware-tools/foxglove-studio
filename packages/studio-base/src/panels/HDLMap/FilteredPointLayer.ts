@@ -2,14 +2,14 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 import {
-  Map,
-  LatLngBounds,
-  FeatureGroup,
   Circle,
   CircleMarker,
+  FeatureGroup,
+  LatLngBounds,
+  Map,
   PathOptions,
-  tooltip,
   latLng,
+  tooltip,
 } from "leaflet";
 import { eigs } from "mathjs";
 import { Annotation } from "scene-viewer-panels/dist/AnnotationManagement/types";
@@ -97,7 +97,7 @@ function FilteredPointLayer(args: Args): FeatureGroup {
         if (!usedIndexes.includes(annotationIndex)) {
           tooltip({ permanent: true, direction: "top" })
             .setLatLng(latLng(lat, lon))
-            .setContent(String(annotationIndex + 1))
+            .setContent(String(args.annotations[annotationIndex]?.index))
             .addTo(markersLayer);
           usedIndexes.push(annotationIndex);
         }
