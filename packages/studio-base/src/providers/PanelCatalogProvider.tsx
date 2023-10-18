@@ -59,15 +59,21 @@ export default function PanelCatalogProvider(props: PropsWithChildren): React.Re
     return {
       builtin: panels.getBuiltin(t),
       debug: panels.getDebug(t),
+      hdlDeveloped: panels.getHDLDeveloped(),
     };
   }, [t]);
 
   const allPanels = useMemo(() => {
-    return [...allPanelsInfo.builtin, ...allPanelsInfo.debug, ...wrappedExtensionPanels];
+    return [
+      ...allPanelsInfo.builtin,
+      ...allPanelsInfo.debug,
+      ...allPanelsInfo.hdlDeveloped,
+      ...wrappedExtensionPanels,
+    ];
   }, [wrappedExtensionPanels, allPanelsInfo]);
 
   const visiblePanels = useMemo(() => {
-    const panelList = [...allPanelsInfo.builtin];
+    const panelList = [...allPanelsInfo.builtin, ...allPanelsInfo.hdlDeveloped];
     if (showDebugPanels) {
       panelList.push(...allPanelsInfo.debug);
     }
