@@ -15,6 +15,7 @@ import PanelCatalogContext, {
 } from "@foxglove/studio-base/context/PanelCatalogContext";
 import { useAppConfigurationValue } from "@foxglove/studio-base/hooks/useAppConfigurationValue";
 import * as panels from "@foxglove/studio-base/panels";
+import { getHDLDeveloped } from "@foxglove/studio-base/panelsByHDL";
 import { SaveConfig } from "@foxglove/studio-base/types/panels";
 
 type PanelProps = {
@@ -59,7 +60,7 @@ export default function PanelCatalogProvider(props: PropsWithChildren): React.Re
     return {
       builtin: panels.getBuiltin(t),
       debug: panels.getDebug(t),
-      hdlDeveloped: panels.getHDLDeveloped(),
+      hdlDeveloped: getHDLDeveloped(),
     };
   }, [t]);
 

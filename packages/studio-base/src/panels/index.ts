@@ -190,12 +190,3 @@ export const getDebug: (t: TFunction<"panels">) => PanelInfo[] = (t) => [
     module: async () => await import("./PlaybackPerformance"),
   },
 ];
-
-export const getHDLDeveloped: () => PanelInfo[] = () => [
-  {
-    title: "HDLSample",
-    type: "HDLSample",
-    description: "HDLによるサンプルパネルです。",
-    module: async () => await import("./HDLPanels/Sample"),
-  },
-];
