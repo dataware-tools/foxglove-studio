@@ -680,8 +680,11 @@ export default class RosbridgePlayer implements Player {
         await this.callService("/rosbag2_player/resume", {});
         this.#isPlaying = true;
       } catch {
-        const result: any = await this.callService("/rosbag2_player/is_paused", {});
-        this.#isPlaying = !result.paused;
+        const result = await this.callService("/rosbag2_player/is_paused", {});
+        if (result != undefined && typeof result === "object") {
+          // @ts-expect-error result should have property paused
+          this.#isPlaying = !result.paused;
+        }
       }
     }
   }
@@ -694,7 +697,7 @@ export default class RosbridgePlayer implements Player {
       await this.callService("/rosbag_player_controller/pause", {});
       this.#isPlaying = false;
     } else {
-      this.callService("/rosbag2_player/pause", {});
+      await this.callService("/rosbag2_player/pause", {});
       this.#isPlaying = false;
     }
   }
@@ -710,9 +713,7 @@ export default class RosbridgePlayer implements Player {
       await this.callService("/rosbag_player_controller/seek", request);
       this.#lastSeekTime = toSec(time);
     } else {
-      const request = {
-        time: time,
-      };
+      const request = { time };
       await this.callService("/rosbag2_player/seek", request);
       this.#lastSeekTime = toSec(time);
     }
