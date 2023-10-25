@@ -59,6 +59,11 @@ export const devServerConfig = (params: ConfigParams): WebpackConfiguration => (
     //  "[WDS] Disconnected!"
     // Since we are only connecting to localhost, DNS rebinding attacks are not a concern during dev
     allowedHosts: "all",
+    client: {
+      webSocketURL: process.env.USE_LOCAL_DATAWARE_TOOLS
+        ? "wss://dataware-tools.local/scene-viewer/ws"
+        : "auto://0.0.0.0:0/ws",
+    },
   },
 
   plugins: [new CleanWebpackPlugin()],
