@@ -673,18 +673,74 @@ export default class RosbridgePlayer implements Player {
     });
   }
 
-  // Bunch of unsupported stuff. Just don't do anything for these.
-  public startPlayback(): void {
-    // no-op
+  public async startPlayback(): Promise<void> {
+    if (this._isServiceBusy) {
+      return;
+    }
+
+    if (this.#rosVersion === 1) {
+      await this.callService("/rosbag_player_controller/play", {});
+      this._isPlaying = true;
+    } else {
+      try {
+        await this.callService("/rosbag2_player/resume", {});
+        this._isPlaying = true;
+      } catch {
+        const result: any = await this.callService("/rosbag2_player/is_paused", {});
+        this._isPlaying = !result.paused;
+      }
+    }
   }
-  public pausePlayback(): void {
-    // no-op
+  public async pausePlayback(): Promise<void> {
+    if (this._isServiceBusy) {
+      return;
+    }
+
+    if (this.#rosVersion === 1) {
+      await this.callService("/rosbag_player_controller/pause", {});
+      this._isPlaying = false;
+    } else {
+      this.callService("/rosbag2_player/pause", {});
+      this._isPlaying = false;
+    }
   }
-  public seekPlayback(_time: Time): void {
-    // no-op
+  public async seekPlayback(time: Time): Promise<void> {
+    if (this._isServiceBusy) {
+      return;
+    }
+
+    if (this.#rosVersion === 1) {
+      const request = {
+        time: toSec(time),
+      };
+      await this.callService("/rosbag_player_controller/seek", request);
+      this._lastSeekTime = toSec(time);
+    } else {
+      const request = {
+        time: time,
+      };
+      await this.callService("/rosbag2_player/seek", request);
+      this._lastSeekTime = toSec(time);
+    }
   }
-  public setPlaybackSpeed(_speedFraction: number): void {
-    // no-op
+  public async setPlaybackSpeed(speedFraction: number): Promise<void> {
+    if (this._isServiceBusy) {
+      return;
+    }
+
+    if (this.#rosVersion === 1) {
+      const request = {
+        speed: speedFraction,
+      };
+      await this.callService("/rosbag_player_controller/set_playback_speed", request);
+      this._playbackSpeed = speedFraction;
+    } else {
+      const request = {
+        rate: speedFraction,
+      };
+      await this.callService("/rosbag2_player/set_rate", request);
+      this._playbackSpeed = speedFraction;
+    }
   }
   public setGlobalVariables(): void {
     // no-op
