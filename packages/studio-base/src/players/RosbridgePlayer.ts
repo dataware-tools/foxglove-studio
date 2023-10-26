@@ -683,7 +683,7 @@ export default class RosbridgePlayer implements Player {
         const result = (await this.callService("/rosbag2_player/is_paused", {})) as {
           paused?: boolean;
         };
-        if (result != undefined && result.paused != undefined) {
+        if (result.paused != undefined) {
           this.#isPlaying = !result.paused;
         }
       }
