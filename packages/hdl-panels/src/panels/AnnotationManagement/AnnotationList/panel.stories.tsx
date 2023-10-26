@@ -1,6 +1,6 @@
 import PanelSetup from "@foxglove/studio-base/stories/PanelSetup";
 import { Box } from "@mui/system";
-import { FoxGloveThemeProvider } from "../../utils/ThemeProvider";
+import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { AnnotationList } from "./content";
 
 export default {

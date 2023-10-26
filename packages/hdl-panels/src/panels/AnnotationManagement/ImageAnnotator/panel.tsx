@@ -11,35 +11,22 @@ import { TopicDropdown } from "@foxglove/studio-base/panels/ImageView/components
 import { useImagePanelMessages } from "@foxglove/studio-base/panels/ImageView/hooks/useImagePanelMessages";
 import { NORMALIZABLE_IMAGE_DATATYPES } from "@foxglove/studio-base/panels/ImageView/lib/normalizeMessage";
 import { NormalizedImageMessage } from "@foxglove/studio-base/panels/ImageView/types";
-import {
-  AddComment as AddCommentIcon,
-  Clear as ClearIcon,
-} from "@mui/icons-material";
+import { AddComment as AddCommentIcon, Clear as ClearIcon } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Box, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { FoxGloveThemeProvider } from "../../utils/ThemeProvider";
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { useAnnotationsState } from "../stores/annotation";
 import { useIsAdding } from "../stores/isAdding";
 import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
 import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
-import {
-  ImageAnnotationCanvas,
-  ImageAnnotationCanvasProps,
-} from "./ImageAnnotationCanvas";
+import { ImageAnnotationCanvas, ImageAnnotationCanvasProps } from "./ImageAnnotationCanvas";
 
 const MIN_PANEL_WIDTH = 400;
 const MIN_PANEL_HEIGHT = 200;
@@ -82,7 +69,7 @@ const ImageAnnotatorPanel = () => {
   }, [parentPanelContext]);
   const currentCameraTopic = useMemo(
     () => (panelId ? cameraTopics[panelId] : ""),
-    [panelId, cameraTopics]
+    [panelId, cameraTopics],
   );
 
   const { image } = useImagePanelMessages({
@@ -94,9 +81,7 @@ const ImageAnnotatorPanel = () => {
   const { topics } = useDataSourceInfo();
 
   const allImageTopics = useMemo(() => {
-    return topics.filter(({ datatype }) =>
-      NORMALIZABLE_IMAGE_DATATYPES.includes(datatype)
-    );
+    return topics.filter(({ datatype }) => NORMALIZABLE_IMAGE_DATATYPES.includes(datatype));
   }, [topics]);
 
   // Set the first image topic if cameraTopic is not selected
@@ -113,7 +98,7 @@ const ImageAnnotatorPanel = () => {
   const imageMessageToRender = image ?? lastImageMessageRef.current;
 
   const pauseFrame = useMessagePipeline(
-    useCallback((messagePipeline) => messagePipeline.pauseFrame, [])
+    useCallback((messagePipeline) => messagePipeline.pauseFrame, []),
   );
   const onStartRenderImage = useCallback(() => {
     // NOTE: Absent of this line makes the app so slow, but editing the arg of pauseFrame
@@ -147,23 +132,13 @@ const ImageAnnotatorPanel = () => {
         ? "No camera topics"
         : "Select a camera topic";
 
-    return (
-      <TopicDropdown
-        multiple={false}
-        title={title}
-        items={items}
-        onChange={onChange}
-      />
-    );
+    return <TopicDropdown multiple={false} title={title} items={items} onChange={onChange} />;
   }, [currentCameraTopic, setCameraTopics, allImageTopics, panelId]);
 
   // CurrentTime should be receiveTime of the image message that is being shown in this panel.
   // Because when user playback to the timestamp an annotation have, this panel must show exact image the annotation links
-  const messages = useMessagePipeline(
-    (ctx) => ctx.playerState.activeData?.messages
-  );
-  const imageMessages =
-    messages?.filter((message) => message.topic === currentCameraTopic) || [];
+  const messages = useMessagePipeline((ctx) => ctx.playerState.activeData?.messages);
+  const imageMessages = messages?.filter((message) => message.topic === currentCameraTopic) || [];
   const currentImageMessage = imageMessages[imageMessages.length - 1];
   const currentImageMessageTime = currentImageMessage?.receiveTime;
 
@@ -174,7 +149,7 @@ const ImageAnnotatorPanel = () => {
     }
   }, [currentImageMessageTime, setCurrentTime]);
   const isPlaying = useMessagePipeline(
-    (ctx: MessagePipelineContext) => ctx.playerState.activeData?.isPlaying
+    (ctx: MessagePipelineContext) => ctx.playerState.activeData?.isPlaying,
   );
   const setIsPlaying = usePlayerState((state) => state.setIsPlaying);
   useEffect(() => {
@@ -185,20 +160,14 @@ const ImageAnnotatorPanel = () => {
 
   // Manage hide annotations state
   const [hideAnnotations, setHideAnnotations] = useState(false);
-  const hideAnnotationsTooltipComment = hideAnnotations
-    ? "Show annotations"
-    : "Hide annotations";
+  const hideAnnotationsTooltipComment = hideAnnotations ? "Show annotations" : "Hide annotations";
 
   const isAdding = useIsAdding((state) => state.isAdding);
   const startAdding = useIsAdding((state) => state.startAdding);
   const stopAdding = useIsAdding((state) => state.stopAdding);
   const stopEditing = useAnnotationsState((state) => state.stopEditing);
-  const editingAnnotationId = useAnnotationsState(
-    (state) => state.editingAnnotationId
-  );
-  const removeAnnotation = useAnnotationsState(
-    (state) => state.removeAnnotation
-  );
+  const editingAnnotationId = useAnnotationsState((state) => state.editingAnnotationId);
+  const removeAnnotation = useAnnotationsState((state) => state.removeAnnotation);
   const confirm = useConfirm();
 
   const handleClick = useCallback(async () => {
@@ -232,8 +201,7 @@ const ImageAnnotatorPanel = () => {
     stopEditing,
   ]);
   // Disable button if camera topic is not selected, or if there is an editing existing annotation
-  const disabled =
-    currentCameraTopic === "" || (!isAdding && editingAnnotationId !== null);
+  const disabled = currentCameraTopic === "" || (!isAdding && editingAnnotationId !== null);
 
   return (
     <FoxGloveThemeProvider>

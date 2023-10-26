@@ -1,4 +1,4 @@
-import { FoxGloveThemeProvider } from "../../utils/ThemeProvider";
+import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
 import { buildSampleImage } from "./ImageAnnotationCanvas.stories";

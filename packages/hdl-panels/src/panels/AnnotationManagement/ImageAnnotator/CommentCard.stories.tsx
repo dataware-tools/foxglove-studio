@@ -1,16 +1,10 @@
-import {
-  ContentCopy as ContentCopyIcon,
-  Delete as DeleteIcon,
-} from "@mui/icons-material";
+import { ContentCopy as ContentCopyIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import { Meta } from "@storybook/react";
 import React from "react";
-import { FoxGloveThemeProvider } from "../../utils/ThemeProvider";
+import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { Annotation, Point } from "../types";
-import {
-  CommentCardPresentation,
-  CommentCardPresentationProps,
-} from "./CommentCard";
+import { CommentCardPresentation, CommentCardPresentationProps } from "./CommentCard";
 
 const meta: Meta<typeof CommentCardPresentation> = {
   title: "components/CommentCard",
@@ -124,10 +118,7 @@ export function Interactive(): JSX.Element {
       <FormControlLabel
         sx={{ m: 2 }}
         control={
-          <Checkbox
-            value={isOnTimestamp}
-            onChange={() => setIsOnTimestamp((val) => !val)}
-          />
+          <Checkbox value={isOnTimestamp} onChange={() => setIsOnTimestamp((val) => !val)} />
         }
         label="isOnTimestamp"
       />

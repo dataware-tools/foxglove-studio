@@ -1,7 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import { Meta } from "@storybook/react";
 import React from "react";
-import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
+import { FoxGloveThemeProvider } from "../../../../utils/ThemeProvider";
 import { Annotation, Point } from "../../types";
 import { AdaptiveCommentPin } from "./AdaptiveCommentPin";
 import { CommentPinPresentation } from "./CommentPinPresentation";
@@ -36,16 +36,11 @@ export function Variation(): JSX.Element {
             { index: 1 },
             { index: 99 },
             { index: 1, loading: true },
-            { index: 1, isOnTime: false},
+            { index: 1, isOnTime: false },
           ].map((args, key) => (
             <Box position="relative" height={100} key={key}>
               <CommentPinPresentation comment={longSentence} {...args} />
-              <CommentPinPresentation
-                comment={longSentence}
-                open
-                left={80}
-                {...args}
-              />
+              <CommentPinPresentation comment={longSentence} open left={80} {...args} />
             </Box>
           ))}
         </Stack>
@@ -58,44 +53,39 @@ export function Placement(): JSX.Element {
   return (
     <FoxGloveThemeProvider>
       <Stack p={2} spacing={2}>
-        {["left-top", "left-bottom", "right-top", "right-bottom"].map(
-          (placement, pkey) => (
+        {["left-top", "left-bottom", "right-top", "right-bottom"].map((placement, pkey) => (
+          <Box
+            key={pkey}
+            position="relative"
+            width="100%"
+            height="200px"
+            bgcolor={(theme) => theme.palette.grey[100]}
+          >
             <Box
-              key={pkey}
-              position="relative"
-              width="100%"
-              height="200px"
-              bgcolor={(theme) => theme.palette.grey[100]}
+              width="100px"
+              height="100px"
+              borderRight="1px dashed red"
+              borderBottom="1px dashed red"
             >
-              <Box
-                width="100px"
-                height="100px"
-                borderRight="1px dashed red"
-                borderBottom="1px dashed red"
-              >
-                {placement}
-              </Box>
-              <CommentPinPresentation
-                index={1}
-                comment={longSentence}
-                // @ts-expect-error for debug
-                placement={placement}
-                open
-                top={100}
-                left={100}
-              />
+              {placement}
             </Box>
-          )
-        )}
+            <CommentPinPresentation
+              index={1}
+              comment={longSentence}
+              // @ts-expect-error for debug
+              placement={placement}
+              open
+              top={100}
+              left={100}
+            />
+          </Box>
+        ))}
       </Stack>
     </FoxGloveThemeProvider>
   );
 }
 
-const InteractiveCommentPin = (props: {
-  placement: string;
-  offset: number;
-}) => {
+const InteractiveCommentPin = (props: { placement: string; offset: number }) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Box
@@ -104,12 +94,7 @@ const InteractiveCommentPin = (props: {
       height="200px"
       bgcolor={(theme) => theme.palette.grey[100]}
     >
-      <Box
-        width="200px"
-        height="100px"
-        borderRight="1px dashed red"
-        borderBottom="1px dashed red"
-      >
+      <Box width="200px" height="100px" borderRight="1px dashed red" borderBottom="1px dashed red">
         {" "}
       </Box>
       <CommentPinPresentation
@@ -136,15 +121,9 @@ export function Interactive(): JSX.Element {
   return (
     <FoxGloveThemeProvider>
       <Stack p={2} spacing={2}>
-        {["left-top", "left-bottom", "right-top", "right-bottom"].map(
-          (placement, pkey) => (
-            <InteractiveCommentPin
-              placement={placement}
-              key={pkey}
-              offset={5}
-            />
-          )
-        )}
+        {["left-top", "left-bottom", "right-top", "right-bottom"].map((placement, pkey) => (
+          <InteractiveCommentPin placement={placement} key={pkey} offset={5} />
+        ))}
       </Stack>
     </FoxGloveThemeProvider>
   );

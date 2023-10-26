@@ -1,7 +1,7 @@
 import Panel from "@foxglove/studio-base/components/Panel";
 import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
 import { Box } from "@mui/system";
-import { FoxGloveThemeProvider } from "../../utils/ThemeProvider";
+import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
 import { AnnotationList } from "./content";

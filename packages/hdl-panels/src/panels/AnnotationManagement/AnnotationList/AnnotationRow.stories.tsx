@@ -1,7 +1,7 @@
 import MockMessagePipelineProvider from "@foxglove/studio-base/components/MessagePipeline/MockMessagePipelineProvider";
 import { Box } from "@mui/system";
 import { RefObject } from "react";
-import { FoxGloveThemeProvider } from "../../utils/ThemeProvider";
+import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { Point } from "../types";
 import { AnnotationRow } from "./AnnotationRow";
 import { AnnotationList } from "./content";
@@ -12,10 +12,7 @@ export default {
 };
 export function Default(): JSX.Element {
   // NOTE (onose004): This is a dummy function to prevent the error
-  const setRef = (
-    ref: RefObject<HTMLTableRowElement>,
-    annotationId: string
-  ) => {
+  const setRef = (ref: RefObject<HTMLTableRowElement>, annotationId: string) => {
     console.log(ref, annotationId);
   };
   return (

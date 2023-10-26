@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { SearchBar } from "../../components/SearchBar";
-import { FoxGloveThemeProvider } from "../../utils/ThemeProvider";
+import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { useServerAnnotations } from "../apiClients";
 import { useSeekPlaybackToAnnotation } from "../hooks/useSeekPlaybackToAnnotation";
 import { useAnnotationsState } from "../stores/annotation";
@@ -36,13 +36,11 @@ export const AnnotationList = () => {
       annotations
         ? [...annotations].sort((a, b) => a.timestamp_from - b.timestamp_from)
         : undefined,
-    [annotations]
+    [annotations],
   );
   const [latestSearchedText, setLatestSearchedText] = useState("");
   const [searchAnnotationSwitch, setSearchAnnotationSwitch] = useState(false);
-  const [selectedTopics, setSelectedTopics] = useState<string[] | undefined>(
-    undefined
-  );
+  const [selectedTopics, setSelectedTopics] = useState<string[] | undefined>(undefined);
 
   const { fetchedAnnotations } = useServerAnnotations();
   const {
@@ -55,10 +53,8 @@ export const AnnotationList = () => {
     index,
   } = useSearchState();
 
-  const selectStartTime = (ctx: MessagePipelineContext) =>
-    ctx.playerState.activeData?.startTime;
-  const selectEndTime = (ctx: MessagePipelineContext) =>
-    ctx.playerState.activeData?.endTime;
+  const selectStartTime = (ctx: MessagePipelineContext) => ctx.playerState.activeData?.startTime;
+  const selectEndTime = (ctx: MessagePipelineContext) => ctx.playerState.activeData?.endTime;
   const startTime = useMessagePipeline(selectStartTime) || { sec: 0, nsec: 0 };
   const endTime = useMessagePipeline(selectEndTime) || { sec: 0, nsec: 0 };
   const { fetchServerAnnotations } = useServerAnnotations();
@@ -67,12 +63,8 @@ export const AnnotationList = () => {
     const updateSearchText = async () => {
       if (searchText !== latestSearchedText || searchAnnotationSwitch) {
         setSearchAnnotationSwitch(false);
-        annotations?.forEach(
-          async ({ comment, id }) => await index.addAsync(id, comment)
-        );
-        const newSearchResult = searchText
-          ? new Set(await index.searchAsync(searchText))
-          : null;
+        annotations?.forEach(async ({ comment, id }) => await index.addAsync(id, comment));
+        const newSearchResult = searchText ? new Set(await index.searchAsync(searchText)) : null;
         setSearchResult(newSearchResult);
         setHighlightedTexts(searchText.split(" "));
         setLatestSearchedText(searchText);
@@ -104,18 +96,14 @@ export const AnnotationList = () => {
     setSearchAnnotationSwitch,
   ]);
 
-  const editingAnnotationId = useAnnotationsState(
-    (state) => state.editingAnnotationId
-  );
+  const editingAnnotationId = useAnnotationsState((state) => state.editingAnnotationId);
 
-  const editingHasUpdate = useAnnotationsState(
-    (state) => state.editingHasUpdate
-  );
+  const editingHasUpdate = useAnnotationsState((state) => state.editingHasUpdate);
   const isAdding = useIsAdding((state) => state.isAdding);
   const startEditing = useAnnotationsState((state) => state.startEditing);
 
   const setTriggerShakingAnimation = useAnnotationsState(
-    (state) => state.setTriggerShakingAnimation
+    (state) => state.setTriggerShakingAnimation,
   );
   const seekPlaybackToAnnotation = useSeekPlaybackToAnnotation();
 
@@ -128,7 +116,7 @@ export const AnnotationList = () => {
     let nextAnnotationIndex = 0;
     if (editingAnnotationId) {
       const editingAnnotationIndex = sortedAnnotations.findIndex(
-        (annotation) => annotation.id === editingAnnotationId
+        (annotation) => annotation.id === editingAnnotationId,
       );
       nextAnnotationIndex = editingAnnotationIndex + 1;
     }
@@ -155,7 +143,7 @@ export const AnnotationList = () => {
     let prevAnnotationIndex = sortedAnnotations.length - 1;
     if (editingAnnotationId) {
       const editingAnnotationIndex = sortedAnnotations.findIndex(
-        (annotation) => annotation.id === editingAnnotationId
+        (annotation) => annotation.id === editingAnnotationId,
       );
       prevAnnotationIndex = editingAnnotationIndex - 1;
     }
@@ -199,7 +187,7 @@ export const AnnotationList = () => {
         },
       },
     }),
-    [handleSelectNextAnnotation, handleSelectPrevAnnotation]
+    [handleSelectNextAnnotation, handleSelectPrevAnnotation],
   );
 
   const filteredAnnotations = useMemo(() => {
@@ -211,14 +199,11 @@ export const AnnotationList = () => {
       // early return
       if (!matchTimestamp) return false;
 
-      const matchSearchResult = searchResult
-        ? searchResult.has(annotation.id)
-        : true;
+      const matchSearchResult = searchResult ? searchResult.has(annotation.id) : true;
       if (!matchSearchResult) return false;
 
       const matchTopicFilter =
-        !selectedTopics ||
-        selectedTopics.includes(annotation.targetTopic || "");
+        !selectedTopics || selectedTopics.includes(annotation.targetTopic || "");
       if (!matchTopicFilter) return false;
 
       return true;
@@ -229,10 +214,7 @@ export const AnnotationList = () => {
     useAnnotationsState.setState({ filteredAnnotations });
   }, [filteredAnnotations]);
 
-  const setRef = (
-    ref: React.RefObject<HTMLTableRowElement> | null,
-    annotationId: string
-  ) => {
+  const setRef = (ref: React.RefObject<HTMLTableRowElement> | null, annotationId: string) => {
     if (editingAnnotationId === annotationId) {
       ref?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
@@ -240,11 +222,7 @@ export const AnnotationList = () => {
 
   return (
     <FoxGloveThemeProvider>
-      <KeyListener
-        global
-        keyUpHandlers={keyUpHandlers}
-        keyDownHandlers={keyDownHandlers}
-      />
+      <KeyListener global keyUpHandlers={keyUpHandlers} keyDownHandlers={keyDownHandlers} />
       <Box
         sx={{
           display: "flex",
@@ -257,29 +235,18 @@ export const AnnotationList = () => {
         <Stack
           direction="row"
           spacing={0}
-          divider={
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ mx: 0.5, my: 0.5 }}
-            />
-          }
+          divider={<Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 0.5 }} />}
           alignItems="center"
           pr={0.5}
         >
           <SearchBar
             onChangeText={(searchText: string) => {
-              const fixedSearchText = searchText
-                .replaceAll("\\", "")
-                .replaceAll("　", " ");
+              const fixedSearchText = searchText.replaceAll("\\", "").replaceAll("　", " ");
               setSearchText(fixedSearchText);
             }}
           />
           <Stack direction="row">
-            <TopicFilter
-              annotations={sortedAnnotations}
-              setSelectedTopics={setSelectedTopics}
-            />
+            <TopicFilter annotations={sortedAnnotations} setSelectedTopics={setSelectedTopics} />
             <IconButton size="small" onClick={() => fetchServerAnnotations()}>
               <SyncIcon />
             </IconButton>
