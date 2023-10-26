@@ -2435,6 +2435,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@foxglove/hdl-panels@workspace:*, @foxglove/hdl-panels@workspace:packages/hdl-panels":
+  version: 0.0.0-use.local
+  resolution: "@foxglove/hdl-panels@workspace:packages/hdl-panels"
+  dependencies:
+    "@foxglove/studio-base": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "@foxglove/hooks@workspace:*, @foxglove/hooks@workspace:packages/hooks":
   version: 0.0.0-use.local
   resolution: "@foxglove/hooks@workspace:packages/hooks"
@@ -2666,6 +2674,7 @@ __metadata:
     "@foxglove/comlink-transfer-handlers": "workspace:*"
     "@foxglove/crc": 0.0.3
     "@foxglove/den": "workspace:*"
+    "@foxglove/hdl-panels": "workspace:*"
     "@foxglove/hooks": "workspace:*"
     "@foxglove/log": "workspace:*"
     "@foxglove/mcap-support": "workspace:*"

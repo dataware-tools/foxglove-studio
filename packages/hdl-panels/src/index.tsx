@@ -8,6 +8,6 @@ export const getHDLDeveloped: () => PanelInfo[] = () => [
     title: "HDLSample",
     type: "HDLSample",
     description: "HDLによるサンプルパネルです。",
-    module: async () => await import("./Sample"),
+    module: async () => await import("./panels/Sample"),
   },
 ];

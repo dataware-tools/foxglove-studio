@@ -5,6 +5,7 @@
 import { PropsWithChildren, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { getHDLDeveloped } from "@foxglove/hdl-panels";
 import { AppSetting } from "@foxglove/studio-base/AppSetting";
 import Panel from "@foxglove/studio-base/components/Panel";
 import { PanelExtensionAdapter } from "@foxglove/studio-base/components/PanelExtensionAdapter";
@@ -15,7 +16,6 @@ import PanelCatalogContext, {
 } from "@foxglove/studio-base/context/PanelCatalogContext";
 import { useAppConfigurationValue } from "@foxglove/studio-base/hooks/useAppConfigurationValue";
 import * as panels from "@foxglove/studio-base/panels";
-import { getHDLDeveloped } from "@foxglove/studio-base/panelsByHDL";
 import { SaveConfig } from "@foxglove/studio-base/types/panels";
 
 type PanelProps = {
