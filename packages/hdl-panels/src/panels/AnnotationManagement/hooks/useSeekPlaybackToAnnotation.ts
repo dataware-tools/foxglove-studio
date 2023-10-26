@@ -1,4 +1,4 @@
-import { useSeekPlayback } from "../../hooks/useSeekPlayback";
+import { useSeekPlayback } from "../../../hooks/useSeekPlayback";
 import { Annotation } from "../types";
 import { unixtimeToFoxgloveTime } from "../utils";
 

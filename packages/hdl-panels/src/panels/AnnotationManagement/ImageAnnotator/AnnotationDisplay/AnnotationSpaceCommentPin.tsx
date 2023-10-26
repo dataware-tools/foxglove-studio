@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { useSeekPlayback } from "../../../hooks/useSeekPlayback";
+import { useSeekPlayback } from "../../../../hooks/useSeekPlayback";
 import { useAnnotationsState } from "../../stores/annotation";
 import { usePlayerState } from "../../stores/player";
 import { Annotation, AnnotationForImageOnTimePoint } from "../../types";
@@ -26,28 +26,22 @@ export const AnnotationSpaceCommentPin = ({
   setOpenedAnnotationId,
 }: AnnotationSpaceCommentPinProps) => {
   const startEditing = useAnnotationsState((state) => state.startEditing);
-  const currentTimeInNumber = usePlayerState(
-    (state) => state.currentTimeInNumber
-  );
-  const editingHasUpdate = useAnnotationsState(
-    (state) => state.editingHasUpdate
-  );
+  const currentTimeInNumber = usePlayerState((state) => state.currentTimeInNumber);
+  const editingHasUpdate = useAnnotationsState((state) => state.editingHasUpdate);
 
   const seekPlayback = useSeekPlayback();
-  const editingAnnotation = useAnnotationsState(
-    (state) => state.editingAnnotation
-  );
+  const editingAnnotation = useAnnotationsState((state) => state.editingAnnotation);
 
   const handleClickAnnotationPin = (
     e: React.MouseEvent<HTMLDivElement>,
-    targetAnnotation: Annotation
+    targetAnnotation: Annotation,
   ) => {
     e.stopPropagation();
     if (
       calcIsOnTimestamp(
         currentTimeInNumber() || 0,
         targetAnnotation.timestamp_from,
-        targetAnnotation.timestamp_to
+        targetAnnotation.timestamp_to,
       )
     ) {
       startEditing(targetAnnotation.id);
@@ -64,21 +58,15 @@ export const AnnotationSpaceCommentPin = ({
       key={annotation.id}
       index={annotation.index}
       comment={annotation.comment}
-      left={
-        (annotation.centerPoint.x + (annotation.width ?? 0) / 2) *
-        imageSpaceWidthRatio
-      }
-      top={
-        (annotation.centerPoint.y + (annotation.height ?? 0) / 2) *
-        imageSpaceHeightRatio
-      }
+      left={(annotation.centerPoint.x + (annotation.width ?? 0) / 2) * imageSpaceWidthRatio}
+      top={(annotation.centerPoint.y + (annotation.height ?? 0) / 2) * imageSpaceHeightRatio}
       spaceWidth={spaceWidth}
       spaceHeight={spaceHeight}
       open={openedAnnotationId === annotation.id && !editingAnnotation}
       isOnTime={calcIsOnTimestamp(
         currentTimeInNumber() || 0,
         annotation.timestamp_from,
-        annotation.timestamp_to
+        annotation.timestamp_to,
       )}
       onMouseOver={() => {
         setOpenedAnnotationId(annotation.id);
