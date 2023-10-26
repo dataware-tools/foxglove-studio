@@ -680,9 +680,10 @@ export default class RosbridgePlayer implements Player {
         await this.callService("/rosbag2_player/resume", {});
         this.#isPlaying = true;
       } catch {
-        const result = await this.callService("/rosbag2_player/is_paused", {});
+        const result = (await this.callService("/rosbag2_player/is_paused", {})) as {
+          paused?: boolean;
+        };
         if (result != undefined && typeof result === "object") {
-          // @ts-expect-error result should have property paused
           this.#isPlaying = !result.paused;
         }
       }
