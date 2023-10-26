@@ -7,7 +7,7 @@ import { AnnotationRow } from "./AnnotationRow";
 import { AnnotationList } from "./content";
 
 export default {
-  title: "components/AnnotationRow",
+  title: "HDLComponents/AnnotationRow",
   component: AnnotationList,
 };
 export function Default(): JSX.Element {

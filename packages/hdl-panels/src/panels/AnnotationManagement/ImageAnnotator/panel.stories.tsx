@@ -5,7 +5,7 @@ import { buildSampleImage } from "./ImageAnnotationCanvas.stories";
 import { ImageAnnotatorPanelPresentation } from "./panel";
 
 export default {
-  title: "panels/ImageAnnotator",
+  title: "HDLPanels/ImageAnnotator",
   component: ImageAnnotatorPanelPresentation,
 };
 

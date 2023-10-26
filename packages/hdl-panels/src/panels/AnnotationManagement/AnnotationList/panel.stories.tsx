@@ -4,7 +4,7 @@ import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { AnnotationList } from "./content";
 
 export default {
-  title: "panels/AnnotationList",
+  title: "HDLPanels/AnnotationList",
   component: AnnotationList,
 };
 

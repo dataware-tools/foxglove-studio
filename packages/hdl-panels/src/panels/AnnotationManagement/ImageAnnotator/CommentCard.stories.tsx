@@ -7,7 +7,7 @@ import { Annotation, Point } from "../types";
 import { CommentCardPresentation, CommentCardPresentationProps } from "./CommentCard";
 
 const meta: Meta<typeof CommentCardPresentation> = {
-  title: "components/CommentCard",
+  title: "HDLComponents/CommentCard",
   component: CommentCardPresentation,
 };
 export default meta;

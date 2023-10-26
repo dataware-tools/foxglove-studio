@@ -3,7 +3,7 @@ import { useCameraTopicState } from "../stores/topic";
 import { ImageAnnotationCanvas } from "./ImageAnnotationCanvas";
 
 export default {
-  title: "components/ImageAnnotationCanvas",
+  title: "HDLComponents/ImageAnnotationCanvas",
   component: ImageAnnotationCanvas,
   excludeStories: ["buildSampleImage"],
 };
@@ -14,13 +14,9 @@ export const buildSampleImage = (width: number, height: number) => {
   const maxValue = 120;
   for (let row = 0; row < height; row++) {
     for (let col = 0; col < width; col++) {
-      const r =
-        Math.max(0, 1 - Math.hypot(1 - row / height, col / width)) * maxValue;
-      const g =
-        Math.max(0, 1 - Math.hypot(row / height, 1 - col / width)) * maxValue;
-      const b =
-        Math.max(0, 1 - Math.hypot(1 - row / height, 1 - col / width)) *
-        maxValue;
+      const r = Math.max(0, 1 - Math.hypot(1 - row / height, col / width)) * maxValue;
+      const g = Math.max(0, 1 - Math.hypot(row / height, 1 - col / width)) * maxValue;
+      const b = Math.max(0, 1 - Math.hypot(1 - row / height, 1 - col / width)) * maxValue;
       data[idx++] = r;
       data[idx++] = g;
       data[idx++] = b;
