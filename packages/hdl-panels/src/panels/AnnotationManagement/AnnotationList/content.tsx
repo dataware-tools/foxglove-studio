@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { SearchBar } from "../../components/SearchBar";
+import { SearchBar } from "../../../components/SearchBar";
 import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { useServerAnnotations } from "../apiClients";
 import { useSeekPlaybackToAnnotation } from "../hooks/useSeekPlaybackToAnnotation";
