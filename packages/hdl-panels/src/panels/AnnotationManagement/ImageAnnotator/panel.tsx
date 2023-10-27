@@ -168,7 +168,7 @@ const ImageAnnotatorPanel = () => {
   const stopEditing = useAnnotationsState((state) => state.stopEditing);
   const editingAnnotationId = useAnnotationsState((state) => state.editingAnnotationId);
   const removeAnnotation = useAnnotationsState((state) => state.removeAnnotation);
-  const confirm = useConfirm();
+  const [confirm, confirmModal] = useConfirm();
 
   const handleClick = useCallback(async () => {
     if (editingAnnotationId) {
@@ -218,6 +218,7 @@ const ImageAnnotatorPanel = () => {
           overflow="scroll"
         >
           <ServerAnnotationSync />
+          {confirmModal}
           <PanelToolbar alwaysVisible>
             <Stack
               spacing={1}

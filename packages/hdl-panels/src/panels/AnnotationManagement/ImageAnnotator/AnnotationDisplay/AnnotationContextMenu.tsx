@@ -10,12 +10,11 @@ export const AnnotationContextMenu = (props: {
   handleClose: () => void;
 }) => {
   const { copyAnnotationAction } = useCopyAnnotationAction();
-  const { deleteAnnotationAction } = useDeleteAnnotationAction();
-  const annotation = useAnnotationsState((state) =>
-    state.getAnnotation(props.annotationId)
-  );
+  const { deleteAnnotationAction, confirmModal } = useDeleteAnnotationAction();
+  const annotation = useAnnotationsState((state) => state.getAnnotation(props.annotationId));
   return (
     <>
+      {confirmModal}
       {props.contextMenuEvent && (
         <Menu
           open={props.contextMenuEvent !== undefined}

@@ -2,20 +2,13 @@ import { useConfirm } from "@foxglove/studio-base/hooks/useConfirm";
 import {
   ContentCopy as ContentCopyIcon,
   Delete as DeleteIcon,
-  SwipeLeftAlt
+  SwipeLeftAlt,
 } from "@mui/icons-material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloseIcon from "@mui/icons-material/Close";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import {
-  Badge,
-  InputBase,
-  Skeleton,
-  SxProps,
-  Tooltip,
-  colors
-} from "@mui/material";
+import { Badge, InputBase, Skeleton, SxProps, Tooltip, colors } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -26,18 +19,8 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { Box, alpha } from "@mui/system";
 import { animated, useSpring, useSpringRef } from "@react-spring/web";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {
-  useAddAnnotation,
-  useServerAnnotations,
-  useUpdateAnnotation,
-} from "../apiClients";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useAddAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 import { useCopyAnnotationAction } from "../hooks/useCopyAnnotationAction";
 import { useDeleteAnnotationAction } from "../hooks/useDeleteAnnotationAction";
 import { useDuplicateAnnotationAction } from "../hooks/useDuplicateAnnotationAction";
@@ -128,16 +111,12 @@ export type CommentCardPresentationProps = {
   }[];
   sx?: SxProps;
   onClose: React.MouseEventHandler<HTMLButtonElement>;
-  onCommentChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  onInstanceChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  onCommentChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onInstanceChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmitComment: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     comment: string,
-    instanceId?: string
+    instanceId?: string,
   ) => Promise<void>;
   onSeekBack?: () => void;
 };
@@ -163,7 +142,7 @@ export const CommentCardPresentation = ({
   const [instanceId, setInstanceId] = useState("");
   const [closeButtonHover, setCloseButtonHover] = useState(false);
   const stopPropagation = (
-    e: React.PointerEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+    e: React.PointerEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
   ) => e.stopPropagation();
 
   // Set initial value
@@ -208,14 +187,7 @@ export const CommentCardPresentation = ({
         </Stack>
       </Stack>
     ),
-    [
-      menuItems,
-      onClose,
-      editingHasUpdate,
-      closeButtonHover,
-      isOnTimestamp,
-      onSeekBack,
-    ]
+    [menuItems, onClose, editingHasUpdate, closeButtonHover, isOnTimestamp, onSeekBack],
   );
   const CommentForm = useMemo(() => {
     return (
@@ -267,15 +239,8 @@ export const CommentCardPresentation = ({
           </FormControl>
         </Box>
         <Box height="100%">
-          <Tooltip
-            title={isOnTimestamp ? "" : "Saving with original timestamps"}
-          >
-            <Badge
-              variant="dot"
-              color="secondary"
-              overlap="circular"
-              invisible={isOnTimestamp}
-            >
+          <Tooltip title={isOnTimestamp ? "" : "Saving with original timestamps"}>
+            <Badge variant="dot" color="secondary" overlap="circular" invisible={isOnTimestamp}>
               <IconButton
                 size="small"
                 aria-label="submit"
@@ -327,13 +292,7 @@ export const CommentCardPresentation = ({
         }}
       >
         {isLoading ? (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="100%"
-            my={1}
-          >
+          <Box display="flex" alignItems="center" justifyContent="center" height="100%" my={1}>
             <Skeleton width={100} />
           </Box>
         ) : (
@@ -366,9 +325,7 @@ export const CommentCard = ({
   spaceHeight,
 }: CommentCardProps) => {
   const [annotation, setAnnotation] = useState<Annotation | null>(null);
-  const currentTimeInNumber = usePlayerState(
-    (state) => state.currentTimeInNumber
-  );
+  const currentTimeInNumber = usePlayerState((state) => state.currentTimeInNumber);
   const curTimestamp = currentTimeInNumber() || 0;
   const cardRef = useRef<HTMLDivElement | null>(null);
   const cardHeight = useMemo(() => {
@@ -376,7 +333,7 @@ export const CommentCard = ({
     const height = cardRef.current.offsetHeight;
     return height;
   }, [cardRef.current?.offsetHeight]);
-  const confirm = useConfirm();
+  const [confirm, confirmModal] = useConfirm();
 
   // Focus input field on mounted
   const inputRef = useRef<HTMLInputElement>(null);
@@ -387,31 +344,19 @@ export const CommentCard = ({
   }, [inputRef]);
 
   // Update comment related
-  const updateAnnotation = useAnnotationsState(
-    (state) => state.updateAnnotation
-  );
-  const updateEditingAnnotation = useAnnotationsState(
-    (state) => state.updateEditingAnnotation
-  );
+  const updateAnnotation = useAnnotationsState((state) => state.updateAnnotation);
+  const updateEditingAnnotation = useAnnotationsState((state) => state.updateEditingAnnotation);
   const getAnnotation = useAnnotationsState((state) => state.getAnnotation);
-  const editingHasUpdate = useAnnotationsState(
-    (state) => state.editingHasUpdate
-  );
-  const isNewlyAddingAnnotation = useAnnotationsState(
-    (state) => state.isNewlyAddingAnnotation
-  );
-  const editingAnnotation = useAnnotationsState(
-    (state) => state.editingAnnotation
-  );
+  const editingHasUpdate = useAnnotationsState((state) => state.editingHasUpdate);
+  const isNewlyAddingAnnotation = useAnnotationsState((state) => state.isNewlyAddingAnnotation);
+  const editingAnnotation = useAnnotationsState((state) => state.editingAnnotation);
   const isOnTimestamp = useMemo(() => {
     if (!editingAnnotation) return false;
     const isAnnotationTimePoint =
       editingAnnotation.timestamp_from === editingAnnotation.timestamp_to;
     if (isAnnotationTimePoint) {
       const timestamp = editingAnnotation.timestamp_from;
-      return timestamp
-        ? curTimestamp - timestamp < 0.1 && curTimestamp - timestamp >= 0
-        : false;
+      return timestamp ? curTimestamp - timestamp < 0.1 && curTimestamp - timestamp >= 0 : false;
     } else {
       // TODO(t-watanabe): Support annotation with duration
       return true;
@@ -430,9 +375,7 @@ export const CommentCard = ({
   const { request: updateAnnotationRequest } = useUpdateAnnotation();
   const { fetchServerAnnotations } = useServerAnnotations();
   const stopEditing = useAnnotationsState((state) => state.stopEditing);
-  const incrementGeneration = useAnnotationsState(
-    (state) => state.incrementGeneration
-  );
+  const incrementGeneration = useAnnotationsState((state) => state.incrementGeneration);
   const stopAdding = useIsAdding((state) => state.stopAdding);
   const handleSubmitComment = async (value: string, instanceId?: string) => {
     if (!editingAnnotation) return;
@@ -464,10 +407,7 @@ export const CommentCard = ({
     } else if (commentHasUpdate || editingHasUpdate || !isOnTimestamp) {
       // Request API to update comment if the comment or annotation geometry has update
       incrementGeneration(editingAnnotation.id);
-      const [, error] = await updateAnnotationRequest(
-        editingAnnotation.id,
-        newAnnotation
-      );
+      const [, error] = await updateAnnotationRequest(editingAnnotation.id, newAnnotation);
       if (error) {
         console.error(error);
         await confirm({ title: "Failed to update annotation" });
@@ -478,9 +418,7 @@ export const CommentCard = ({
 
   // Close button related
   const isAdding = useIsAdding((state) => state.isAdding);
-  const removeAnnotation = useAnnotationsState(
-    (state) => state.removeAnnotation
-  );
+  const removeAnnotation = useAnnotationsState((state) => state.removeAnnotation);
 
   // Set initial value
   useEffect(() => {
@@ -515,7 +453,8 @@ export const CommentCard = ({
   }, [commentAreaCenterX, spaceWidth]);
 
   const { duplicateAnnotationAction } = useDuplicateAnnotationAction();
-  const { deleteAnnotationAction } = useDeleteAnnotationAction();
+  const { deleteAnnotationAction, confirmModal: confirmDeleteAnnotationModal } =
+    useDeleteAnnotationAction();
   const { copyAnnotationAction } = useCopyAnnotationAction();
 
   const menuItems = useMemo(
@@ -544,12 +483,7 @@ export const CommentCard = ({
         },
       },
     ],
-    [
-      annotation,
-      duplicateAnnotationAction,
-      deleteAnnotationAction,
-      copyAnnotationAction,
-    ]
+    [annotation, duplicateAnnotationAction, deleteAnnotationAction, copyAnnotationAction],
   );
 
   // For animation
@@ -568,13 +502,11 @@ export const CommentCard = ({
     [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
     // prettier-ignore
     [shakeXStart, shakeXEnd, shakeXStart, shakeXEnd, shakeXStart, shakeXEnd, shakeXStart, shakeXEnd,
-    ]
+    ],
   );
-  const triggerShakingAnimation = useAnnotationsState(
-    (state) => state.triggerShakingAnimation
-  );
+  const triggerShakingAnimation = useAnnotationsState((state) => state.triggerShakingAnimation);
   const setTriggerShakingAnimation = useAnnotationsState(
-    (state) => state.setTriggerShakingAnimation
+    (state) => state.setTriggerShakingAnimation,
   );
   useEffect(() => {
     if (triggerShakingAnimation) {
@@ -597,14 +529,7 @@ export const CommentCard = ({
       removeAnnotation(annotationId);
     }
     stopEditing();
-  }, [
-    editingHasUpdate,
-    isAdding,
-    removeAnnotation,
-    annotationId,
-    stopEditing,
-    confirm,
-  ]);
+  }, [editingHasUpdate, isAdding, removeAnnotation, annotationId, stopEditing, confirm]);
   const seekPlaybackToAnnotation = useSeekPlaybackToAnnotation();
 
   return (
@@ -617,6 +542,8 @@ export const CommentCard = ({
         height: 0,
       }}
     >
+      {confirmModal}
+      {confirmDeleteAnnotationModal}
       {annotation && (
         <CommentCardPresentation
           annotation={annotation}

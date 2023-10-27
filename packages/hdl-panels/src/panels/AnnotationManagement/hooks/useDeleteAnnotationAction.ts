@@ -4,11 +4,9 @@ import { useAnnotationsState } from "../stores/annotation";
 import { Annotation } from "../types";
 
 export const useDeleteAnnotationAction = () => {
-  const confirm = useConfirm();
+  const [confirm, confirmModal] = useConfirm();
   const { request: deleteAnnotationInServer } = useDeleteAnnotation();
-  const removeAnnotation = useAnnotationsState(
-    (state) => state.removeAnnotation
-  );
+  const removeAnnotation = useAnnotationsState((state) => state.removeAnnotation);
   const { fetchServerAnnotations } = useServerAnnotations();
 
   const deleteAnnotationAction = async (annotation: Annotation) => {
@@ -31,5 +29,5 @@ export const useDeleteAnnotationAction = () => {
     }
   };
 
-  return { deleteAnnotationAction };
+  return { deleteAnnotationAction, confirmModal };
 };

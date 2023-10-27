@@ -22,7 +22,7 @@ export const EditingAnnotation = ({
   spaceHeight,
 }: EditingAnnotationProps) => {
   const { copyAnnotationAction } = useCopyAnnotationAction();
-  const { deleteAnnotationAction } = useDeleteAnnotationAction();
+  const { deleteAnnotationAction, confirmModal } = useDeleteAnnotationAction();
   const { keyUpHandlers, keyDownHandlers } = useMemo(
     () => ({
       keyUpHandlers: {},
@@ -40,19 +40,14 @@ export const EditingAnnotation = ({
         },
       },
     }),
-    [copyAnnotationAction, annotation, deleteAnnotationAction]
+    [copyAnnotationAction, annotation, deleteAnnotationAction],
   );
 
-  const highlightingAnnotationId = useAnnotationsState(
-    (state) => state.highlightingAnnotationId
-  );
+  const highlightingAnnotationId = useAnnotationsState((state) => state.highlightingAnnotationId);
   return (
     <>
-      <KeyListener
-        global
-        keyUpHandlers={keyUpHandlers}
-        keyDownHandlers={keyDownHandlers}
-      />
+      {confirmModal}
+      <KeyListener global keyUpHandlers={keyUpHandlers} keyDownHandlers={keyDownHandlers} />
       {annotation.type === "point" && (
         <AnnotationPoint
           key={annotation.id}
@@ -66,22 +61,21 @@ export const EditingAnnotation = ({
           isEditing
         />
       )}
-      {annotation.type === "rect" &&
-        !(annotation.width == null || annotation.height == null) && (
-          <AnnotationRectangle
-            key={annotation.id}
-            annotationId={annotation.id}
-            centerPoint={annotation.centerPoint}
-            width={annotation.width}
-            height={annotation.height}
-            isHighlighting={annotation.id === highlightingAnnotationId}
-            imageSpaceWidthRatio={imageSpaceWidthRatio}
-            imageSpaceHeightRatio={imageSpaceHeightRatio}
-            spaceWidth={spaceWidth}
-            spaceHeight={spaceHeight}
-            isEditing
-          />
-        )}
+      {annotation.type === "rect" && !(annotation.width == null || annotation.height == null) && (
+        <AnnotationRectangle
+          key={annotation.id}
+          annotationId={annotation.id}
+          centerPoint={annotation.centerPoint}
+          width={annotation.width}
+          height={annotation.height}
+          isHighlighting={annotation.id === highlightingAnnotationId}
+          imageSpaceWidthRatio={imageSpaceWidthRatio}
+          imageSpaceHeightRatio={imageSpaceHeightRatio}
+          spaceWidth={spaceWidth}
+          spaceHeight={spaceHeight}
+          isEditing
+        />
+      )}
     </>
   );
 };
