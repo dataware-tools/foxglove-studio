@@ -122,6 +122,7 @@ export const AnnotationList = () => {
     }
     if (nextAnnotationIndex >= sortedAnnotations.length) return;
     const nextAnnotation = sortedAnnotations[nextAnnotationIndex];
+    if (!nextAnnotation) return;
     seekPlaybackToAnnotation(nextAnnotation);
     startEditing(nextAnnotation.id);
   }, [
@@ -149,6 +150,7 @@ export const AnnotationList = () => {
     }
     if (prevAnnotationIndex <= -1) return;
     const prevAnnotation = sortedAnnotations[prevAnnotationIndex];
+    if (!prevAnnotation) return;
     seekPlaybackToAnnotation(prevAnnotation);
     startEditing(prevAnnotation.id);
   }, [
