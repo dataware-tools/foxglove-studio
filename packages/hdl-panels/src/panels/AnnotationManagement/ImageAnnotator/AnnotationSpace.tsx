@@ -3,14 +3,7 @@ import PanelContext from "@foxglove/studio-base/components/PanelContext";
 import { Menu, MenuItem } from "@mui/material";
 import Box from "@mui/material/Box";
 import { SxProps } from "@mui/system";
-import {
-  MouseEvent,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { MouseEvent, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useAnnotationsFilter } from "../hooks/useAnnotationsFilter";
 import { useInterpolatedAnnotations } from "../hooks/useInterpolatedAnnotation";
 import { usePasteAnnotationAction } from "../hooks/usePasteAnnotationAction";
@@ -20,11 +13,7 @@ import { useIsAdding } from "../stores/isAdding";
 import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
 import { Point } from "../types";
-import {
-  AnnotationPoint,
-  AnnotationRectangle,
-  InterpolatedAnnotation,
-} from "./AnnotationDisplay";
+import { AnnotationPoint, AnnotationRectangle, InterpolatedAnnotation } from "./AnnotationDisplay";
 import { AnnotationSpaceCommentPin } from "./AnnotationDisplay/AnnotationSpaceCommentPin";
 import { EditingAnnotation } from "./EditingAnnotation";
 import { NewlyAddingAnnotation } from "./NewlyAddingAnnotation";
@@ -48,27 +37,15 @@ export const AnnotationSpace = ({
 }: AnnotationSpaceProps) => {
   const isAdding = useIsAdding((state) => state.isAdding);
 
-  const editingAnnotationId = useAnnotationsState(
-    (state) => state.editingAnnotationId
-  );
-  const editingAnnotation = useAnnotationsState(
-    (state) => state.editingAnnotation
-  );
-  const editingHasUpdate = useAnnotationsState(
-    (state) => state.editingHasUpdate
-  );
+  const editingAnnotationId = useAnnotationsState((state) => state.editingAnnotationId);
+  const editingAnnotation = useAnnotationsState((state) => state.editingAnnotation);
+  const editingHasUpdate = useAnnotationsState((state) => state.editingHasUpdate);
   const stopEditing = useAnnotationsState((state) => state.stopEditing);
   const addAnnotation = useAnnotationsState((state) => state.addAnnotation);
-  const removeAnnotation = useAnnotationsState(
-    (state) => state.removeAnnotation
-  );
-  const highlightingAnnotationId = useAnnotationsState(
-    (state) => state.highlightingAnnotationId
-  );
+  const removeAnnotation = useAnnotationsState((state) => state.removeAnnotation);
+  const highlightingAnnotationId = useAnnotationsState((state) => state.highlightingAnnotationId);
 
-  const currentTimeInNumber = usePlayerState(
-    (state) => state.currentTimeInNumber
-  );
+  const currentTimeInNumber = usePlayerState((state) => state.currentTimeInNumber);
 
   const cameraTopics = useCameraTopicState((state) => state.cameraTopics);
   const parentPanelContext = useContext(PanelContext);
@@ -76,8 +53,8 @@ export const AnnotationSpace = ({
     return parentPanelContext?.id;
   }, [parentPanelContext]);
   const currentCameraTopic = useMemo(
-    () => (panelId ? cameraTopics[panelId] : ""),
-    [panelId, cameraTopics]
+    () => (panelId ? cameraTopics[panelId] ?? "" : ""),
+    [panelId, cameraTopics],
   );
 
   // Ratio to convert from image coordinate system to image space coordinate system
@@ -97,7 +74,7 @@ export const AnnotationSpace = ({
     return new Point(
       clickStartPoint.x + difference.x / imageSpaceWidthRatio,
       clickStartPoint.y + difference.y / imageSpaceHeightRatio,
-      { limit }
+      { limit },
     );
   }, [
     clickStartPoint,
@@ -119,7 +96,7 @@ export const AnnotationSpace = ({
 
   // For triggering shaking unchanged annotation
   const setTriggerShakingAnimation = useAnnotationsState(
-    (state) => state.setTriggerShakingAnimation
+    (state) => state.setTriggerShakingAnimation,
   );
 
   const handleEscape = useCallback(() => {
@@ -150,13 +127,11 @@ export const AnnotationSpace = ({
     setClickStartPoint(
       new Point(
         e.nativeEvent.offsetX / imageSpaceWidthRatio,
-        e.nativeEvent.offsetY / imageSpaceHeightRatio
-      )
+        e.nativeEvent.offsetY / imageSpaceHeightRatio,
+      ),
     );
   };
-  const [openedAnnotationId, setOpenedAnnotationId] = useState<string | null>(
-    null
-  );
+  const [openedAnnotationId, setOpenedAnnotationId] = useState<string | null>(null);
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     handleUp(e);
@@ -222,7 +197,7 @@ export const AnnotationSpace = ({
         },
       },
     }),
-    [handleEscape, pasteAnnotationAction]
+    [handleEscape, pasteAnnotationAction],
   );
   useEffect(() => {
     setOpenedAnnotationId(highlightingAnnotationId);
@@ -236,27 +211,19 @@ export const AnnotationSpace = ({
         setContextMenuEvent(e.nativeEvent);
       }}
     >
-      <KeyListener
-        global
-        keyUpHandlers={keyUpHandlers}
-        keyDownHandlers={keyDownHandlers}
-      />
+      <KeyListener global keyUpHandlers={keyUpHandlers} keyDownHandlers={keyDownHandlers} />
       <Box
         sx={{
           ...sx,
-          cursor:
-            isAdding && editingAnnotationId === null ? "crosshair" : "default",
+          cursor: isAdding && editingAnnotationId === null ? "crosshair" : "default",
         }}
         onPointerDown={handlePointerDown}
-        onPointerMove={
-          isAdding && editingAnnotationId === null ? handleMove : undefined
-        }
+        onPointerMove={isAdding && editingAnnotationId === null ? handleMove : undefined}
         onPointerUp={handlePointerUp}
       >
         {filteredAnnotations.map((annotation) => {
           // Hide annotations if hideAnnotations is true or it's editing
-          if (hideAnnotations || editingAnnotation?.id === annotation.id)
-            return null;
+          if (hideAnnotations || editingAnnotation?.id === annotation.id) return null;
 
           switch (annotation.type) {
             case "point":
@@ -290,7 +257,7 @@ export const AnnotationSpace = ({
               );
             case "interpolate": {
               const interpolatedCoordinate = annotation.interpolateCoordinate(
-                currentTimeInNumber() ?? 0
+                currentTimeInNumber() ?? 0,
               );
               return (
                 <InterpolatedAnnotation
@@ -310,8 +277,7 @@ export const AnnotationSpace = ({
           }
         })}
         {filteredAnnotations.map((annotation, akey) => {
-          if (!(annotation.type === "rect" || annotation.type === "point"))
-            return null;
+          if (!(annotation.type === "rect" || annotation.type === "point")) return null;
           return (
             <AnnotationSpaceCommentPin
               key={akey}
@@ -325,16 +291,15 @@ export const AnnotationSpace = ({
             />
           );
         })}
-        {editingAnnotation &&
-          editingAnnotation.targetTopic === currentCameraTopic && (
-            <EditingAnnotation
-              annotation={editingAnnotation}
-              imageSpaceWidthRatio={imageSpaceWidthRatio}
-              imageSpaceHeightRatio={imageSpaceHeightRatio}
-              spaceWidth={spaceWidth}
-              spaceHeight={spaceHeight}
-            />
-          )}
+        {editingAnnotation && editingAnnotation.targetTopic === currentCameraTopic && (
+          <EditingAnnotation
+            annotation={editingAnnotation}
+            imageSpaceWidthRatio={imageSpaceWidthRatio}
+            imageSpaceHeightRatio={imageSpaceHeightRatio}
+            spaceWidth={spaceWidth}
+            spaceHeight={spaceHeight}
+          />
+        )}
         {isAdding && clickStartPoint && (
           <NewlyAddingAnnotation
             clickStartPoint={clickStartPoint}
