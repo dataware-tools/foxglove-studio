@@ -9,8 +9,9 @@ export const useCopyAnnotationAction = () => {
 
   const getAnnotation = useAnnotationsState((state) => state.getAnnotation);
 
-  const { width: imageWidth, height: imageHeight } =
-    useImageAnnotationGeometryState((state) => state.imageGeometry);
+  const { width: imageWidth, height: imageHeight } = useImageAnnotationGeometryState(
+    (state) => state.imageGeometry,
+  );
 
   const [isCopying, setIsCopying] = useState(false);
 
@@ -39,22 +40,18 @@ export const useCopyAnnotationAction = () => {
       annotation.centerPoint.y + (annotation.height ?? 0) / 2 >= imageHeight
         ? -difference
         : difference;
-    const newCenterPoint = annotation.centerPoint.getPointDifferedBy(
-      diffX,
-      diffY
-    );
+    const newCenterPoint = annotation.centerPoint.getPointDifferedBy(diffX, diffY);
 
     const newAnnotationWithoutId: Parameters<typeof addAnnotationRequest>[0] = {
       ...annotation,
       centerPoint: newCenterPoint,
       generation: 1,
     };
-    navigator.clipboard
-      .writeText(JSON.stringify(newAnnotationWithoutId))
-      .catch((err) => {
-        console.error(err);
-        sendNotification(`Faild to copy the comment`, err, "app", "error");
-      });
+    const jsonString = JSON.stringify(newAnnotationWithoutId) ?? "{}";
+    navigator.clipboard.writeText(jsonString).catch((err) => {
+      console.error(err);
+      sendNotification(`Faild to copy the comment`, err, "app", "error");
+    });
 
     setIsCopying(false);
   };

@@ -174,7 +174,7 @@ export const AnnotationRow = ({
   highlightedTexts: string[];
   setRef: (ref: React.RefObject<HTMLTableRowElement>, annotationId: string) => void;
 }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLTableRowElement>(null);
   const [open, setOpen] = useState(false);
   const [isOpenedExplicitlyByUser, setIsOpenedExplicitlyByUser] = useState(false);
   useEffect(() => {
