@@ -10,4 +10,10 @@ export const getHDLDeveloped: () => PanelInfo[] = () => [
     description: "HDLによるサンプルパネルです。",
     module: async () => await import("./panels/Sample"),
   },
+  {
+    title: "ImageAnnotator",
+    type: "ImageAnnotator",
+    description: "HDLによる画像アノテーション用のパネルです。",
+    module: async () => await import("./panels/AnnotationManagement/ImageAnnotator/panel"),
+  },
 ];

@@ -12,7 +12,9 @@ export function useDatatypesByTopic(): Map<string, string> {
   return useMemo(() => {
     const out = new Map<string, string>();
     for (const topic of topics) {
-      out.set(topic.name, topic.datatype);
+      if (topic.schemaName != undefined) {
+        out.set(topic.name, topic.schemaName);
+      }
     }
     return out;
   }, [topics]);

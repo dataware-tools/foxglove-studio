@@ -26,6 +26,7 @@ import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
 import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
+import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import { ImageAnnotationCanvas, ImageAnnotationCanvasProps } from "./ImageAnnotationCanvas";
 
 const MIN_PANEL_WIDTH = 400;
@@ -58,7 +59,14 @@ export const ImageAnnotatorPanelPresentation = ({
 // NOTE(yusukefs): This initialization needs to be done outside of the component to prevent re-rendering
 const annotationTopics: string[] = [];
 
-const ImageAnnotatorPanel = () => {
+type ImageAnnotatorConfig = {};
+
+type ImageAnnotatorPanelProps = {
+  config: ImageAnnotatorConfig;
+  saveConfig: SaveConfig<ImageAnnotatorConfig>;
+};
+
+const ImageAnnotatorPanel = (props: ImageAnnotatorPanelProps) => {
   const [cameraTopics, setCameraTopics] = useCameraTopicState((state) => [
     state.cameraTopics,
     state.setCameraTopic,
@@ -81,7 +89,9 @@ const ImageAnnotatorPanel = () => {
   const { topics } = useDataSourceInfo();
 
   const allImageTopics = useMemo(() => {
-    return topics.filter(({ datatype }) => NORMALIZABLE_IMAGE_DATATYPES.includes(datatype));
+    return topics.filter(
+      ({ schemaName }) => schemaName && NORMALIZABLE_IMAGE_DATATYPES.includes(schemaName),
+    );
   }, [topics]);
 
   // Set the first image topic if cameraTopic is not selected
@@ -219,7 +229,6 @@ const ImageAnnotatorPanel = () => {
         >
           <ServerAnnotationSync />
           {confirmModal}
-          {/* TODO(yusukefs): Show toolbar always if necessary */}
           <PanelToolbar>
             <Stack
               spacing={1}
@@ -277,9 +286,11 @@ const ImageAnnotatorPanel = () => {
   );
 };
 
-ImageAnnotatorPanel.panelType = "CommentManagementPanel";
-ImageAnnotatorPanel.defaultConfig = {};
+const defaultConfig: ImageAnnotatorConfig = {};
 
-const Wrapped = Panel(ImageAnnotatorPanel);
-
-export { Wrapped as ImageAnnotator };
+export default Panel(
+  Object.assign(ImageAnnotatorPanel, {
+    panelType: "ImageAnnotatorPanel",
+    defaultConfig,
+  }),
+);

@@ -3,8 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 import { filterMap } from "@foxglove/den/collection";
-import { fromNanoSec } from "@foxglove/rostime";
-import { FoxgloveMessages } from "@foxglove/studio-base/types/FoxgloveMessages";
+// import { fromNanoSec } from "@foxglove/rostime";
+// import { FoxgloveMessages } from "@foxglove/studio-base/types/FoxgloveMessages";
 import {
   ImageMarker,
   ImageMarkerArray,
@@ -13,67 +13,67 @@ import {
 
 import type { Annotation, PointsAnnotation } from "../types";
 
-function foxglovePointTypeToStyle(type: number): PointsAnnotation["style"] | undefined {
-  switch (type) {
-    case 0:
-      return "points";
-    case 1:
-      return "polygon";
-    case 2:
-      return "line_strip";
-    case 3:
-      return "line_list";
-  }
-  return undefined;
-}
+// function foxglovePointTypeToStyle(type: number): PointsAnnotation["style"] | undefined {
+//   switch (type) {
+//     case 0:
+//       return "points";
+//     case 1:
+//       return "polygon";
+//     case 2:
+//       return "line_strip";
+//     case 3:
+//       return "line_list";
+//   }
+//   return undefined;
+// }
 
-function normalizeFoxgloveImageAnnotations(
-  message: FoxgloveMessages["foxglove.ImageAnnotations"],
-): Annotation[] | undefined {
-  if (!message.circles && !message.points) {
-    return undefined;
-  }
+// function normalizeFoxgloveImageAnnotations(
+//   message: FoxgloveMessages["foxglove.ImageAnnotations"],
+// ): Annotation[] | undefined {
+//   if (!message.circles && !message.points) {
+//     return undefined;
+//   }
 
-  if (message.circles?.length === 0 && message.points?.length === 0) {
-    return undefined;
-  }
+//   if (message.circles?.length === 0 && message.points?.length === 0) {
+//     return undefined;
+//   }
 
-  const annotations: Annotation[] = [];
+//   const annotations: Annotation[] = [];
 
-  for (const circle of message.circles ?? []) {
-    const stamp =
-      typeof circle.timestamp === "bigint" ? fromNanoSec(circle.timestamp) : circle.timestamp;
-    annotations.push({
-      type: "circle",
-      stamp,
-      fillColor: circle.fill_color,
-      outlineColor: circle.outline_color,
-      radius: circle.diameter / 2.0,
-      thickness: circle.thickness,
-      position: circle.position,
-    });
-  }
-  for (const point of message.points ?? []) {
-    const style = foxglovePointTypeToStyle(point.type);
-    if (!style) {
-      continue;
-    }
-    const stamp =
-      typeof point.timestamp === "bigint" ? fromNanoSec(point.timestamp) : point.timestamp;
-    annotations.push({
-      type: "points",
-      stamp,
-      style,
-      points: point.points,
-      outlineColors: point.outline_colors,
-      outlineColor: point.outline_color,
-      thickness: point.thickness,
-      fillColor: point.fill_color,
-    });
-  }
+//   for (const circle of message.circles ?? []) {
+//     const stamp =
+//       typeof circle.timestamp === "bigint" ? fromNanoSec(circle.timestamp) : circle.timestamp;
+//     annotations.push({
+//       type: "circle",
+//       stamp,
+//       fillColor: circle.fill_color,
+//       outlineColor: circle.outline_color,
+//       radius: circle.diameter / 2.0,
+//       thickness: circle.thickness,
+//       position: circle.position,
+//     });
+//   }
+//   for (const point of message.points ?? []) {
+//     const style = foxglovePointTypeToStyle(point.type);
+//     if (!style) {
+//       continue;
+//     }
+//     const stamp =
+//       typeof point.timestamp === "bigint" ? fromNanoSec(point.timestamp) : point.timestamp;
+//     annotations.push({
+//       type: "points",
+//       stamp,
+//       style,
+//       points: point.points,
+//       outlineColors: point.outline_colors,
+//       outlineColor: point.outline_color,
+//       thickness: point.thickness,
+//       fillColor: point.fill_color,
+//     });
+//   }
 
-  return annotations;
-}
+//   return annotations;
+// }
 
 function normalizeRosImageMarkerArray(message: ImageMarkerArray): Annotation[] | undefined {
   return filterMap(message.markers, (marker) => normalizeRosImageMarker(marker));
@@ -189,9 +189,9 @@ function normalizeAnnotations(
     case "webviz_msgs/ImageMarkerArray":
       break;
     // foxglove
-    case "foxglove.ImageAnnotations": {
-      return normalizeFoxgloveImageAnnotations(message as FoxgloveMessages[typeof datatype]);
-    }
+    // case "foxglove.ImageAnnotations": {
+    //   return normalizeFoxgloveImageAnnotations(message as FoxgloveMessages[typeof datatype]);
+    // }
   }
 
   return undefined;
