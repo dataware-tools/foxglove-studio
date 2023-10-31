@@ -66,7 +66,7 @@ type ImageAnnotatorPanelProps = {
   saveConfig: SaveConfig<ImageAnnotatorConfig>;
 };
 
-const ImageAnnotatorPanel = (props: ImageAnnotatorPanelProps) => {
+const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
   const [cameraTopics, setCameraTopics] = useCameraTopicState((state) => [
     state.cameraTopics,
     state.setCameraTopic,

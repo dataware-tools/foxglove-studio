@@ -1,5 +1,6 @@
 import Panel from "@foxglove/studio-base/components/Panel";
 import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
+import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import { Box } from "@mui/system";
 import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
@@ -9,7 +10,14 @@ import { AnnotationList } from "./content";
 const MIN_PANEL_WIDTH = 400;
 const MIN_PANEL_HEIGHT = 200;
 
-const AnnotationListPanel = () => {
+type AnnotationListPanelConfig = {};
+
+type AnnotationListPanelProps = {
+  config: AnnotationListPanelConfig;
+  saveConfig: SaveConfig<AnnotationListPanelConfig>;
+};
+
+const AnnotationListPanel = (_props: AnnotationListPanelProps) => {
   return (
     <FoxGloveThemeProvider>
       <ConfiguredAuth0Provider>
@@ -24,7 +32,7 @@ const AnnotationListPanel = () => {
           overflow="scroll"
         >
           <ServerAnnotationSync />
-          <PanelToolbar floating />
+          <PanelToolbar />
           <AnnotationList />
         </Box>
       </ConfiguredAuth0Provider>
@@ -32,9 +40,11 @@ const AnnotationListPanel = () => {
   );
 };
 
-AnnotationListPanel.panelType = "AnnotationListPanel";
-AnnotationListPanel.defaultConfig = {};
+const defaultConfig: AnnotationListPanelConfig = {};
 
-const Wrapped = Panel(AnnotationListPanel);
-
-export { Wrapped as AnnotationList };
+export default Panel(
+  Object.assign(AnnotationListPanel, {
+    panelType: "AnnotationListPanel",
+    defaultConfig,
+  }),
+);
