@@ -53,6 +53,75 @@ export const ImageAnnotatorPanelPresentation = ({
   );
 };
 
+type ImageAnnotatorWithTopicProps = {
+  hideAnnotations: boolean;
+  cameraTopic: string;
+};
+
+const ImageAnnotatorWithTopic = ({
+  hideAnnotations,
+  cameraTopic,
+}: ImageAnnotatorWithTopicProps) => {
+  const { image } = useImagePanelMessages({
+    imageTopic: cameraTopic,
+    annotationTopics,
+    synchronize: false,
+  });
+
+  const lastImageMessageRef = useRef(image);
+  if (image) {
+    lastImageMessageRef.current = image;
+  }
+  const imageMessageToRender = image ?? lastImageMessageRef.current;
+
+  const pauseFrame = useMessagePipeline(
+    useCallback((messagePipeline) => messagePipeline.pauseFrame, []),
+  );
+  const onStartRenderImage = useCallback(() => {
+    // NOTE: Absent of this line makes the app so slow, but editing the arg of pauseFrame
+    // doesn't change anything. It seems the arg is not actually used.
+    const resumeFrame = pauseFrame("CommentManagement");
+    const onFinishRenderImage = () => {
+      resumeFrame();
+    };
+    return onFinishRenderImage;
+  }, [pauseFrame]);
+
+  // CurrentTime should be receiveTime of the image message that is being shown in this panel.
+  // Because when user playback to the timestamp an annotation have, this panel must show exact image the annotation links
+  const messages = useMessagePipeline((ctx) => ctx.playerState.activeData?.messages);
+  const imageMessages = messages?.filter((message) => message.topic === cameraTopic) || [];
+  const currentImageMessage = imageMessages[imageMessages.length - 1];
+  const currentImageMessageTime = currentImageMessage?.receiveTime;
+
+  const setCurrentTime = usePlayerState((state) => state.setCurrentTime);
+  useEffect(() => {
+    if (currentImageMessageTime) {
+      setCurrentTime(currentImageMessageTime);
+    }
+  }, [currentImageMessageTime, setCurrentTime]);
+  const isPlaying = useMessagePipeline(
+    (ctx: MessagePipelineContext) => ctx.playerState.activeData?.isPlaying,
+  );
+  const setIsPlaying = usePlayerState((state) => state.setIsPlaying);
+  useEffect(() => {
+    if (isPlaying) {
+      setIsPlaying(isPlaying);
+    }
+  }, [isPlaying, setIsPlaying]);
+
+  if (imageMessageToRender && cameraTopic) {
+    return (
+      <ImageAnnotatorPanelPresentation
+        image={imageMessageToRender}
+        onStartRenderImage={onStartRenderImage}
+        hideAnnotations={hideAnnotations}
+      />
+    );
+  }
+  return null;
+};
+
 // NOTE(yusukefs): This initialization needs to be done outside of the component to prevent re-rendering
 const annotationTopics: string[] = [];
 
@@ -77,12 +146,6 @@ const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
     [panelId, cameraTopics],
   );
 
-  const { image } = useImagePanelMessages({
-    imageTopic: currentCameraTopic,
-    annotationTopics,
-    synchronize: false,
-  });
-
   const { topics } = useDataSourceInfo();
 
   const allImageTopics = useMemo(() => {
@@ -97,25 +160,6 @@ const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
       panelId && setCameraTopics(panelId, allImageTopics[0].name);
     }
   }, [allImageTopics, setCameraTopics, panelId]);
-
-  const lastImageMessageRef = useRef(image);
-  if (image) {
-    lastImageMessageRef.current = image;
-  }
-  const imageMessageToRender = image ?? lastImageMessageRef.current;
-
-  const pauseFrame = useMessagePipeline(
-    useCallback((messagePipeline) => messagePipeline.pauseFrame, []),
-  );
-  const onStartRenderImage = useCallback(() => {
-    // NOTE: Absent of this line makes the app so slow, but editing the arg of pauseFrame
-    // doesn't change anything. It seems the arg is not actually used.
-    const resumeFrame = pauseFrame("CommentManagement");
-    const onFinishRenderImage = () => {
-      resumeFrame();
-    };
-    return onFinishRenderImage;
-  }, [pauseFrame]);
 
   const imageTopicDropdown = useMemo(() => {
     const items = allImageTopics.map((topic) => {
@@ -142,19 +186,6 @@ const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
     return <TopicDropdown multiple={false} title={title} items={items} onChange={onChange} />;
   }, [currentCameraTopic, setCameraTopics, allImageTopics, panelId]);
 
-  // CurrentTime should be receiveTime of the image message that is being shown in this panel.
-  // Because when user playback to the timestamp an annotation have, this panel must show exact image the annotation links
-  const messages = useMessagePipeline((ctx) => ctx.playerState.activeData?.messages);
-  const imageMessages = messages?.filter((message) => message.topic === currentCameraTopic) || [];
-  const currentImageMessage = imageMessages[imageMessages.length - 1];
-  const currentImageMessageTime = currentImageMessage?.receiveTime;
-
-  const setCurrentTime = usePlayerState((state) => state.setCurrentTime);
-  useEffect(() => {
-    if (currentImageMessageTime) {
-      setCurrentTime(currentImageMessageTime);
-    }
-  }, [currentImageMessageTime, setCurrentTime]);
   const isPlaying = useMessagePipeline(
     (ctx: MessagePipelineContext) => ctx.playerState.activeData?.isPlaying,
   );
@@ -260,13 +291,10 @@ const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
               </Stack>
             </Stack>
           </PanelToolbar>
-          {imageMessageToRender && (
-            <ImageAnnotatorPanelPresentation
-              image={imageMessageToRender}
-              onStartRenderImage={onStartRenderImage}
-              hideAnnotations={hideAnnotations}
-            />
-          )}
+          <ImageAnnotatorWithTopic
+            hideAnnotations={hideAnnotations}
+            cameraTopic={currentCameraTopic}
+          />
         </Stack>
       </ConfiguredAuth0Provider>
     </FoxGloveThemeProvider>
