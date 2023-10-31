@@ -7,6 +7,7 @@ import Panel from "@foxglove/studio-base/components/Panel";
 import PanelContext from "@foxglove/studio-base/components/PanelContext";
 import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
 import { useConfirm } from "@foxglove/studio-base/hooks/useConfirm";
+import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import { TopicDropdown } from "../ImageView/components/TopicDropdown";
 import { useImagePanelMessages } from "../ImageView/hooks/useImagePanelMessages";
 import { NORMALIZABLE_IMAGE_DATATYPES } from "../ImageView/lib/normalizeMessage";
@@ -14,7 +15,7 @@ import { NormalizedImageMessage } from "../ImageView/types";
 import { AddComment as AddCommentIcon, Clear as ClearIcon } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
@@ -26,11 +27,7 @@ import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
 import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
-import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import { ImageAnnotationCanvas, ImageAnnotationCanvasProps } from "./ImageAnnotationCanvas";
-
-const MIN_PANEL_WIDTH = 400;
-const MIN_PANEL_HEIGHT = 200;
 
 export type ImageAnnotatorPanelPresentationProps = {
   image?: NormalizedImageMessage;
@@ -216,17 +213,7 @@ const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
   return (
     <FoxGloveThemeProvider>
       <ConfiguredAuth0Provider>
-        <Box
-          sx={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-          minHeight={MIN_PANEL_HEIGHT}
-          minWidth={MIN_PANEL_WIDTH}
-          overflow="scroll"
-        >
+        <Stack flex="auto">
           <ServerAnnotationSync />
           {confirmModal}
           <PanelToolbar>
@@ -280,7 +267,7 @@ const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
               hideAnnotations={hideAnnotations}
             />
           )}
-        </Box>
+        </Stack>
       </ConfiguredAuth0Provider>
     </FoxGloveThemeProvider>
   );

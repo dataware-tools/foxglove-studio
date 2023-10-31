@@ -1,14 +1,12 @@
 import Panel from "@foxglove/studio-base/components/Panel";
 import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
 import { SaveConfig } from "@foxglove/studio-base/types/panels";
-import { Box } from "@mui/system";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
 import { AnnotationList } from "./content";
-
-const MIN_PANEL_WIDTH = 400;
-const MIN_PANEL_HEIGHT = 200;
 
 type AnnotationListPanelConfig = {};
 
@@ -21,20 +19,17 @@ const AnnotationListPanel = (_props: AnnotationListPanelProps) => {
   return (
     <FoxGloveThemeProvider>
       <ConfiguredAuth0Provider>
-        <Box
-          sx={{
-            width: "100%",
-            height: "100%",
-            pt: 3,
-          }}
-          minHeight={MIN_PANEL_HEIGHT}
-          minWidth={MIN_PANEL_WIDTH}
-          overflow="scroll"
-        >
+        <Stack flex="auto" width="100%" height="100%">
           <ServerAnnotationSync />
           <PanelToolbar />
-          <AnnotationList />
-        </Box>
+          <Box
+            sx={{
+              overflowY: "scroll",
+            }}
+          >
+            <AnnotationList />
+          </Box>
+        </Stack>
       </ConfiguredAuth0Provider>
     </FoxGloveThemeProvider>
   );
