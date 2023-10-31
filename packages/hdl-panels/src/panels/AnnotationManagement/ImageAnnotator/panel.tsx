@@ -7,10 +7,10 @@ import Panel from "@foxglove/studio-base/components/Panel";
 import PanelContext from "@foxglove/studio-base/components/PanelContext";
 import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
 import { useConfirm } from "@foxglove/studio-base/hooks/useConfirm";
-import { TopicDropdown } from "@foxglove/studio-base/panels/ImageView/components";
-import { useImagePanelMessages } from "@foxglove/studio-base/panels/ImageView/hooks/useImagePanelMessages";
-import { NORMALIZABLE_IMAGE_DATATYPES } from "@foxglove/studio-base/panels/ImageView/lib/normalizeMessage";
-import { NormalizedImageMessage } from "@foxglove/studio-base/panels/ImageView/types";
+import { TopicDropdown } from "../ImageView/components/TopicDropdown";
+import { useImagePanelMessages } from "../ImageView/hooks/useImagePanelMessages";
+import { NORMALIZABLE_IMAGE_DATATYPES } from "../ImageView/lib/normalizeMessage";
+import { NormalizedImageMessage } from "../ImageView/types";
 import { AddComment as AddCommentIcon, Clear as ClearIcon } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -68,7 +68,7 @@ const ImageAnnotatorPanel = () => {
     return parentPanelContext?.id;
   }, [parentPanelContext]);
   const currentCameraTopic = useMemo(
-    () => (panelId ? cameraTopics[panelId] : ""),
+    () => (panelId ? cameraTopics[panelId] ?? "" : ""),
     [panelId, cameraTopics],
   );
 
@@ -219,7 +219,8 @@ const ImageAnnotatorPanel = () => {
         >
           <ServerAnnotationSync />
           {confirmModal}
-          <PanelToolbar alwaysVisible>
+          {/* TODO(yusukefs): Show toolbar always if necessary */}
+          <PanelToolbar>
             <Stack
               spacing={1}
               direction="row"

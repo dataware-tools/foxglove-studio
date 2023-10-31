@@ -1,11 +1,8 @@
-import { NormalizedImageMessage } from "@foxglove/studio-base/panels/ImageView/types";
+import { NormalizedImageMessage } from "../ImageView/types";
 import { useResizeDetector } from "react-resize-detector";
 import { useImageCanvas, useImageCanvasArgs } from "../hooks/useImageCanvas";
 import { useImageAnnotationGeometryState } from "../stores/imageAnnotationGeometry";
-import {
-  AnnotationSpace,
-  useGetAnnotationSpaceGeometry,
-} from "./AnnotationSpace";
+import { AnnotationSpace, useGetAnnotationSpaceGeometry } from "./AnnotationSpace";
 
 export type ImageAnnotationCanvasProps = {
   image?: NormalizedImageMessage;
@@ -27,8 +24,9 @@ export const ImageAnnotationCanvas = ({
     refreshMode: "debounce",
   });
 
-  const { width: imageWidth, height: imageHeight } =
-    useImageAnnotationGeometryState((state) => state.imageGeometry);
+  const { width: imageWidth, height: imageHeight } = useImageAnnotationGeometryState(
+    (state) => state.imageGeometry,
+  );
 
   const { canvasRef } = useImageCanvas({
     image,

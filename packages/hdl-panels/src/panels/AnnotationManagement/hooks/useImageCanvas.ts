@@ -1,5 +1,5 @@
-import { renderImage } from "@foxglove/studio-base/panels/ImageView/lib/renderImage";
-import { NormalizedImageMessage } from "@foxglove/studio-base/panels/ImageView/types";
+import { renderImage } from "../ImageView/lib/renderImage";
+import { NormalizedImageMessage } from "../ImageView/types";
 import { useCallback, useEffect, useRef } from "react";
 import { useImageAnnotationGeometryState } from "../stores/imageAnnotationGeometry";
 
@@ -18,9 +18,7 @@ export const useImageCanvas = ({
 }: useImageCanvasArgs) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const setImageGeometry = useImageAnnotationGeometryState(
-    (state) => state.setImageGeometry
-  );
+  const setImageGeometry = useImageAnnotationGeometryState((state) => state.setImageGeometry);
 
   const render = useCallback(async () => {
     const canvas = canvasRef.current;
