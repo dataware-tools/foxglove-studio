@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { SearchBar } from "../../../components/SearchBar";
-import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { useServerAnnotations } from "../apiClients";
 import { useSeekPlaybackToAnnotation } from "../hooks/useSeekPlaybackToAnnotation";
 import { useAnnotationsState } from "../stores/annotation";
@@ -223,7 +222,7 @@ export const AnnotationList = () => {
   };
 
   return (
-    <FoxGloveThemeProvider>
+    <>
       <KeyListener global keyUpHandlers={keyUpHandlers} keyDownHandlers={keyDownHandlers} />
       <Box
         sx={{
@@ -313,6 +312,6 @@ export const AnnotationList = () => {
           </Table>
         </TableContainer>
       </Box>
-    </FoxGloveThemeProvider>
+    </>
   );
 };

@@ -2,7 +2,6 @@ import { ContentCopy as ContentCopyIcon, Delete as DeleteIcon } from "@mui/icons
 import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
 import { Meta } from "@storybook/react";
 import React from "react";
-import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { Annotation, Point } from "../types";
 import { CommentCardPresentation, CommentCardPresentationProps } from "./CommentCard";
 
@@ -72,30 +71,28 @@ const defaultArgs: CommentCardPresentationProps = {
 
 function Variation({ title }: { title: string }): JSX.Element {
   return (
-    <FoxGloveThemeProvider>
-      <Stack spacing={2} p={2}>
-        <Typography variant="h3">{title}</Typography>
+    <Stack spacing={2} p={2}>
+      <Typography variant="h3">{title}</Typography>
 
-        <Typography>default</Typography>
-        <CommentCardPresentation {...defaultArgs} />
+      <Typography>default</Typography>
+      <CommentCardPresentation {...defaultArgs} />
 
-        <Typography>loading</Typography>
-        <CommentCardPresentation {...defaultArgs} isLoading />
+      <Typography>loading</Typography>
+      <CommentCardPresentation {...defaultArgs} isLoading />
 
-        <Typography>long sentence</Typography>
-        <CommentCardPresentation
-          {...defaultArgs}
-          annotation={{ ...annotation, comment: longSentence.repeat(4) }}
-        />
+      <Typography>long sentence</Typography>
+      <CommentCardPresentation
+        {...defaultArgs}
+        annotation={{ ...annotation, comment: longSentence.repeat(4) }}
+      />
 
-        <Typography>timestamp is not on time</Typography>
-        <CommentCardPresentation
-          {...defaultArgs}
-          annotation={{ ...annotation, comment: longSentence.repeat(4) }}
-          isOnTimestamp={false}
-        />
-      </Stack>
-    </FoxGloveThemeProvider>
+      <Typography>timestamp is not on time</Typography>
+      <CommentCardPresentation
+        {...defaultArgs}
+        annotation={{ ...annotation, comment: longSentence.repeat(4) }}
+        isOnTimestamp={false}
+      />
+    </Stack>
   );
 }
 
@@ -106,7 +103,7 @@ export function EditableVariation(): JSX.Element {
 export function Interactive(): JSX.Element {
   const [isOnTimestamp, setIsOnTimestamp] = React.useState(true);
   return (
-    <FoxGloveThemeProvider>
+    <>
       <CommentCardPresentation
         {...defaultArgs}
         top={10}
@@ -122,6 +119,6 @@ export function Interactive(): JSX.Element {
         }
         label="isOnTimestamp"
       />
-    </FoxGloveThemeProvider>
+    </>
   );
 }

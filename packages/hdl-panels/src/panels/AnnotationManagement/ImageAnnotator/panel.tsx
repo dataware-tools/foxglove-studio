@@ -20,7 +20,6 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { useAnnotationsState } from "../stores/annotation";
 import { useIsAdding } from "../stores/isAdding";
 import { usePlayerState } from "../stores/player";
@@ -242,62 +241,60 @@ const ImageAnnotatorPanel = (_props: ImageAnnotatorPanelProps) => {
   const disabled = currentCameraTopic === "" || (!isAdding && editingAnnotationId !== null);
 
   return (
-    <FoxGloveThemeProvider>
-      <ConfiguredAuth0Provider>
-        <Stack flex="auto">
-          <ServerAnnotationSync />
-          {confirmModal}
-          <PanelToolbar>
-            <Stack
-              spacing={1}
-              direction="row"
-              justifyContent="space-between"
-              sx={{
-                flexWrap: "wrap",
-                flex: "1 1 auto",
-              }}
-            >
-              <Stack spacing={1} direction="row">
-                {imageTopicDropdown}
-                <Tooltip title={hideAnnotationsTooltipComment}>
-                  <IconButton
-                    aria-label={hideAnnotationsTooltipComment}
-                    size="medium"
-                    onClick={() => {
-                      setHideAnnotations(!hideAnnotations);
-                    }}
-                  >
-                    {hideAnnotations ? (
-                      <VisibilityOffIcon fontSize="inherit" />
-                    ) : (
-                      <VisibilityIcon fontSize="inherit" />
-                    )}
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-              <Stack spacing={1} direction="row">
-                <Tooltip title={isAdding ? "Cancel" : "Add comment"}>
-                  <Button
-                    disabled={disabled}
-                    size="small"
-                    color={isAdding ? "error" : "primary"}
-                    variant="contained"
-                    startIcon={isAdding ? <ClearIcon /> : <AddCommentIcon />}
-                    onClick={handleClick}
-                  >
-                    {isAdding ? "Cancel" : "Comment"}
-                  </Button>
-                </Tooltip>
-              </Stack>
+    <ConfiguredAuth0Provider>
+      <Stack flex="auto">
+        <ServerAnnotationSync />
+        {confirmModal}
+        <PanelToolbar>
+          <Stack
+            spacing={1}
+            direction="row"
+            justifyContent="space-between"
+            sx={{
+              flexWrap: "wrap",
+              flex: "1 1 auto",
+            }}
+          >
+            <Stack spacing={1} direction="row">
+              {imageTopicDropdown}
+              <Tooltip title={hideAnnotationsTooltipComment}>
+                <IconButton
+                  aria-label={hideAnnotationsTooltipComment}
+                  size="medium"
+                  onClick={() => {
+                    setHideAnnotations(!hideAnnotations);
+                  }}
+                >
+                  {hideAnnotations ? (
+                    <VisibilityOffIcon fontSize="inherit" />
+                  ) : (
+                    <VisibilityIcon fontSize="inherit" />
+                  )}
+                </IconButton>
+              </Tooltip>
             </Stack>
-          </PanelToolbar>
-          <ImageAnnotatorWithTopic
-            hideAnnotations={hideAnnotations}
-            cameraTopic={currentCameraTopic}
-          />
-        </Stack>
-      </ConfiguredAuth0Provider>
-    </FoxGloveThemeProvider>
+            <Stack spacing={1} direction="row">
+              <Tooltip title={isAdding ? "Cancel" : "Add comment"}>
+                <Button
+                  disabled={disabled}
+                  size="small"
+                  color={isAdding ? "error" : "primary"}
+                  variant="contained"
+                  startIcon={isAdding ? <ClearIcon /> : <AddCommentIcon />}
+                  onClick={handleClick}
+                >
+                  {isAdding ? "Cancel" : "Comment"}
+                </Button>
+              </Tooltip>
+            </Stack>
+          </Stack>
+        </PanelToolbar>
+        <ImageAnnotatorWithTopic
+          hideAnnotations={hideAnnotations}
+          cameraTopic={currentCameraTopic}
+        />
+      </Stack>
+    </ConfiguredAuth0Provider>
   );
 };
 

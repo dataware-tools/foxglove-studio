@@ -1,7 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import { Meta } from "@storybook/react";
 import React from "react";
-import { FoxGloveThemeProvider } from "../../../../utils/ThemeProvider";
 import { Annotation, Point } from "../../types";
 import { AdaptiveCommentPin } from "./AdaptiveCommentPin";
 import { CommentPinPresentation } from "./CommentPinPresentation";
@@ -29,59 +28,55 @@ const annotation: Annotation = {
 };
 export function Variation(): JSX.Element {
   return (
-    <FoxGloveThemeProvider>
-      <Box p={2} position="relative">
-        <Stack>
-          {[
-            { index: 1 },
-            { index: 99 },
-            { index: 1, loading: true },
-            { index: 1, isOnTime: false },
-          ].map((args, key) => (
-            <Box position="relative" height={100} key={key}>
-              <CommentPinPresentation comment={longSentence} {...args} />
-              <CommentPinPresentation comment={longSentence} open left={80} {...args} />
-            </Box>
-          ))}
-        </Stack>
-      </Box>
-    </FoxGloveThemeProvider>
+    <Box p={2} position="relative">
+      <Stack>
+        {[
+          { index: 1 },
+          { index: 99 },
+          { index: 1, loading: true },
+          { index: 1, isOnTime: false },
+        ].map((args, key) => (
+          <Box position="relative" height={100} key={key}>
+            <CommentPinPresentation comment={longSentence} {...args} />
+            <CommentPinPresentation comment={longSentence} open left={80} {...args} />
+          </Box>
+        ))}
+      </Stack>
+    </Box>
   );
 }
 
 export function Placement(): JSX.Element {
   return (
-    <FoxGloveThemeProvider>
-      <Stack p={2} spacing={2}>
-        {["left-top", "left-bottom", "right-top", "right-bottom"].map((placement, pkey) => (
+    <Stack p={2} spacing={2}>
+      {["left-top", "left-bottom", "right-top", "right-bottom"].map((placement, pkey) => (
+        <Box
+          key={pkey}
+          position="relative"
+          width="100%"
+          height="200px"
+          bgcolor={(theme) => theme.palette.grey[100]}
+        >
           <Box
-            key={pkey}
-            position="relative"
-            width="100%"
-            height="200px"
-            bgcolor={(theme) => theme.palette.grey[100]}
+            width="100px"
+            height="100px"
+            borderRight="1px dashed red"
+            borderBottom="1px dashed red"
           >
-            <Box
-              width="100px"
-              height="100px"
-              borderRight="1px dashed red"
-              borderBottom="1px dashed red"
-            >
-              {placement}
-            </Box>
-            <CommentPinPresentation
-              index={1}
-              comment={longSentence}
-              // @ts-expect-error for debug
-              placement={placement}
-              open
-              top={100}
-              left={100}
-            />
+            {placement}
           </Box>
-        ))}
-      </Stack>
-    </FoxGloveThemeProvider>
+          <CommentPinPresentation
+            index={1}
+            comment={longSentence}
+            // @ts-expect-error for debug
+            placement={placement}
+            open
+            top={100}
+            left={100}
+          />
+        </Box>
+      ))}
+    </Stack>
   );
 }
 
@@ -119,55 +114,46 @@ const InteractiveCommentPin = (props: { placement: string; offset: number }) => 
 
 export function Interactive(): JSX.Element {
   return (
-    <FoxGloveThemeProvider>
-      <Stack p={2} spacing={2}>
-        {["left-top", "left-bottom", "right-top", "right-bottom"].map((placement, pkey) => (
-          <InteractiveCommentPin placement={placement} key={pkey} offset={5} />
-        ))}
-      </Stack>
-    </FoxGloveThemeProvider>
+    <Stack p={2} spacing={2}>
+      {["left-top", "left-bottom", "right-top", "right-bottom"].map((placement, pkey) => (
+        <InteractiveCommentPin placement={placement} key={pkey} offset={5} />
+      ))}
+    </Stack>
   );
 }
 
 export function Adaptive(): JSX.Element {
   return (
-    <FoxGloveThemeProvider>
-      <Stack p={2} spacing={2}>
-        {[
-          [20, 10],
-          [20, 180],
-          [400, 10],
-          [400, 180],
-        ].map(([left, top], pkey) => (
-          <Box
-            key={pkey}
-            bgcolor={(theme) => theme.palette.grey[100]}
-            width={500}
-            height={200}
-            position="relative"
-          >
-            <Box
-              width={left}
-              height={top}
-              borderRight="1px dashed red"
-              borderBottom="1px dashed red"
-            >
-              {" "}
-            </Box>
-            <AdaptiveCommentPin
-              spaceWidth={500}
-              spaceHeight={200}
-              offset={10}
-              {...annotation}
-              index={1}
-              comment={longSentence}
-              open
-              left={left}
-              top={top}
-            />
+    <Stack p={2} spacing={2}>
+      {[
+        [20, 10],
+        [20, 180],
+        [400, 10],
+        [400, 180],
+      ].map(([left, top], pkey) => (
+        <Box
+          key={pkey}
+          bgcolor={(theme) => theme.palette.grey[100]}
+          width={500}
+          height={200}
+          position="relative"
+        >
+          <Box width={left} height={top} borderRight="1px dashed red" borderBottom="1px dashed red">
+            {" "}
           </Box>
-        ))}
-      </Stack>
-    </FoxGloveThemeProvider>
+          <AdaptiveCommentPin
+            spaceWidth={500}
+            spaceHeight={200}
+            offset={10}
+            {...annotation}
+            index={1}
+            comment={longSentence}
+            open
+            left={left}
+            top={top}
+          />
+        </Box>
+      ))}
+    </Stack>
   );
 }

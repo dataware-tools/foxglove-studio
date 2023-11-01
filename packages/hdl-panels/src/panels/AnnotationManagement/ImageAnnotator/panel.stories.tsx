@@ -1,4 +1,3 @@
-import { FoxGloveThemeProvider } from "../../../utils/ThemeProvider";
 import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
 import { buildSampleImage } from "./ImageAnnotationCanvas.stories";
@@ -20,19 +19,17 @@ export function Default(): JSX.Element {
   setCurrentTime({ sec: 1, nsec: 0 });
 
   return (
-    <FoxGloveThemeProvider>
-      <ImageAnnotatorPanelPresentation
-        image={{
-          type: "raw",
-          stamp: { sec: 0, nsec: 0 },
-          data,
-          width,
-          height,
-          encoding: "rgb8",
-          is_bigendian: false,
-          step: 1,
-        }}
-      />
-    </FoxGloveThemeProvider>
+    <ImageAnnotatorPanelPresentation
+      image={{
+        type: "raw",
+        stamp: { sec: 0, nsec: 0 },
+        data,
+        width,
+        height,
+        encoding: "rgb8",
+        is_bigendian: false,
+        step: 1,
+      }}
+    />
   );
 }
