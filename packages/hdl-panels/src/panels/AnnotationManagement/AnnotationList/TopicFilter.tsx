@@ -1,7 +1,4 @@
-import {
-  Check as CheckIcon,
-  FilterAlt as FilterAltIcon,
-} from "@mui/icons-material";
+import { Check as CheckIcon, FilterAlt as FilterAltIcon } from "@mui/icons-material";
 import {
   Badge,
   Divider,
@@ -11,13 +8,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useCameraTopicState } from "../stores/topic";
 import { Annotation } from "../types";
 
@@ -42,7 +33,7 @@ type TopicFilterProps = {
   setSelectedTopics: Dispatch<SetStateAction<string[] | undefined>>;
 };
 
-export const TopicFilter = (props: TopicFilterProps) => {
+export const TopicFilter = ({ annotations, setSelectedTopics }: TopicFilterProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,10 +43,8 @@ export const TopicFilter = (props: TopicFilterProps) => {
     setAnchorEl(null);
   };
   const allTopicNames = useMemo(() => {
-    return Array.from(
-      new Set(props.annotations?.map((annotation) => annotation.targetTopic))
-    );
-  }, [props.annotations]);
+    return Array.from(new Set(annotations?.map((annotation) => annotation.targetTopic)));
+  }, [annotations]);
   const cameraTopics = useCameraTopicState((state) => state.cameraTopics);
   const openedTopicNames = useMemo(() => {
     return Array.from(new Set(Object.values(cameraTopics)));
@@ -66,25 +55,20 @@ export const TopicFilter = (props: TopicFilterProps) => {
   useEffect(() => {
     switch (selectedItem) {
       case "all":
-        props.setSelectedTopics(undefined);
+        setSelectedTopics(undefined);
         break;
       case "panels":
-        props.setSelectedTopics(openedTopicNames);
+        setSelectedTopics(openedTopicNames);
         break;
       default:
-        props.setSelectedTopics([selectedItem]);
+        setSelectedTopics([selectedItem]);
         break;
     }
-  }, [selectedItem, openedTopicNames, props]);
+  }, [selectedItem, openedTopicNames, setSelectedTopics]);
 
   return (
     <>
-      <Badge
-        variant="dot"
-        color="secondary"
-        overlap="circular"
-        invisible={selectedItem === "all"}
-      >
+      <Badge variant="dot" color="secondary" overlap="circular" invisible={selectedItem === "all"}>
         <IconButton size="small" onClick={(e) => handleClick(e)}>
           <FilterAltIcon />
         </IconButton>
@@ -133,7 +117,7 @@ export const TopicFilter = (props: TopicFilterProps) => {
                   handleClose();
                 }}
               />
-            )
+            ),
         )}
       </Menu>
     </>
