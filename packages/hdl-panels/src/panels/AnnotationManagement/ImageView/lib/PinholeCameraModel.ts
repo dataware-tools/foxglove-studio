@@ -11,6 +11,8 @@
 //   found at http://www.apache.org/licenses/LICENSE-2.0
 //   You may not use this file except in compliance with the License.
 
+// This source code is copied from ImageView panel of @foxglove/studio-base@v1.11.0.
+
 import { MutablePoint, MutablePoint2D, Point2D } from "@foxglove/studio-base/types/Messages";
 import { CameraInfo, Matrix3, Matrix3x4 } from "../Messages";
 
