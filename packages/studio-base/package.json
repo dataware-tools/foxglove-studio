@@ -23,6 +23,7 @@
     "@foxglove/comlink-transfer-handlers": "workspace:*",
     "@foxglove/crc": "0.0.3",
     "@foxglove/den": "workspace:*",
+    "@foxglove/hdl-panels": "workspace:*",
     "@foxglove/hooks": "workspace:*",
     "@foxglove/log": "workspace:*",
     "@foxglove/mcap-support": "workspace:*",

@@ -85,6 +85,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@auth0/auth0-react@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@auth0/auth0-react@npm:1.12.0"
+  dependencies:
+    "@auth0/auth0-spa-js": ^1.22.4
+  peerDependencies:
+    react: ^16.11.0 || ^17 || ^18
+    react-dom: ^16.11.0 || ^17 || ^18
+  checksum: f80bc5e1734e20828601aa8ba5ccc251e032329cbbaaf1c4feac81773e30ce835a953879e5b7196bf4bd37bd82902fe731b87aa63f772c4f8e981dbcdd8af5b6
+  languageName: node
+  linkType: hard
+
+"@auth0/auth0-react@npm:>=1.4.0 < 2":
+  version: 1.12.1
+  resolution: "@auth0/auth0-react@npm:1.12.1"
+  dependencies:
+    "@auth0/auth0-spa-js": ^1.22.6
+  peerDependencies:
+    react: ^16.11.0 || ^17 || ^18
+    react-dom: ^16.11.0 || ^17 || ^18
+  checksum: 2d5de5ac7447def4e4a1f5c9f5f0ac1fb8b04a36e31a3f4e07e1656a7a13fc0f322e067bc38facb2b2c328ba090b4eb9dc45b81fa1eac11ee097960367893aad
+  languageName: node
+  linkType: hard
+
+"@auth0/auth0-spa-js@npm:^1.22.4, @auth0/auth0-spa-js@npm:^1.22.6":
+  version: 1.22.6
+  resolution: "@auth0/auth0-spa-js@npm:1.22.6"
+  dependencies:
+    abortcontroller-polyfill: ^1.7.3
+    browser-tabs-lock: ^1.2.15
+    core-js: ^3.25.4
+    es-cookie: ~1.3.2
+    fast-text-encoding: ^1.0.6
+    promise-polyfill: ^8.2.3
+    unfetch: ^4.2.0
+  checksum: 0155025b82898bd0533db373d7c8b85938fbae097c6fdf732a315ddee67d84a32c32a3b944465aec0600adb11d6d32e53eabbfc2ea04e6b5c90f92f72607bc30
+  languageName: node
+  linkType: hard
+
 "@aw-web-design/x-default-browser@npm:1.4.126":
   version: 1.4.126
   resolution: "@aw-web-design/x-default-browser@npm:1.4.126"
@@ -2435,6 +2474,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@foxglove/hdl-panels@workspace:*, @foxglove/hdl-panels@workspace:packages/hdl-panels":
+  version: 0.0.0-use.local
+  resolution: "@foxglove/hdl-panels@workspace:packages/hdl-panels"
+  dependencies:
+    "@auth0/auth0-react": 1.12.0
+    "@foxglove/studio-base": "workspace:*"
+    "@hdwlab/api-annotation-store-client": 1.0.0-alpha4
+    "@hdwlab/api-helper-typescript": 0.1.0-alpha8
+    "@react-spring/web": 9.6.1
+    "@types/flexsearch": 0.7.3
+    "@types/react-highlight-words": ^0
+    "@types/react-linkify": ^1
+    flexsearch: 0.7.21
+    react-highlight-words: 0.18.0
+    react-linkify: 1.0.0-alpha
+  languageName: unknown
+  linkType: soft
+
 "@foxglove/hooks@workspace:*, @foxglove/hooks@workspace:packages/hooks":
   version: 0.0.0-use.local
   resolution: "@foxglove/hooks@workspace:packages/hooks"
@@ -2666,6 +2723,7 @@ __metadata:
     "@foxglove/comlink-transfer-handlers": "workspace:*"
     "@foxglove/crc": 0.0.3
     "@foxglove/den": "workspace:*"
+    "@foxglove/hdl-panels": "workspace:*"
     "@foxglove/hooks": "workspace:*"
     "@foxglove/log": "workspace:*"
     "@foxglove/mcap-support": "workspace:*"
@@ -2979,6 +3037,29 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0 <19.0.0"
   checksum: e67238ca3ce8d64759334691dc4b24ae4630c54f56eb0aa349a617900e711147c517481c0c039c5a301a47e5ba569f07d688847747a397842789d2611787a7ad
+  languageName: node
+  linkType: hard
+
+"@hdwlab/api-annotation-store-client@npm:1.0.0-alpha4":
+  version: 1.0.0-alpha4
+  resolution: "@hdwlab/api-annotation-store-client@npm:1.0.0-alpha4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40hdwlab%2Fapi-annotation-store-client%2F1.0.0-alpha4%2F90a632205dcaeb9921dccb00574d7c6a0fdb356c"
+  dependencies:
+    form-data: ^4.0.0
+    node-fetch: ^2.6.5
+  checksum: b0f353367571000db428243f2860211a50a47f84ec717199f0da41bd6c026cb5f1155abb949e0538524e2597cab9df3296fc7418285dfb8640e78a3b0d6f5565
+  languageName: node
+  linkType: hard
+
+"@hdwlab/api-helper-typescript@npm:0.1.0-alpha8":
+  version: 0.1.0-alpha8
+  resolution: "@hdwlab/api-helper-typescript@npm:0.1.0-alpha8::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40hdwlab%2Fapi-helper-typescript%2F0.1.0-alpha8%2F00c7eb2214b1957f39e2c209f4ad9dc984dbf31d"
+  dependencies:
+    "@auth0/auth0-react": ">=1.4.0 < 2"
+    swr: ^1.3.0
+  peerDependencies:
+    "@auth0/auth0-react": ">=1.4.0 < 2"
+    swr: ^1.3.0
+  checksum: ad6e818d5c30bf85a86e95ea109069e27e7f687385f9e45d711cb7ec75d1164146d0f144ebd0ac25e97eb25e1e24479a51851d20fa18e3f726bbf14291524c71
   languageName: node
   linkType: hard
 
@@ -4538,6 +4619,73 @@ __metadata:
   version: 4.0.2
   resolution: "@react-dnd/shallowequal@npm:4.0.2"
   checksum: 7f21d691bddbfd4d2830948cbeefecca1600b2b46bcb1934926795f07ae8a1fa60a3dfd3a2112be5ef682c3820c80a99711e9fa15843f7e300acb25a4ecb70ab
+  languageName: node
+  linkType: hard
+
+"@react-spring/animated@npm:~9.6.1":
+  version: 9.6.1
+  resolution: "@react-spring/animated@npm:9.6.1"
+  dependencies:
+    "@react-spring/shared": ~9.6.1
+    "@react-spring/types": ~9.6.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: fd8b3dbb1ad3195d510888bd7ea2e2790ea4505442b70b19b30c462c2b68f56c9d66febbb7e4fa32a21e31b03c423176f6257879be80b22c0286e56789547ee3
+  languageName: node
+  linkType: hard
+
+"@react-spring/core@npm:~9.6.1":
+  version: 9.6.1
+  resolution: "@react-spring/core@npm:9.6.1"
+  dependencies:
+    "@react-spring/animated": ~9.6.1
+    "@react-spring/rafz": ~9.6.1
+    "@react-spring/shared": ~9.6.1
+    "@react-spring/types": ~9.6.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 7e0aaec8a6f68b3f2399533947cdbf1b2c4f94a6b01eb1d577516af7385cd302d775f1f3f10b838581edd70773d314ba066dbce0b63169b4cf2fd7791acc3d13
+  languageName: node
+  linkType: hard
+
+"@react-spring/rafz@npm:~9.6.1":
+  version: 9.6.1
+  resolution: "@react-spring/rafz@npm:9.6.1"
+  checksum: 3c8967b01ad29d212244a572193b465087104064b043e6bb303e4498e165f73bb8ef20d46af7bcdd351dc3370fb190fcee76a31d80a8b2c09cf04ef976e34556
+  languageName: node
+  linkType: hard
+
+"@react-spring/shared@npm:~9.6.1":
+  version: 9.6.1
+  resolution: "@react-spring/shared@npm:9.6.1"
+  dependencies:
+    "@react-spring/rafz": ~9.6.1
+    "@react-spring/types": ~9.6.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 4e2c905a1804fe0402753ce50fc563faa87dec7b6dd348cc21800c213ce71d77db4e299cf1b9c47a8ee557220b62ee64ac934867c11881b1124b63f59eb4c9f3
+  languageName: node
+  linkType: hard
+
+"@react-spring/types@npm:~9.6.1":
+  version: 9.6.1
+  resolution: "@react-spring/types@npm:9.6.1"
+  checksum: 803dc6c2d67773ee1e5d00d2feac291dad32cf4ca6a790554d6133dd4cd39aeb89b3beea4cc67f91c2d2e4bdbd1a995540dc7fee117138e207a105d255d39c1c
+  languageName: node
+  linkType: hard
+
+"@react-spring/web@npm:9.6.1":
+  version: 9.6.1
+  resolution: "@react-spring/web@npm:9.6.1"
+  dependencies:
+    "@react-spring/animated": ~9.6.1
+    "@react-spring/core": ~9.6.1
+    "@react-spring/shared": ~9.6.1
+    "@react-spring/types": ~9.6.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 3c336a9d162136c0d1ec8adad31d8534d4309de46eea9fa50f735aa9ea0cd3350320654160ea1fc731ba06a3b4342c508d7b5b9035b7816ab0285f5e952dd118
   languageName: node
   linkType: hard
 
@@ -6289,6 +6437,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/flexsearch@npm:0.7.3":
+  version: 0.7.3
+  resolution: "@types/flexsearch@npm:0.7.3"
+  checksum: fac365e6d6f7f251c49b22530635a7042523b00a45dcb5591372782125f5e5e97b0508c71e08c8d1b3fbef0e01c504027271df5d60698b1e26caf7d067cc2ef0
+  languageName: node
+  linkType: hard
+
 "@types/foxglove__roslibjs@workspace:*, @types/foxglove__roslibjs@workspace:packages/@types/foxglove__roslibjs":
   version: 0.0.0-use.local
   resolution: "@types/foxglove__roslibjs@workspace:packages/@types/foxglove__roslibjs"
@@ -6698,11 +6853,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-highlight-words@npm:^0":
+  version: 0.16.6
+  resolution: "@types/react-highlight-words@npm:0.16.6"
+  dependencies:
+    "@types/react": "*"
+  checksum: fa2d668e43bda940f3ceba813d1daf69a4ea6c77e22701e0a6eb5dddb9cbc3c324e5f71c4be1a019b29421742ea21226cae6d3c8dde1f1f50372b1965735177e
+  languageName: node
+  linkType: hard
+
 "@types/react-hover-observer@workspace:*, @types/react-hover-observer@workspace:packages/@types/react-hover-observer":
   version: 0.0.0-use.local
   resolution: "@types/react-hover-observer@workspace:packages/@types/react-hover-observer"
   languageName: unknown
   linkType: soft
+
+"@types/react-linkify@npm:^1":
+  version: 1.0.3
+  resolution: "@types/react-linkify@npm:1.0.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: e34261df6fb905740dfb4b4e037abeaaf65944fe2beb866e7660b8876e73f1d7891d2a6cd9cfbba58041904f0957c2c5f3db71982a90e4f513ce31a7899059e3
+  languageName: node
+  linkType: hard
 
 "@types/react-transition-group@npm:^4.4.6":
   version: 4.4.6
@@ -7568,6 +7741,13 @@ __metadata:
   dependencies:
     event-target-shim: ^5.0.0
   checksum: 170bdba9b47b7e65906a28c8ce4f38a7a369d78e2271706f020849c1bfe0ee2067d4261df8bbb66eb84f79208fd5b710df759d64191db58cfba7ce8ef9c54b75
+  languageName: node
+  linkType: hard
+
+"abortcontroller-polyfill@npm:^1.7.3":
+  version: 1.7.5
+  resolution: "abortcontroller-polyfill@npm:1.7.5"
+  checksum: daf4169f4228ae0e4f4dbcfa782e501b923667f2666b7c55bd3b7664e5d6b100e333a93371173985fdf21f65d7dfba15bdb2e6031bdc9e57e4ce0297147da3aa
   languageName: node
   linkType: hard
 
@@ -8637,6 +8817,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"browser-tabs-lock@npm:^1.2.15":
+  version: 1.3.0
+  resolution: "browser-tabs-lock@npm:1.3.0"
+  dependencies:
+    lodash: ">=4.17.21"
+  checksum: 4fcfb6d5fc4bc5e4f53c298d555d8421ca4f815e32c2650b73008868eb70d7ee41aca8f92ad84d9beb77a8ffe0cb99f1efc8d9b3135cc434d48f7bd569f2bb72
+  languageName: node
+  linkType: hard
+
 "browserify-aes@npm:^1.0.0, browserify-aes@npm:^1.0.4":
   version: 1.2.0
   resolution: "browserify-aes@npm:1.2.0"
@@ -9651,6 +9840,13 @@ __metadata:
   version: 3.19.2
   resolution: "core-js@npm:3.19.2"
   checksum: a605f7b0448a7aa13731fd9a13525460681e15ce60ec0e1ff45e88b18b71e74f6c625959200f0f8376ec0a1eb94b0f06e3d6807a01c5a46f3871d08a2c4f1d58
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.25.4":
+  version: 3.33.1
+  resolution: "core-js@npm:3.33.1"
+  checksum: 3a95003b0e77995203587117f3bde7f4e96adf434b6b78033dbe60347ffe38b2bac31eafab6a4cc641e5766062846b52f336ab4553fc0902c278959af4778e53
   languageName: node
   linkType: hard
 
@@ -11010,6 +11206,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es-cookie@npm:~1.3.2":
+  version: 1.3.2
+  resolution: "es-cookie@npm:1.3.2"
+  checksum: 8509355a7d00bd2e3fcab4a76a90e0da35b40c1e76f114f8ffe805ab3fdfff51e8fc0e7cdccd9bf1536066150b6b9861e37d78ae14f80680513901902ac4f0df
+  languageName: node
+  linkType: hard
+
 "es-get-iterator@npm:^1.1.3":
   version: 1.1.3
   resolution: "es-get-iterator@npm:1.1.3"
@@ -12011,6 +12214,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-text-encoding@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "fast-text-encoding@npm:1.0.6"
+  checksum: 9d58f694314b3283e785bf61954902536da228607ad246905e30256f9ab8331f780ac987e7222c9f5eafd04168d07e12b8054c85cedb76a2c05af0e82387a903
+  languageName: node
+  linkType: hard
+
 "fast-url-parser@npm:1.1.3":
   version: 1.1.3
   resolution: "fast-url-parser@npm:1.1.3"
@@ -12257,6 +12467,13 @@ __metadata:
   version: 3.2.4
   resolution: "flatted@npm:3.2.4"
   checksum: 7d33846428ab337ec81ef9b8b9103894c1c81f5f67feb32bd4ed106fbc47da60d56edb42efd36c9f1f30a010272aeccd34ec1ffacfe9dfdff19673b1d4df481b
+  languageName: node
+  linkType: hard
+
+"flexsearch@npm:0.7.21":
+  version: 0.7.21
+  resolution: "flexsearch@npm:0.7.21"
+  checksum: ae77c6ebba6f02660bf28a36b56427ec2d737dcb9bd03564db27801484be2dd943fc7350e60a6f0aed47ab1b85af7fd5b33e27e84fd2fcbb241d9c5d21c8d068
   languageName: node
   linkType: hard
 
@@ -13209,6 +13426,13 @@ __metadata:
   version: 0.2.7
   resolution: "heap@npm:0.2.7"
   checksum: b0f3963a799e02173f994c452921a777f2b895b710119df999736bfed7477235c2860c423d9aea18a9f3b3d065cb1114d605c208cfcb8d0ac550f97ec5d28cb0
+  languageName: node
+  linkType: hard
+
+"highlight-words-core@npm:^1.2.0":
+  version: 1.2.2
+  resolution: "highlight-words-core@npm:1.2.2"
+  checksum: 737758a8a572c82919552b031df300016164b7d0db6a819d24bc6c7ca2279d3cd6d03497728930d6402423c7a3fc2f42c628a9b01b025c704a0b56a635377511
   languageName: node
   linkType: hard
 
@@ -15331,6 +15555,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"linkify-it@npm:^2.0.3":
+  version: 2.2.0
+  resolution: "linkify-it@npm:2.2.0"
+  dependencies:
+    uc.micro: ^1.0.1
+  checksum: d198871d0b3f3cfdb745dae564bfd6743474f20cd0ef1057e6ca29451834749e7f3da52b59b4de44e98f31a1e5c71bdad160490d4ae54de251cbcde57e4d7837
+  languageName: node
+  linkType: hard
+
 "loader-runner@npm:^4.2.0":
   version: 4.2.0
   resolution: "loader-runner@npm:4.2.0"
@@ -15447,7 +15680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0":
+"lodash@npm:>=4.17.21, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -15782,6 +16015,13 @@ __metadata:
   version: 5.2.1
   resolution: "memoize-one@npm:5.2.1"
   checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
+  languageName: node
+  linkType: hard
+
+"memoize-one@npm:^4.0.0":
+  version: 4.0.3
+  resolution: "memoize-one@npm:4.0.3"
+  checksum: addd18c046542f57440ba70bf8ebd48663d17626cade681f777522ef70900a87ec72c5041bed8ece4f6d40a2cb58803bae388b50a4b740d64f36bcda20c147b7
   languageName: node
   linkType: hard
 
@@ -16623,6 +16863,20 @@ __metadata:
     encoding:
       optional: true
   checksum: 249d0666a9497553384d46b5ab296ba223521ac88fed4d8a17d6ee6c2efb0fc890f3e8091cafe7f9fba8151a5b8d925db2671543b3409a56c3cd522b468b47b3
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^2.6.5":
+  version: 2.7.0
+  resolution: "node-fetch@npm:2.7.0"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: d76d2f5edb451a3f05b15115ec89fc6be39de37c6089f1b6368df03b91e1633fd379a7e01b7ab05089a25034b2023d959b47e59759cb38d88341b2459e89d6e5
   languageName: node
   linkType: hard
 
@@ -17681,6 +17935,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"promise-polyfill@npm:^8.2.3":
+  version: 8.3.0
+  resolution: "promise-polyfill@npm:8.3.0"
+  checksum: 206373802076c77def0805758d0a8ece64120dfa6603f092404a1004211f8f2f67f33cadbc35953fc2a8ed0b0d38c774e88bdf01e20ce7a920723a60df84b7a5
+  languageName: node
+  linkType: hard
+
 "promise-retry@npm:^2.0.1":
   version: 2.0.1
   resolution: "promise-retry@npm:2.0.1"
@@ -17701,7 +17962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -18171,6 +18432,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-highlight-words@npm:0.18.0":
+  version: 0.18.0
+  resolution: "react-highlight-words@npm:0.18.0"
+  dependencies:
+    highlight-words-core: ^1.2.0
+    memoize-one: ^4.0.0
+    prop-types: ^15.5.8
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0-0 || ^17.0.0-0 || ^18.0.0-0
+  checksum: ff9759e7ebeb140067854d8cad3021123ba0e3b78bda14d35d9b21dd7890986c858955885ddbcb537e9f88472aebe4a23a1841b7af190989efb0a8ecf7dc2a57
+  languageName: node
+  linkType: hard
+
 "react-hover-observer@npm:2.1.1":
   version: 2.1.1
   resolution: "react-hover-observer@npm:2.1.1"
@@ -18271,6 +18545,16 @@ __metadata:
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
+  languageName: node
+  linkType: hard
+
+"react-linkify@npm:1.0.0-alpha":
+  version: 1.0.0-alpha
+  resolution: "react-linkify@npm:1.0.0-alpha"
+  dependencies:
+    linkify-it: ^2.0.3
+    tlds: ^1.199.0
+  checksum: abff36e1fdd9db822278292379e070d471d96ddda2d199565edd9ecff3d17faa31a3c83bd2be8fa4c0f9589dd97553ba77c553047b94cfd94e0f528b9e91fafa
   languageName: node
   linkType: hard
 
@@ -20354,6 +20638,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"swr@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "swr@npm:1.3.0"
+  peerDependencies:
+    react: ^16.11.0 || ^17.0.0 || ^18.0.0
+  checksum: e7a184f0d560e9c8be85c023cc8e65e56a88a6ed46f9394b301b07f838edca23d2e303685319a4fcd620b81d447a7bcb489c7fa0a752c259f91764903c690cdb
+  languageName: node
+  linkType: hard
+
 "symbol-tree@npm:^3.2.4":
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
@@ -20603,6 +20896,15 @@ __metadata:
   version: 3.0.0
   resolution: "titleize@npm:3.0.0"
   checksum: 71fbbeabbfb36ccd840559f67f21e356e1d03da2915b32d2ae1a60ddcc13a124be2739f696d2feb884983441d159a18649e8d956648d591bdad35c430a6b6d28
+  languageName: node
+  linkType: hard
+
+"tlds@npm:^1.199.0":
+  version: 1.243.0
+  resolution: "tlds@npm:1.243.0"
+  bin:
+    tlds: bin.js
+  checksum: 75800c5bd14a2abcfdddd67b725f362d9069479c75f7e525793edbd5896d4e71fe2f00b4b9615fbd419f7c0d11e1415d7deb4774eea4f7744abbcedebfca00d7
   languageName: node
   linkType: hard
 
@@ -21131,6 +21433,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uc.micro@npm:^1.0.1":
+  version: 1.0.6
+  resolution: "uc.micro@npm:1.0.6"
+  checksum: 6898bb556319a38e9cf175e3628689347bd26fec15fc6b29fa38e0045af63075ff3fea4cf1fdba9db46c9f0cbf07f2348cd8844889dd31ebd288c29fe0d27e7a
+  languageName: node
+  linkType: hard
+
 "uglify-js@npm:^3.1.4":
   version: 3.14.4
   resolution: "uglify-js@npm:3.14.4"
@@ -21149,6 +21458,13 @@ __metadata:
     has-symbols: ^1.0.3
     which-boxed-primitive: ^1.0.2
   checksum: b7a1cf5862b5e4b5deb091672ffa579aa274f648410009c81cca63fed3b62b610c4f3b773f912ce545bb4e31edc3138975b5bc777fc6e4817dca51affb6380e9
+  languageName: node
+  linkType: hard
+
+"unfetch@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "unfetch@npm:4.2.0"
+  checksum: 6a4b2557e1d921eaa80c4425ce27a404945ec26491ed06e62598f333996a91a44c7908cb26dc7c2746d735762b13276cf4aa41829b4c8f438dde63add3045d7a
   languageName: node
   linkType: hard
 
