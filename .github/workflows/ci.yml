@@ -111,6 +111,26 @@ jobs:
           key: v5-${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: v5-${{ runner.os }}-yarn-
 
+      - run: |
+          cat <<EOF > ~/.yarnrc.yml
+          npmScopes:
+            dataware-tools:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+            hdwlab:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+
+          npmRegistries:
+            //npm.pkg.github.com:
+              npmAlwaysAuth: true
+              npmAuthToken: ${NPM_TOKEN}
+          EOF
+          cat ~/.yarnrc.yml
+        env:
+          NPM_REGISTRY: https://npm.pkg.github.com
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - run: yarn install --immutable
 
       - run: yarn workspace @foxglove/studio-base run storybook:build
@@ -153,6 +173,26 @@ jobs:
             **/node_modules
           key: v5-${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: v5-${{ runner.os }}-yarn-
+
+      - run: |
+          cat <<EOF > ~/.yarnrc.yml
+          npmScopes:
+            dataware-tools:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+            hdwlab:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+
+          npmRegistries:
+            //npm.pkg.github.com:
+              npmAlwaysAuth: true
+              npmAuthToken: ${NPM_TOKEN}
+          EOF
+          cat ~/.yarnrc.yml
+        env:
+          NPM_REGISTRY: https://npm.pkg.github.com
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: yarn install --immutable
 
