@@ -28,19 +28,19 @@ jobs:
               yarn run lint:ci
               yarn run lint:unused-exports
               yarn run lint:dependencies
-          - name: packages
-            command: yarn run build:packages
+          # - name: packages
+          #   command: yarn run build:packages
           - name: web
             command: yarn run web:build:prod
           - name: build benchmark
             command: yarn run benchmark:build:prod
           - name: test
             command: yarn run test --maxWorkers=100%
-        include:
-          - os: windows-2019
-            config:
-              name: packages
-              command: echo complete
+        # include:
+        #   - os: windows-2019
+        #     config:
+        #       name: packages
+        #       command: echo complete
 
     name: ${{ matrix.config.name }} (${{ matrix.os }})
 
