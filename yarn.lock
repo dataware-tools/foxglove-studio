@@ -9836,14 +9836,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.0.0":
-  version: 3.19.2
-  resolution: "core-js@npm:3.19.2"
-  checksum: a605f7b0448a7aa13731fd9a13525460681e15ce60ec0e1ff45e88b18b71e74f6c625959200f0f8376ec0a1eb94b0f06e3d6807a01c5a46f3871d08a2c4f1d58
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.25.4":
+"core-js@npm:^3.0.0, core-js@npm:^3.25.4":
   version: 3.33.1
   resolution: "core-js@npm:3.33.1"
   checksum: 3a95003b0e77995203587117f3bde7f4e96adf434b6b78033dbe60347ffe38b2bac31eafab6a4cc641e5766062846b52f336ab4553fc0902c278959af4778e53
@@ -16852,21 +16845,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.0.0":
-  version: 2.6.11
-  resolution: "node-fetch@npm:2.6.11"
-  dependencies:
-    whatwg-url: ^5.0.0
-  peerDependencies:
-    encoding: ^0.1.0
-  peerDependenciesMeta:
-    encoding:
-      optional: true
-  checksum: 249d0666a9497553384d46b5ab296ba223521ac88fed4d8a17d6ee6c2efb0fc890f3e8091cafe7f9fba8151a5b8d925db2671543b3409a56c3cd522b468b47b3
-  languageName: node
-  linkType: hard
-
-"node-fetch@npm:^2.6.5":
+"node-fetch@npm:^2.0.0, node-fetch@npm:^2.6.5":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
