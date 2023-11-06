@@ -33,6 +33,7 @@ export const usePasteAnnotationAction = () => {
     setIsPasting(true);
 
     const pastedText = await navigator.clipboard.readText();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let pastedObj: any | null = null;
     try {
       pastedObj = JSON.parse(pastedText);

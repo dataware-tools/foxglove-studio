@@ -52,6 +52,9 @@ export const ImageAnnotatorPanelPresentation = ({
   );
 };
 
+// NOTE(yusukefs): This initialization needs to be done outside of the component to prevent re-rendering
+const annotationTopics: string[] = [];
+
 type ImageAnnotatorWithTopicProps = {
   hideAnnotations: boolean;
   cameraTopic: string;
@@ -121,10 +124,7 @@ const ImageAnnotatorWithTopic = ({
   return null;
 };
 
-// NOTE(yusukefs): This initialization needs to be done outside of the component to prevent re-rendering
-const annotationTopics: string[] = [];
-
-type ImageAnnotatorConfig = {};
+type ImageAnnotatorConfig = Record<string, never>;
 
 type ImageAnnotatorPanelProps = {
   config: ImageAnnotatorConfig;
