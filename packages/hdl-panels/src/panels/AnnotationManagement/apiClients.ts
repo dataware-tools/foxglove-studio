@@ -4,10 +4,7 @@ import {
   AnnotationCommentedImageRectangularArea,
   Annotation as ServerAnnotation,
 } from "@hdwlab/api-annotation-store-client/dist/browser/client";
-import {
-  useAPIClient,
-  useAPIClientWithSWR,
-} from "@hdwlab/api-helper-typescript";
+import { useAPIClient, useAPIClientWithSWR } from "@hdwlab/api-helper-typescript";
 import { useCallback, useMemo } from "react";
 import { API_VERSION } from "./ImageAnnotator/constants";
 import { useAnnotationsState } from "./stores/annotation";
@@ -26,9 +23,7 @@ export const useAddAnnotation = () => {
 
   const client = useAPIClient();
 
-  const request = async (
-    annotation: Omit<AnnotationForImageOnTimePoint, "id">
-  ) => {
+  const request = async (annotation: Omit<AnnotationForImageOnTimePoint, "id">) => {
     // @ts-expect-error annotation_id and generation will be inserted by backend api.
     const annotationInRequestObject: annotationStore.Annotation = (() => {
       switch (annotation.type) {
@@ -84,7 +79,7 @@ export const useAddAnnotation = () => {
       {
         databaseId,
         annotation: annotationInRequestObject,
-      }
+      },
     );
     return response;
   };
@@ -100,7 +95,7 @@ export const useUpdateAnnotation = () => {
   const request = async (
     annotationId: string,
     // NOTE(yusukefs): Make annotation optional except for the generation property.
-    annotation: Partial<Annotation> & Pick<Annotation, "generation">
+    annotation: Partial<Annotation> & Pick<Annotation, "generation">,
   ) => {
     // @ts-expect-error _kind and record_id are immutable in this app.
     const annotationInRequestObject: annotationStore.Annotation = (() => {
@@ -158,7 +153,7 @@ export const useUpdateAnnotation = () => {
         databaseId,
         annotationId,
         annotation: annotationInRequestObject,
-      }
+      },
     );
     return response;
   };
@@ -180,19 +175,17 @@ export const useDeleteAnnotation = () => {
         {
           databaseId,
           annotationId,
-        }
+        },
       );
       return response;
     },
-    [databaseId, client]
+    [databaseId, client],
   );
 
   return { request };
 };
 
-const convServerAnnotationToFrontState = (
-  annotation: ServerAnnotation
-): Annotation | undefined => {
+const convServerAnnotationToFrontState = (annotation: ServerAnnotation): Annotation | undefined => {
   if (annotation._kind === "AnnotationCommentedImagePixel") {
     // @ts-expect-error if _kind is AnnotationCommentedImagePixel, type must have below type
     const rawPoint: AnnotationCommentedImagePixel = annotation;
@@ -202,7 +195,7 @@ const convServerAnnotationToFrontState = (
       type: "point",
       centerPoint: new Point(
         rawPoint.commented_image_pixel.image_pixel.x,
-        rawPoint.commented_image_pixel.image_pixel.y
+        rawPoint.commented_image_pixel.image_pixel.y,
       ),
       comment: rawPoint.commented_image_pixel.text,
       targetTopic: rawPoint.commented_image_pixel.target_topic,
@@ -222,17 +215,15 @@ const convServerAnnotationToFrontState = (
       type: "rect",
       centerPoint: new Point(
         rawRect.commented_image_rectangular_area.image_rectangular_area.center_x,
-        rawRect.commented_image_rectangular_area.image_rectangular_area.center_y
+        rawRect.commented_image_rectangular_area.image_rectangular_area.center_y,
       ),
       comment: rawRect.commented_image_rectangular_area.text,
       targetTopic: rawRect.commented_image_rectangular_area.target_topic,
       timestamp_from: rawRect.timestamp_from as number,
       timestamp_to: rawRect.timestamp_to as number,
       generation: rawRect.generation,
-      height:
-        rawRect.commented_image_rectangular_area.image_rectangular_area.size_y,
-      width:
-        rawRect.commented_image_rectangular_area.image_rectangular_area.size_x,
+      height: rawRect.commented_image_rectangular_area.image_rectangular_area.size_y,
+      width: rawRect.commented_image_rectangular_area.image_rectangular_area.size_x,
       frame_id: rawRect.commented_image_rectangular_area.frame_id,
       instance_id: rawRect.commented_image_rectangular_area.instance_id,
     };
@@ -286,7 +277,9 @@ export const useServerAnnotations = () => {
         annotations: data.data
           .map(convServerAnnotationToFrontState)
           .filter((annotation) => annotation !== undefined)
-          .sort((a, b) => {return a!.timestamp_from - b!.timestamp_from})
+          .sort((a, b) => {
+            return a!.timestamp_from - b!.timestamp_from;
+          })
           .map((annotation, index) => {
             return { ...annotation, index: index + 1 };
           }) as Annotation[],

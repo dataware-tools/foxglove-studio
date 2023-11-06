@@ -9,8 +9,9 @@ export const useDuplicateAnnotationAction = () => {
   const getAnnotation = useAnnotationsState((state) => state.getAnnotation);
   const startEditing = useAnnotationsState((state) => state.startEditing);
 
-  const { width: imageWidth, height: imageHeight } =
-    useImageAnnotationGeometryState((state) => state.imageGeometry);
+  const { width: imageWidth, height: imageHeight } = useImageAnnotationGeometryState(
+    (state) => state.imageGeometry,
+  );
 
   const { fetchServerAnnotations } = useServerAnnotations();
   const [isDuplicating, setIsDuplicating] = useState(false);
@@ -40,10 +41,7 @@ export const useDuplicateAnnotationAction = () => {
       annotation.centerPoint.y + (annotation.height ?? 0) / 2 >= imageHeight
         ? -difference
         : difference;
-    const newCenterPoint = annotation.centerPoint.getPointDifferedBy(
-      diffX,
-      diffY
-    );
+    const newCenterPoint = annotation.centerPoint.getPointDifferedBy(diffX, diffY);
 
     const newAnnotationWithoutId: Parameters<typeof addAnnotationRequest>[0] = {
       index: 0,

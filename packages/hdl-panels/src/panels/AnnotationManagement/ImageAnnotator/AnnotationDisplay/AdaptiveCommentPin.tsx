@@ -1,8 +1,5 @@
 import { useMemo } from "react";
-import {
-  CommentPinPresentation,
-  CommentPinPresentationProps,
-} from "./CommentPinPresentation";
+import { CommentPinPresentation, CommentPinPresentationProps } from "./CommentPinPresentation";
 
 export type AdaptiveCommentPinProps = {
   spaceWidth: number;
@@ -30,10 +27,7 @@ export const AdaptiveCommentPin = ({
   }, [bottomY, rightX, spaceWidth, spaceHeight]);
   return (
     <>
-      <CommentPinPresentation
-        placement={placement ?? adaptedPlacement}
-        {...props}
-      />
+      <CommentPinPresentation placement={placement ?? adaptedPlacement} {...props} />
     </>
   );
-}
+};

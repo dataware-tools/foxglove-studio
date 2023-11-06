@@ -17,8 +17,7 @@ export const InterpolatedAnnotation = ({
 }: InterpolatedAnnotationProps) => {
   if (!interpolatedCoordinate) return null;
   if (
-    (interpolatedCoordinate.height === 0 &&
-      interpolatedCoordinate.width === 0) ||
+    (interpolatedCoordinate.height === 0 && interpolatedCoordinate.width === 0) ||
     (!interpolatedCoordinate.height && !interpolatedCoordinate.width)
   ) {
     return (

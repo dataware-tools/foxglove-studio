@@ -29,16 +29,12 @@ export const AddAnnotationFAB = ({ sx }: AddAnnotationFABProps) => {
   }, [parentPanelContext]);
   const currentCameraTopic = useMemo(
     () => (panelId ? cameraTopics[panelId] : ""),
-    [panelId, cameraTopics]
+    [panelId, cameraTopics],
   );
 
-  const editingAnnotationId = useAnnotationsState(
-    (state) => state.editingAnnotationId
-  );
+  const editingAnnotationId = useAnnotationsState((state) => state.editingAnnotationId);
   const stopEditing = useAnnotationsState((state) => state.stopEditing);
-  const removeAnnotation = useAnnotationsState(
-    (state) => state.removeAnnotation
-  );
+  const removeAnnotation = useAnnotationsState((state) => state.removeAnnotation);
 
   const handleClick = () => {
     if (isAdding) {
@@ -55,8 +51,7 @@ export const AddAnnotationFAB = ({ sx }: AddAnnotationFABProps) => {
   };
 
   // Disable button if camera topic is not selected, or if there is an editing existing annotation
-  const disabled =
-    currentCameraTopic === "" || (!isAdding && editingAnnotationId !== null);
+  const disabled = currentCameraTopic === "" || (!isAdding && editingAnnotationId !== null);
 
   return (
     <Fab

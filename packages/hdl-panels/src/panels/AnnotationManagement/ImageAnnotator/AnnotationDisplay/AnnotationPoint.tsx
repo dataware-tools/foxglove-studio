@@ -8,11 +8,7 @@ import { useIsAdding } from "../../stores/isAdding";
 import { Point } from "../../types";
 import { CommentCard } from "../CommentCard";
 import { AnnotationContextMenu } from "./AnnotationContextMenu";
-import {
-  CommonAnnotationProps,
-  useAnnotationStyle,
-  useIsOnTimestamp,
-} from "./utils";
+import { CommonAnnotationProps, useAnnotationStyle, useIsOnTimestamp } from "./utils";
 
 const POINT_DEFAULT_SIZE = 16;
 
@@ -36,9 +32,7 @@ export const AnnotationPoint = ({
   borderWidth = 1,
   styleOverrides = {},
 }: AnnotationPointProps) => {
-  const annotation = useAnnotationsState((state) =>
-    state.getAnnotation(annotationId)
-  );
+  const annotation = useAnnotationsState((state) => state.getAnnotation(annotationId));
   const { colorFixed } = useAnnotationStyle({
     color,
     borderWidth,
@@ -46,19 +40,14 @@ export const AnnotationPoint = ({
   });
 
   const isAdding = useIsAdding((state) => state.isAdding);
-  const editingAnnotationId = useAnnotationsState(
-    (state) => state.editingAnnotationId
-  );
-  const updateEditingAnnotation = useAnnotationsState(
-    (state) => state.updateEditingAnnotation
-  );
+  const editingAnnotationId = useAnnotationsState((state) => state.editingAnnotationId);
+  const updateEditingAnnotation = useAnnotationsState((state) => state.updateEditingAnnotation);
   const setHighlightingAnnotationId = useAnnotationsState(
-    (state) => state.setHighlightingAnnotationId
+    (state) => state.setHighlightingAnnotationId,
   );
 
   const [clickStartPoint, setClickStartPoint] = useState<Point | null>(null);
-  const { isDragging, handleDown, handleMove, handleUp, difference } =
-    usePointerDrag();
+  const { isDragging, handleDown, handleMove, handleUp, difference } = usePointerDrag();
 
   const handlePointDown = (e: React.PointerEvent<HTMLDivElement>) => {
     handleDown(e);
@@ -75,7 +64,7 @@ export const AnnotationPoint = ({
     const newPoint = new Point(
       clickStartPoint.x + difference.x / imageSpaceWidthRatio,
       clickStartPoint.y + difference.y / imageSpaceHeightRatio,
-      { limit }
+      { limit },
     );
     updateEditingAnnotation({ centerPoint: newPoint });
   }, [
@@ -93,9 +82,7 @@ export const AnnotationPoint = ({
   // Handle click to start editing
   const startEditing = useAnnotationsState((state) => state.startEditing);
   const getAnnotation = useAnnotationsState((state) => state.getAnnotation);
-  const editingHasUpdate = useAnnotationsState(
-    (state) => state.editingHasUpdate
-  );
+  const editingHasUpdate = useAnnotationsState((state) => state.editingHasUpdate);
   const seekPlaybackToAnnotation = useSeekPlaybackToAnnotation();
   const isOnTimestamp = useIsOnTimestamp({ annotation });
 
@@ -136,9 +123,7 @@ export const AnnotationPoint = ({
           borderWidth: 1,
           borderColor: colorFixed,
           borderRadius: "50%",
-          backgroundColor: isHighlighting
-            ? colorFixed
-            : alpha(colorFixed, 0.25),
+          backgroundColor: isHighlighting ? colorFixed : alpha(colorFixed, 0.25),
           position: "absolute",
           top: point.y * imageSpaceHeightRatio - size / 2,
           left: point.x * imageSpaceWidthRatio - size / 2,
@@ -146,10 +131,7 @@ export const AnnotationPoint = ({
 
           height: size,
           cursor: isEditing ? (isDragging ? "grabbing" : "grab") : "pointer",
-          pointerEvents:
-            isEditing || (editingAnnotationId === null && !isAdding)
-              ? "auto"
-              : "none",
+          pointerEvents: isEditing || (editingAnnotationId === null && !isAdding) ? "auto" : "none",
           ...styleOverrides,
         }}
       />

@@ -1,5 +1,5 @@
-import { NormalizedImageMessage } from "../ImageView/types";
 import { useResizeDetector } from "react-resize-detector";
+import { NormalizedImageMessage } from "../ImageView/types";
 import { useImageCanvas, useImageCanvasArgs } from "../hooks/useImageCanvas";
 import { useImageAnnotationGeometryState } from "../stores/imageAnnotationGeometry";
 import { AnnotationSpace, useGetAnnotationSpaceGeometry } from "./AnnotationSpace";

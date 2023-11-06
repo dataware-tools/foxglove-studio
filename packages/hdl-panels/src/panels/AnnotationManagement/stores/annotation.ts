@@ -13,17 +13,13 @@ export type AnnotationsState = {
   startEditing: (annotationId: string) => void;
   stopEditing: () => void;
   setHighlightingAnnotationId: (annotationId: string | null) => void;
-  addAnnotation: (
-    newAnnotation: Omit<AnnotationForImageOnTimePoint, "id">
-  ) => Annotation;
+  addAnnotation: (newAnnotation: Omit<AnnotationForImageOnTimePoint, "id">) => Annotation;
   getAnnotation: (annotationId: string) => Annotation | null;
   updateAnnotation: (
     annotationId: string,
-    newAnnotation: Partial<AnnotationForImageOnTimePoint>
+    newAnnotation: Partial<AnnotationForImageOnTimePoint>,
   ) => void;
-  updateEditingAnnotation: (
-    newAnnotation: Partial<AnnotationForImageOnTimePoint>
-  ) => void;
+  updateEditingAnnotation: (newAnnotation: Partial<AnnotationForImageOnTimePoint>) => void;
   removeAnnotation: (annotationId: string) => void;
   isNewlyAddingAnnotation: (annotationId: string) => boolean;
   incrementGeneration: (annotationId: string) => void;
@@ -63,8 +59,7 @@ export const useAnnotationsState = create<AnnotationsState>((set, get) => ({
       editingAnnotation: null,
       editingHasUpdate: false,
     }),
-  setHighlightingAnnotationId: (annotationId) =>
-    set({ highlightingAnnotationId: annotationId }),
+  setHighlightingAnnotationId: (annotationId) => set({ highlightingAnnotationId: annotationId }),
   addAnnotation: (newAnnotation) => {
     const newAnnotationObject = {
       id: `newlyAddingAnnotation-${uuidv4()}`,
@@ -80,10 +75,7 @@ export const useAnnotationsState = create<AnnotationsState>((set, get) => ({
     return newAnnotationObject;
   },
   getAnnotation(annotationId) {
-    return (
-      get().annotations?.find((annotation) => annotation.id === annotationId) ??
-      null
-    );
+    return get().annotations?.find((annotation) => annotation.id === annotationId) ?? null;
   },
   updateAnnotation(annotationId, newAnnotation) {
     set((state) => ({
@@ -115,9 +107,7 @@ export const useAnnotationsState = create<AnnotationsState>((set, get) => ({
   },
   removeAnnotation: (annotationId) => {
     set((state) => ({
-      annotations: state.annotations?.filter(
-        (annotation) => annotation.id !== annotationId
-      ),
+      annotations: state.annotations?.filter((annotation) => annotation.id !== annotationId),
     }));
     // Stop editing if the removing annotation is being edited
     if (get().editingAnnotationId === annotationId) {
@@ -142,6 +132,5 @@ export const useAnnotationsState = create<AnnotationsState>((set, get) => ({
   },
 
   triggerShakingAnimation: false,
-  setTriggerShakingAnimation: (triggerShakingAnimation) =>
-    set({ triggerShakingAnimation }),
+  setTriggerShakingAnimation: (triggerShakingAnimation) => set({ triggerShakingAnimation }),
 }));
