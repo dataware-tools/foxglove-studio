@@ -2480,8 +2480,8 @@ __metadata:
   dependencies:
     "@auth0/auth0-react": 1.12.0
     "@foxglove/studio-base": "workspace:*"
-    "@hdwlab/api-annotation-store-client": 1.0.0-alpha4
-    "@hdwlab/api-helper-typescript": 0.1.0-alpha8
+    "@hdwlab/api-annotation-store-client": 1.0.0-alpha5
+    "@hdwlab/api-helper-typescript": 0.1.0-alpha9
     "@react-spring/web": 9.6.1
     "@types/flexsearch": 0.7.3
     "@types/react-highlight-words": ^0
@@ -3040,26 +3040,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hdwlab/api-annotation-store-client@npm:1.0.0-alpha4":
-  version: 1.0.0-alpha4
-  resolution: "@hdwlab/api-annotation-store-client@npm:1.0.0-alpha4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40hdwlab%2Fapi-annotation-store-client%2F1.0.0-alpha4%2F90a632205dcaeb9921dccb00574d7c6a0fdb356c"
+"@hdwlab/api-annotation-store-client@npm:1.0.0-alpha5":
+  version: 1.0.0-alpha5
+  resolution: "@hdwlab/api-annotation-store-client@npm:1.0.0-alpha5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40hdwlab%2Fapi-annotation-store-client%2F1.0.0-alpha5%2F02c2b0231ca6f2deeef24b031fbb51ce3cf101df"
   dependencies:
     form-data: ^4.0.0
     node-fetch: ^2.6.5
-  checksum: b0f353367571000db428243f2860211a50a47f84ec717199f0da41bd6c026cb5f1155abb949e0538524e2597cab9df3296fc7418285dfb8640e78a3b0d6f5565
+  checksum: e5ade17e9852911ed4b914331e9a4d98137954bc4aca2fd5550e4588dd75150bc9366036327f073cd9954563276b9d87667bf0d1de8300ac9f236307f6852bef
   languageName: node
   linkType: hard
 
-"@hdwlab/api-helper-typescript@npm:0.1.0-alpha8":
-  version: 0.1.0-alpha8
-  resolution: "@hdwlab/api-helper-typescript@npm:0.1.0-alpha8::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40hdwlab%2Fapi-helper-typescript%2F0.1.0-alpha8%2F00c7eb2214b1957f39e2c209f4ad9dc984dbf31d"
+"@hdwlab/api-helper-typescript@npm:0.1.0-alpha9":
+  version: 0.1.0-alpha9
+  resolution: "@hdwlab/api-helper-typescript@npm:0.1.0-alpha9::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40hdwlab%2Fapi-helper-typescript%2F0.1.0-alpha9%2F0cf557534d692a592df3c99d1383107c4fcd2ac8"
   dependencies:
     "@auth0/auth0-react": ">=1.4.0 < 2"
     swr: ^1.3.0
   peerDependencies:
     "@auth0/auth0-react": ">=1.4.0 < 2"
     swr: ^1.3.0
-  checksum: ad6e818d5c30bf85a86e95ea109069e27e7f687385f9e45d711cb7ec75d1164146d0f144ebd0ac25e97eb25e1e24479a51851d20fa18e3f726bbf14291524c71
+  checksum: 9d460f8c0bb333684d02c3ed9935b553560f6beff32a1f4269f3f4272fc9dd8f98a839fffa7b68673ca8f5e3f07b11daf24bc7a5b778fe12328a0f783d4b6c17
   languageName: node
   linkType: hard
 
