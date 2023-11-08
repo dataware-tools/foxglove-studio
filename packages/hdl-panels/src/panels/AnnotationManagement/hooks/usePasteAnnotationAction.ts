@@ -16,7 +16,7 @@ export const usePasteAnnotationAction = () => {
   }, [parentPanelContext]);
   const currentCameraTopic = useMemo(
     () => (panelId ? cameraTopics[panelId] : ""),
-    [panelId, cameraTopics]
+    [panelId, cameraTopics],
   );
 
   const startEditing = useAnnotationsState((state) => state.startEditing);
@@ -24,28 +24,22 @@ export const usePasteAnnotationAction = () => {
   const { fetchServerAnnotations } = useServerAnnotations();
   const [isPasting, setIsPasting] = useState(false);
 
-  const currentTimeInNumber = usePlayerState(
-    (state) => state.currentTimeInNumber
-  );
+  const currentTimeInNumber = usePlayerState((state) => state.currentTimeInNumber);
   const curTimestamp = currentTimeInNumber() || 0;
 
   const pasteAnnotationAction = async (
-    position: { x: number; y: number } | undefined = undefined
+    position: { x: number; y: number } | undefined = undefined,
   ) => {
     setIsPasting(true);
 
     const pastedText = await navigator.clipboard.readText();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let pastedObj: any | null = null;
     try {
       pastedObj = JSON.parse(pastedText);
     } catch (e) {
       console.error(e);
-      sendNotification(
-        "Failed to parse pasted text",
-        pastedText,
-        "user",
-        "error"
-      );
+      sendNotification("Failed to parse pasted text", pastedText, "user", "error");
       return;
     }
     if (pastedObj === null) {

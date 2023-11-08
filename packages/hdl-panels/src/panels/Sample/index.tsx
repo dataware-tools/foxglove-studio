@@ -2,9 +2,6 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-import { StrictMode, useMemo } from "react";
-import ReactDOM from "react-dom";
-
 import { useCrash } from "@foxglove/hooks";
 import { PanelExtensionContext } from "@foxglove/studio";
 import { CaptureErrorBoundary } from "@foxglove/studio-base/components/CaptureErrorBoundary";
@@ -12,6 +9,8 @@ import Panel from "@foxglove/studio-base/components/Panel";
 import { PanelExtensionAdapter } from "@foxglove/studio-base/components/PanelExtensionAdapter";
 import ThemeProvider from "@foxglove/studio-base/theme/ThemeProvider";
 import { SaveConfig } from "@foxglove/studio-base/types/panels";
+import { StrictMode, useMemo } from "react";
+import ReactDOM from "react-dom";
 
 function initPanel(crash: ReturnType<typeof useCrash>, context: PanelExtensionContext) {
   // eslint-disable-next-line react/no-deprecated

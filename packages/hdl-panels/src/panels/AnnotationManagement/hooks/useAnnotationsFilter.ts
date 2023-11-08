@@ -19,16 +19,14 @@ export const useAnnotationsFilter = ({
       const isTimePoint = annotation.timestamp_from === annotation.timestamp_to;
       // Return time-point-annotation are within 0.5 seconds of the current time
       const isAnnotationInCurrentTimeNeighbor =
-        isTimePoint &&
-        Math.abs(annotation.timestamp_from - currentTimeInNumber) < 0.5;
+        isTimePoint && Math.abs(annotation.timestamp_from - currentTimeInNumber) < 0.5;
       const isCurrentTimeWithinAnnotationTimeSpan =
         !isTimePoint &&
         annotation.timestamp_from < currentTimeInNumber &&
         currentTimeInNumber < annotation.timestamp_to;
       return (
         annotation.targetTopic === topicName &&
-        (isAnnotationInCurrentTimeNeighbor ||
-          isCurrentTimeWithinAnnotationTimeSpan) &&
+        (isAnnotationInCurrentTimeNeighbor || isCurrentTimeWithinAnnotationTimeSpan) &&
         isSearched
       );
     });

@@ -1,6 +1,6 @@
+import { useCallback, useEffect, useRef } from "react";
 import { renderImage } from "../ImageView/lib/renderImage";
 import { NormalizedImageMessage } from "../ImageView/types";
-import { useCallback, useEffect, useRef } from "react";
 import { useImageAnnotationGeometryState } from "../stores/imageAnnotationGeometry";
 
 export type useImageCanvasArgs = {

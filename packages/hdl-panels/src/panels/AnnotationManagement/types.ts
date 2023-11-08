@@ -25,10 +25,7 @@ export class Point {
 
   // If the point is such close to the other point as to be considered the same point
   samePointTo(other: Point, threshold = 8) {
-    return (
-      Math.abs(this.x - other.x) < threshold &&
-      Math.abs(this.y - other.y) < threshold
-    );
+    return Math.abs(this.x - other.x) < threshold && Math.abs(this.y - other.y) < threshold;
   }
 
   // Calculate the middle point between this point and the other point
@@ -111,7 +108,5 @@ export type InterpolatedAnnotation = {
   height?: number;
   color?: string;
   frame_id: string;
-  interpolateCoordinate: (
-    currentTimeInNumber: number
-  ) => interpolatedCoordinate | undefined;
+  interpolateCoordinate: (currentTimeInNumber: number) => interpolatedCoordinate | undefined;
 } & Omit<BaseAnnotation, "generation">;

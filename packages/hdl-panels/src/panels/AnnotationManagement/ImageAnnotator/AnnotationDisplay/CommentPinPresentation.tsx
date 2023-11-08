@@ -1,13 +1,4 @@
-import {
-  Box,
-  Paper,
-  Skeleton,
-  Stack,
-  Tooltip,
-  Typography,
-  alpha,
-  useTheme,
-} from "@mui/material";
+import { Box, Paper, Skeleton, Stack, Tooltip, Typography, alpha, useTheme } from "@mui/material";
 import React from "react";
 export type CommentPinPresentationProps = {
   left?: number;
@@ -16,16 +7,11 @@ export type CommentPinPresentationProps = {
   comment: string;
   open?: boolean;
   offset?: number;
-  placement?:
-    | "left-top"
-    | "left-bottom"
-    | "right-top"
-    | "right-bottom"
-    | undefined;
+  placement?: "left-top" | "left-bottom" | "right-top" | "right-bottom" | undefined;
   isOnTime?: boolean;
   loading?: boolean;
   onMouseOver?: React.MouseEventHandler<HTMLDivElement>;
-  onMouseOut?: React.MouseEventHandler<HTMLDivElement> ;
+  onMouseOut?: React.MouseEventHandler<HTMLDivElement>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 };
 
@@ -47,14 +33,7 @@ export const CommentPinPresentation = ({
   const iconSize = theme.spacing(3);
   const objRef = React.useRef<HTMLDivElement>(null);
   return (
-    <Box
-      left={left}
-      top={top}
-      position="absolute"
-      width="1px"
-      height="1px"
-      overflow="visible"
-    >
+    <Box left={left} top={top} position="absolute" width="1px" height="1px" overflow="visible">
       <Tooltip
         title={isOnTime ? "Open comment" : "Seek to comment"}
         followCursor
@@ -69,27 +48,14 @@ export const CommentPinPresentation = ({
           elevation={isOnTime ? 4 : 2}
           sx={{
             backdropFilter: "blur(10px)",
-            backgroundColor: (theme) =>
-              alpha(theme.palette.background.paper, 0.5),
+            backgroundColor: (theme) => alpha(theme.palette.background.paper, 0.5),
             cursor: onClick ? "pointer" : "default",
             position: "absolute",
             p: open ? 1 : 0.5,
-            top:
-              placement === "left-top" || placement === "right-top"
-                ? "auto"
-                : offset,
-            left:
-              placement === "left-top" || placement === "left-bottom"
-                ? "auto"
-                : offset,
-            right:
-              placement === "right-top" || placement === "right-bottom"
-                ? "auto"
-                : offset,
-            bottom:
-              placement === "left-bottom" || placement === "right-bottom"
-                ? "auto"
-                : offset,
+            top: placement === "left-top" || placement === "right-top" ? "auto" : offset,
+            left: placement === "left-top" || placement === "left-bottom" ? "auto" : offset,
+            right: placement === "right-top" || placement === "right-bottom" ? "auto" : offset,
+            bottom: placement === "left-bottom" || placement === "right-bottom" ? "auto" : offset,
             width: (theme) => theme.spacing(open ? 30 : 4),
             height: (theme) => (open ? "auto" : theme.spacing(4)),
             overflow: "auto",
@@ -125,9 +91,7 @@ export const CommentPinPresentation = ({
             ) : (
               <Box
                 bgcolor={(theme) =>
-                  isOnTime
-                    ? theme.palette.primary.dark
-                    : theme.palette.grey[500]
+                  isOnTime ? theme.palette.primary.dark : theme.palette.grey[500]
                 }
                 borderRadius={(theme) => Number(theme.shape.borderRadius) * 8}
                 width={iconSize}
@@ -139,9 +103,7 @@ export const CommentPinPresentation = ({
               >
                 <Typography
                   fontWeight={isOnTime ? "bold" : "normal"}
-                  color={(theme) =>
-                    theme.palette.getContrastText(theme.palette.primary.main)
-                  }
+                  color={(theme) => theme.palette.getContrastText(theme.palette.primary.main)}
                 >
                   {index}
                 </Typography>

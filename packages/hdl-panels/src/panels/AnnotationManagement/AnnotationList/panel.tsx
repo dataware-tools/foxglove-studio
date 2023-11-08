@@ -7,7 +7,7 @@ import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provid
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
 import { AnnotationList } from "./content";
 
-type AnnotationListPanelConfig = {};
+type AnnotationListPanelConfig = Record<string, never>;
 
 type AnnotationListPanelProps = {
   config: AnnotationListPanelConfig;

@@ -3,9 +3,7 @@ import { Point } from "../types";
 
 export const usePointerDrag = () => {
   const [isDragging, setIsDragging] = useState(false);
-  const [clickStartPagePoint, setClickStartPagePoint] = useState<Point | null>(
-    null
-  );
+  const [clickStartPagePoint, setClickStartPagePoint] = useState<Point | null>(null);
   const [difference, setDifference] = useState<Point | null>(null);
 
   const handleDown = (e: React.PointerEvent<HTMLElement>) => {

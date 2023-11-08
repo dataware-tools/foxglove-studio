@@ -27,34 +27,24 @@ export type CommonAnnotationProps = {
 export const calcIsOnTimestamp = (
   curTimestamp: number,
   timestampFrom?: number,
-  timestampTo?: number
+  timestampTo?: number,
 ) => {
   const isTimestampValid = timestampFrom && timestampTo;
   const isTimeSpan = timestampFrom !== timestampTo;
   const isOnTimestamp =
     isTimestampValid &&
-    ((isTimeSpan &&
-      curTimestamp >= timestampFrom &&
-      curTimestamp <= timestampTo) ||
-      (!isTimeSpan &&
-        curTimestamp - timestampFrom < 0.1 &&
-        curTimestamp - timestampFrom > -0.1));
+    ((isTimeSpan && curTimestamp >= timestampFrom && curTimestamp <= timestampTo) ||
+      (!isTimeSpan && curTimestamp - timestampFrom < 0.1 && curTimestamp - timestampFrom > -0.1));
   return Boolean(isOnTimestamp);
 };
 
-export const useIsOnTimestamp = ({
-  annotation,
-}: {
-  annotation: Annotation | null;
-}) => {
-  const currentTimeInNumber = usePlayerState(
-    (state) => state.currentTimeInNumber
-  );
+export const useIsOnTimestamp = ({ annotation }: { annotation: Annotation | null }) => {
+  const currentTimeInNumber = usePlayerState((state) => state.currentTimeInNumber);
   const curTimestamp = currentTimeInNumber() || 0;
   const isOnTimestamp = calcIsOnTimestamp(
     curTimestamp,
     annotation?.timestamp_from,
-    annotation?.timestamp_to
+    annotation?.timestamp_to,
   );
   return isOnTimestamp;
 };
@@ -79,11 +69,8 @@ export const useAnnotationStyle = ({
 
   const borderWidthFixed = useMemo(
     () => (isOnTimestamp ? borderWidth * 2 : borderWidth),
-    [isOnTimestamp, borderWidth]
+    [isOnTimestamp, borderWidth],
   );
-  const outlineWidthFixed = useMemo(
-    () => (isOnTimestamp ? 1 : 0),
-    [isOnTimestamp]
-  );
+  const outlineWidthFixed = useMemo(() => (isOnTimestamp ? 1 : 0), [isOnTimestamp]);
   return { colorFixed, borderWidthFixed, outlineWidthFixed };
 };
