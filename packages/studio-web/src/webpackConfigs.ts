@@ -7,7 +7,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
-import { Configuration, WebpackPluginInstance } from "webpack";
+import { Configuration, EnvironmentPlugin, WebpackPluginInstance } from "webpack";
 import type {
   ConnectHistoryApiFallbackOptions,
   Configuration as WebpackDevServerConfiguration,
@@ -59,6 +59,11 @@ export const devServerConfig = (params: ConfigParams): WebpackConfiguration => (
     //  "[WDS] Disconnected!"
     // Since we are only connecting to localhost, DNS rebinding attacks are not a concern during dev
     allowedHosts: "all",
+    client: {
+      webSocketURL: process.env.USE_LOCAL_DATAWARE_TOOLS
+        ? "wss://dataware-tools.local/scene-viewer/ws"
+        : "auto://0.0.0.0:0/ws",
+    },
   },
 
   plugins: [new CleanWebpackPlugin()],
@@ -105,6 +110,12 @@ export const mainConfig =
       plugins: [
         ...plugins,
         ...(appWebpackConfig.plugins ?? []),
+        new EnvironmentPlugin({
+          DATAWARE_TOOLS_BACKEND_API_PREFIX: "/api/latest",
+          DATAWARE_TOOLS_AUTH_CONFIG_DOMAIN: "dataware-tools.us.auth0.com",
+          DATAWARE_TOOLS_AUTH_CONFIG_CLIENT_ID: "ETb1RhJEbtXlFgWtaHzl5kPCkaYqhTVl",
+          DATAWARE_TOOLS_AUTH_CONFIG_API_URL: "https://demo.dataware-tools.com/",
+        }),
         new CopyPlugin({
           patterns: [{ from: path.resolve(__dirname, "..", "public") }],
         }),

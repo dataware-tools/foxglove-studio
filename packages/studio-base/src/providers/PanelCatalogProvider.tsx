@@ -5,6 +5,7 @@
 import { PropsWithChildren, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { getHDLDeveloped } from "@foxglove/hdl-panels";
 import { AppSetting } from "@foxglove/studio-base/AppSetting";
 import Panel from "@foxglove/studio-base/components/Panel";
 import { PanelExtensionAdapter } from "@foxglove/studio-base/components/PanelExtensionAdapter";
@@ -59,15 +60,21 @@ export default function PanelCatalogProvider(props: PropsWithChildren): React.Re
     return {
       builtin: panels.getBuiltin(t),
       debug: panels.getDebug(t),
+      hdlDeveloped: getHDLDeveloped(),
     };
   }, [t]);
 
   const allPanels = useMemo(() => {
-    return [...allPanelsInfo.builtin, ...allPanelsInfo.debug, ...wrappedExtensionPanels];
+    return [
+      ...allPanelsInfo.builtin,
+      ...allPanelsInfo.debug,
+      ...allPanelsInfo.hdlDeveloped,
+      ...wrappedExtensionPanels,
+    ];
   }, [wrappedExtensionPanels, allPanelsInfo]);
 
   const visiblePanels = useMemo(() => {
-    const panelList = [...allPanelsInfo.builtin];
+    const panelList = [...allPanelsInfo.builtin, ...allPanelsInfo.hdlDeveloped];
     if (showDebugPanels) {
       panelList.push(...allPanelsInfo.debug);
     }

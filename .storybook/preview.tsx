@@ -167,6 +167,7 @@ function StudioContextProviders({
 
 function WithContextProviders(Child: Story, ctx: StoryContext): JSX.Element {
   if (
+    (ctx.parameters.fileName as string).includes("/packages/hdl-panels/") ||
     (ctx.parameters.fileName as string).includes("/packages/studio-base/") ||
     (ctx.parameters.fileName as string).includes("/packages/theme/")
   ) {

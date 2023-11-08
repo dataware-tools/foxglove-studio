@@ -28,19 +28,19 @@ jobs:
               yarn run lint:ci
               yarn run lint:unused-exports
               yarn run lint:dependencies
-          - name: packages
-            command: yarn run build:packages
+          # - name: packages
+          #   command: yarn run build:packages
           - name: web
             command: yarn run web:build:prod
           - name: build benchmark
             command: yarn run benchmark:build:prod
           - name: test
             command: yarn run test --maxWorkers=100%
-        include:
-          - os: windows-2019
-            config:
-              name: packages
-              command: echo complete
+        # include:
+        #   - os: windows-2019
+        #     config:
+        #       name: packages
+        #       command: echo complete
 
     name: ${{ matrix.config.name }} (${{ matrix.os }})
 
@@ -62,6 +62,26 @@ jobs:
             **/node_modules
           key: v5-${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: v5-${{ runner.os }}-yarn-
+
+      - run: |
+          cat <<EOF > ~/.yarnrc.yml
+          npmScopes:
+            dataware-tools:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+            hdwlab:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+
+          npmRegistries:
+            //npm.pkg.github.com:
+              npmAlwaysAuth: true
+              npmAuthToken: ${NPM_TOKEN}
+          EOF
+          cat ~/.yarnrc.yml
+        env:
+          NPM_REGISTRY: https://npm.pkg.github.com
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: yarn install --immutable
 
@@ -90,6 +110,26 @@ jobs:
             **/node_modules
           key: v5-${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: v5-${{ runner.os }}-yarn-
+
+      - run: |
+          cat <<EOF > ~/.yarnrc.yml
+          npmScopes:
+            dataware-tools:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+            hdwlab:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+
+          npmRegistries:
+            //npm.pkg.github.com:
+              npmAlwaysAuth: true
+              npmAuthToken: ${NPM_TOKEN}
+          EOF
+          cat ~/.yarnrc.yml
+        env:
+          NPM_REGISTRY: https://npm.pkg.github.com
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: yarn install --immutable
 
@@ -133,6 +173,26 @@ jobs:
             **/node_modules
           key: v5-${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: v5-${{ runner.os }}-yarn-
+
+      - run: |
+          cat <<EOF > ~/.yarnrc.yml
+          npmScopes:
+            dataware-tools:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+            hdwlab:
+              npmAlwaysAuth: true
+              npmRegistryServer: ${NPM_REGISTRY}
+
+          npmRegistries:
+            //npm.pkg.github.com:
+              npmAlwaysAuth: true
+              npmAuthToken: ${NPM_TOKEN}
+          EOF
+          cat ~/.yarnrc.yml
+        env:
+          NPM_REGISTRY: https://npm.pkg.github.com
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: yarn install --immutable
 
