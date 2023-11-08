@@ -10,9 +10,6 @@ import {
   SettingsTreeFields,
   SettingsTreeNode,
 } from "@foxglove/studio-base/components/SettingsTreeEditor/types";
-import FilteredPointLayer, {
-  POINT_MARKER_RADIUS,
-} from "@foxglove/studio-base/panels/HDLMap/FilteredPointLayer";
 import { Topic } from "@foxglove/studio-base/players/types";
 import { FoxgloveMessages } from "@foxglove/studio-base/types/FoxgloveMessages";
 import { darkColor, lightColor, lineColors } from "@foxglove/studio-base/util/plotColors";
@@ -29,8 +26,9 @@ import {
 import { difference, minBy, partition, transform, union } from "lodash";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
-import { useAnnotationsState } from "scene-viewer-panels";
+import { useAnnotationsState } from "src/panels/AnnotationManagement/stores/annotation";
 import { useDebouncedCallback } from "use-debounce";
+import FilteredPointLayer, { POINT_MARKER_RADIUS } from "./FilteredPointLayer";
 
 import { hasFix } from "./support";
 import { MapPanelMessage, Point } from "./types";
@@ -126,7 +124,7 @@ function topicMessageType(topic: Topic) {
 function MapPanel(props: MapPanelProps): JSX.Element {
   const { context } = props;
 
-  const mapContainerRef = useRef<HTMLDivElement>(ReactNull);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   const [config, setConfig] = useState<Config>(() => {
     const initialConfig = props.context.initialState as Partial<Config>;
