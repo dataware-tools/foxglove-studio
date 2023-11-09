@@ -12,9 +12,6 @@ import {
   Topic,
 } from "@foxglove/studio";
 import Stack from "@foxglove/studio-base/components/Stack";
-import FilteredPointLayer, {
-  POINT_MARKER_RADIUS,
-} from "@foxglove/studio-base/panels/Map/FilteredPointLayer";
 import { darkColor, lightColor, lineColors } from "@foxglove/studio-base/util/plotColors";
 import { Feature } from "geojson";
 import { produce } from "immer";
@@ -33,6 +30,8 @@ import memoizeWeak from "memoize-weak";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
 import { useDebouncedCallback } from "use-debounce";
+import { useAnnotationsState } from "../AnnotationManagement/stores/annotation";
+import FilteredPointLayer, { POINT_MARKER_RADIUS } from "./FilteredPointLayer";
 
 import { buildSettingsTree, Config, validateCustomUrl } from "./config";
 import {
@@ -493,6 +492,7 @@ function MapPanel(props: MapPanelProps): JSX.Element {
     });
   }, [allNavMessages, currentNavMessages, config]);
 
+  const filteredAnnotation = useAnnotationsState((state) => state.filteredAnnotations);
   useEffect(() => {
     if (!currentMap) {
       return;
@@ -510,6 +510,7 @@ function MapPanel(props: MapPanelProps): JSX.Element {
         hoverColor: darkColor(topicLayer.baseColor),
         onHover,
         onClick,
+        annotations: filteredAnnotation,
       });
 
       topicLayer.allFrames.addLayer(pointLayer);
@@ -532,6 +533,7 @@ function MapPanel(props: MapPanelProps): JSX.Element {
     onClick,
     onHover,
     topicLayers,
+    filteredAnnotation,
   ]);
 
   // create a filtered marker layer for the current nav messages

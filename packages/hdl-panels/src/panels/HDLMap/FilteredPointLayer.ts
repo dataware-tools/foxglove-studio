@@ -2,13 +2,23 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 import { MessageEvent } from "@foxglove/studio-base/players/types";
-import { Map, LatLngBounds, FeatureGroup, CircleMarker, PathOptions, Ellipse } from "leaflet";
+import {
+  Map,
+  LatLngBounds,
+  FeatureGroup,
+  CircleMarker,
+  PathOptions,
+  Ellipse,
+  tooltip,
+  latLng,
+} from "leaflet";
 import "leaflet-ellipse";
 
+import { Annotation } from "../AnnotationManagement/types";
 import { getAccuracy } from "./getAccuracy";
 import { NavSatFixMsg } from "./types";
 
-export const POINT_MARKER_RADIUS = 3;
+export const POINT_MARKER_RADIUS = 5;
 
 type Args = {
   map: Map;
@@ -19,6 +29,7 @@ type Args = {
   navSatMessageEvents: readonly MessageEvent<NavSatFixMsg>[];
   onHover?: (event: MessageEvent<NavSatFixMsg> | undefined) => void;
   onClick?: (event: MessageEvent<NavSatFixMsg>) => void;
+  annotations?: Annotation[];
 };
 
 class PointMarker extends CircleMarker {
@@ -43,6 +54,8 @@ function FilteredPointLayer(args: Args): FeatureGroup {
   // track which pixels have been used
   const sparse2d: (boolean | undefined)[][] = [];
 
+  const usedIndexes: number[] = [];
+
   for (const messageEvent of points) {
     const lat = messageEvent.message.latitude;
     const lon = messageEvent.message.longitude;
@@ -65,6 +78,35 @@ function FilteredPointLayer(args: Args): FeatureGroup {
     const marker = new PointMarker([lat, lon], { ...defaultStyle, radius: POINT_MARKER_RADIUS });
     marker.messageEvent = messageEvent;
     marker.addTo(markersLayer);
+
+    // Add the annotation tooltip
+    if (args.annotations) {
+      const annotationIndex = args.annotations.findIndex((annotation) => {
+        if (
+          annotation.type === "arbitrary" &&
+          // @ts-expect-error message may have header
+          annotation.timestamp_from < messageEvent.message.header?.stamp?.sec &&
+          // @ts-expect-error message may have header
+          messageEvent.message.header?.stamp?.sec < annotation.timestamp_to
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (annotationIndex !== -1) {
+        marker.bindTooltip(String(args.annotations[annotationIndex]?.comment), {
+          direction: "top",
+        });
+        if (!usedIndexes.includes(annotationIndex)) {
+          tooltip({ permanent: true, direction: "top" })
+            .setLatLng(latLng(lat, lon))
+            .setContent(String(args.annotations[annotationIndex]?.index))
+            .addTo(markersLayer);
+          usedIndexes.push(annotationIndex);
+        }
+      }
+    }
 
     if (args.showAccuracy === true) {
       const accuracy = getAccuracy(messageEvent.message);
