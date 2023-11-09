@@ -1,0 +1,19 @@
+{
+  "testMatch": [
+    "<rootDir>/src/**/*.test.ts(x)?"
+  ],
+  "setupFiles": [
+    "<rootDir>/test/setup.ts"
+  ],
+  "moduleNameMapper": {
+    "@foxglove/studio-base/(.*)": "<rootDir>/src/$1"
+  },
+  "transform": {
+    "\\.[jt]sx?$": [
+      "babel-jest",
+      {
+        "rootMode": "upward"
+      }
+    ]
+  }
+}
