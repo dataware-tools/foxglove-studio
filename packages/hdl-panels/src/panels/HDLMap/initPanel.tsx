@@ -2,16 +2,15 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
+import { useCrash } from "@foxglove/hooks";
+import { PanelExtensionContext } from "@foxglove/studio";
+import { CaptureErrorBoundary } from "@foxglove/studio-base/components/CaptureErrorBoundary";
 import L from "leaflet";
 import LeafletRetinaIconUrl from "leaflet/dist/images/marker-icon-2x.png";
 import LeafletIconUrl from "leaflet/dist/images/marker-icon.png";
 import LeafletShadowIconUrl from "leaflet/dist/images/marker-shadow.png";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom";
-
-import { useCrash } from "@foxglove/hooks";
-import { PanelExtensionContext } from "@foxglove/studio";
-import { CaptureErrorBoundary } from "@foxglove/studio-base/components/CaptureErrorBoundary";
 
 import MapPanel from "./MapPanel";
 

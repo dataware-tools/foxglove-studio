@@ -2,6 +2,20 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
+import { filterMap } from "@foxglove/den/collection";
+import { toSec } from "@foxglove/rostime";
+import {
+  MessageEvent,
+  PanelExtensionContext,
+  SettingsTreeAction,
+  Subscription,
+  Topic,
+} from "@foxglove/studio";
+import Stack from "@foxglove/studio-base/components/Stack";
+import FilteredPointLayer, {
+  POINT_MARKER_RADIUS,
+} from "@foxglove/studio-base/panels/Map/FilteredPointLayer";
+import { darkColor, lightColor, lineColors } from "@foxglove/studio-base/util/plotColors";
 import { Feature } from "geojson";
 import { produce } from "immer";
 import {
@@ -19,21 +33,6 @@ import memoizeWeak from "memoize-weak";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
 import { useDebouncedCallback } from "use-debounce";
-
-import { filterMap } from "@foxglove/den/collection";
-import { toSec } from "@foxglove/rostime";
-import {
-  MessageEvent,
-  PanelExtensionContext,
-  SettingsTreeAction,
-  Subscription,
-  Topic,
-} from "@foxglove/studio";
-import Stack from "@foxglove/studio-base/components/Stack";
-import FilteredPointLayer, {
-  POINT_MARKER_RADIUS,
-} from "@foxglove/studio-base/panels/Map/FilteredPointLayer";
-import { darkColor, lightColor, lineColors } from "@foxglove/studio-base/util/plotColors";
 
 import { buildSettingsTree, Config, validateCustomUrl } from "./config";
 import {
