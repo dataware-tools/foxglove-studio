@@ -2,11 +2,8 @@
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-import { getAccuracy } from "@foxglove/studio-base/panels/Map/getAccuracy";
-import {
-  NavSatFixMsg,
-  NavSatFixPositionCovarianceType,
-} from "@foxglove/studio-base/panels/Map/types";
+import { getAccuracy } from "./getAccuracy";
+import { NavSatFixMsg, NavSatFixPositionCovarianceType } from "./types";
 
 describe("getAccuracy", () => {
   const position = {
