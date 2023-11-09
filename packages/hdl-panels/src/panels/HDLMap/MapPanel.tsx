@@ -56,7 +56,7 @@ const memoizedFilterMessages = memoizeWeak((msgs: readonly MessageEvent[]) =>
 function MapPanel(props: MapPanelProps): JSX.Element {
   const { context } = props;
 
-  const mapContainerRef = useRef<HTMLDivElement>(ReactNull);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   const [config, setConfig] = useState<Config>(() => {
     const initialConfig = props.context.initialState as Partial<Config>;
@@ -341,7 +341,7 @@ function MapPanel(props: MapPanelProps): JSX.Element {
     }
 
     return () => {
-      for (const [_topic, featureGroups] of topicLayerEntries) {
+      for (const [, featureGroups] of topicLayerEntries) {
         currentMap.removeLayer(featureGroups.topicGroup);
       }
     };
