@@ -74,8 +74,8 @@ function FilteredPointLayer(args: Args): FeatureGroup {
       const positionIndicesForAnnotation =
         positionIndicesInAnnotation.length > 0
           ? positionIndicesInAnnotation
-          : // TODO(yusukefs): Limit the margin to a reasonable value
-            [getLastIndexBeforeTime(timesAtPositions, annotation.timestamp_from)];
+          : // Limit the search to 1 second before the annotation
+            [getLastIndexBeforeTime(timesAtPositions, annotation.timestamp_from, 1)];
 
       // TODO(yusukefs): Bind the annotation index to the point index
 

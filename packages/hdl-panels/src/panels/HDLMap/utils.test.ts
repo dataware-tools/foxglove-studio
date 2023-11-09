@@ -15,5 +15,16 @@ describe("utils", () => {
       expect(r2).toBeUndefined();
       expect(r3).toBe(8);
     });
+
+    it("returns the last index before specified time with margin", () => {
+      const timeArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      const r1 = getLastIndexBeforeTime(timeArray, 3.5, 1);
+      const r2 = getLastIndexBeforeTime(timeArray, 3.5, 0.1);
+      const r3 = getLastIndexBeforeTime(timeArray, 3.5, 100);
+      expect(r1).toBe(2);
+      expect(r2).toBeUndefined();
+      expect(r3).toBe(2);
+    });
   });
 });

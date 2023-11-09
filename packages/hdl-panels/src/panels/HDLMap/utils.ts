@@ -16,7 +16,15 @@ function findLastIndex<T>(
 export function getLastIndexBeforeTime(
   timeArray: number[],
   timestampFrom: number,
+  margin?: number,
 ): number | undefined {
   const lastIndex = findLastIndex(timeArray, (time) => time < timestampFrom);
-  return lastIndex === -1 ? undefined : lastIndex;
+  const lastIndexFixed = lastIndex === -1 ? undefined : lastIndex;
+  if (margin !== undefined && lastIndexFixed !== undefined) {
+    const lastPointTime = timeArray[lastIndexFixed];
+    if (lastPointTime !== undefined && lastPointTime + margin < timestampFrom) {
+      return undefined;
+    }
+  }
+  return lastIndexFixed;
 }
