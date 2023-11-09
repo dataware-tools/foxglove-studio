@@ -110,7 +110,7 @@ const Wrapper = (StoryComponent: StoryFn, { parameters }: StoryContext): JSX.Ele
 };
 
 export default {
-  title: "panels/Map",
+  title: "HDLPanels/HDLMap",
   component: MapPanel,
 };
 
