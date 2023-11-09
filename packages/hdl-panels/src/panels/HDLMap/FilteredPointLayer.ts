@@ -17,6 +17,7 @@ import "leaflet-ellipse";
 import { Annotation } from "../AnnotationManagement/types";
 import { getAccuracy } from "./getAccuracy";
 import { NavSatFixMsg } from "./types";
+import { getLastIndexBeforeTime } from "./utils";
 
 export const POINT_MARKER_RADIUS = 5;
 
@@ -40,7 +41,7 @@ class PointMarker extends CircleMarker {
  * Create a leaflet LayerGroup with filtered points
  */
 function FilteredPointLayer(args: Args): FeatureGroup {
-  const { navSatMessageEvents: points, bounds, map } = args;
+  const { navSatMessageEvents: points, bounds, map, annotations } = args;
   const defaultStyle: PathOptions = {
     stroke: false,
     color: args.color,
@@ -54,7 +55,46 @@ function FilteredPointLayer(args: Args): FeatureGroup {
   // track which pixels have been used
   const sparse2d: (boolean | undefined)[][] = [];
 
-  const usedIndexes: number[] = [];
+  // Derive the times of the points
+  const timesAtPositions: number[] = points.map((point) => {
+    // @ts-expect-error message may have header
+    return point.message.header?.stamp?.sec + point.message.header?.stamp?.nsec / 1e9;
+  });
+  // Add the annotation tooltips
+  annotations &&
+    annotations.forEach((annotation) => {
+      // Get indices of points that are in the annotation time range
+      const positionIndicesInAnnotation = timesAtPositions
+        .map((time, index) =>
+          annotation.timestamp_from < time && time < annotation.timestamp_to ? index : undefined,
+        )
+        .filter((index) => index !== undefined);
+
+      // If there are no points in the annotation time range, use the latest point before the annotation.
+      const positionIndicesForAnnotation =
+        positionIndicesInAnnotation.length > 0
+          ? positionIndicesInAnnotation
+          : // TODO(yusukefs): Limit the margin to a reasonable value
+            [getLastIndexBeforeTime(timesAtPositions, annotation.timestamp_from)];
+
+      // TODO(yusukefs): Bind the annotation index to the point index
+
+      // Add the permanent tooltip to the point
+      const firstPointIndex = positionIndicesForAnnotation[0];
+      if (firstPointIndex === undefined) {
+        return;
+      }
+      const firstPoint = points[firstPointIndex];
+      if (firstPoint === undefined) {
+        return;
+      }
+      const lat = firstPoint.message.latitude;
+      const lon = firstPoint.message.longitude;
+      tooltip({ permanent: true, direction: "top" })
+        .setLatLng(latLng(lat, lon))
+        .setContent(String(annotation.index))
+        .addTo(markersLayer);
+    });
 
   for (const messageEvent of points) {
     const lat = messageEvent.message.latitude;
@@ -79,34 +119,32 @@ function FilteredPointLayer(args: Args): FeatureGroup {
     marker.messageEvent = messageEvent;
     marker.addTo(markersLayer);
 
+    // TODO(yusukefs): Add the annotation tooltip if the point is in the annotation time range
     // Add the annotation tooltip
-    if (args.annotations) {
-      const annotationIndex = args.annotations.findIndex((annotation) => {
-        if (
-          annotation.type === "arbitrary" &&
-          // @ts-expect-error message may have header
-          annotation.timestamp_from < messageEvent.message.header?.stamp?.sec &&
-          // @ts-expect-error message may have header
-          messageEvent.message.header?.stamp?.sec < annotation.timestamp_to
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-      if (annotationIndex !== -1) {
-        marker.bindTooltip(String(args.annotations[annotationIndex]?.comment), {
-          direction: "top",
-        });
-        if (!usedIndexes.includes(annotationIndex)) {
-          tooltip({ permanent: true, direction: "top" })
-            .setLatLng(latLng(lat, lon))
-            .setContent(String(args.annotations[annotationIndex]?.index))
-            .addTo(markersLayer);
-          usedIndexes.push(annotationIndex);
-        }
-      }
-    }
+    // if (args.annotations) {
+    //   const annotationIndex = args.annotations.findIndex((annotation) => {
+    //     // @ts-expect-error message may have header
+    //     const messageTime = messageEvent.message.header?.stamp?.sec;
+    //     console.log(messageTime, annotation.timestamp_from, annotation.timestamp_to);
+    //     if (annotation.timestamp_from < messageTime && messageTime < annotation.timestamp_to) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    //   if (annotationIndex !== -1) {
+    //     marker.bindTooltip(String(args.annotations[annotationIndex]?.comment), {
+    //       direction: "top",
+    //     });
+    //     if (!usedIndexes.includes(annotationIndex)) {
+    //       tooltip({ permanent: true, direction: "top" })
+    //         .setLatLng(latLng(lat, lon))
+    //         .setContent(String(args.annotations[annotationIndex]?.index))
+    //         .addTo(markersLayer);
+    //       usedIndexes.push(annotationIndex);
+    //     }
+    //   }
+    // }
 
     if (args.showAccuracy === true) {
       const accuracy = getAccuracy(messageEvent.message);
