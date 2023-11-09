@@ -13,7 +13,7 @@ import {
   tooltip,
 } from "leaflet";
 import { eigs } from "mathjs";
-import { Annotation } from "src/panels/AnnotationManagement/types";
+import { Annotation } from "../AnnotationManagement/types";
 
 import { NavSatFixMsg, NavSatFixPositionCovarianceType } from "./types";
 

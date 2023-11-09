@@ -26,8 +26,8 @@ import {
 import { difference, minBy, partition, transform, union } from "lodash";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useResizeDetector } from "react-resize-detector";
-import { useAnnotationsState } from "src/panels/AnnotationManagement/stores/annotation";
 import { useDebouncedCallback } from "use-debounce";
+import { useAnnotationsState } from "../AnnotationManagement/stores/annotation";
 import FilteredPointLayer, { POINT_MARKER_RADIUS } from "./FilteredPointLayer";
 
 import { hasFix } from "./support";
@@ -106,15 +106,15 @@ function buildSettingsTree(config: Config, eligibleTopics: string[]): SettingsTr
 
 function topicMessageType(topic: Topic) {
   if (
-    topic.datatype === "sensor_msgs/NavSatFix" ||
-    topic.datatype === "sensor_msgs/msg/NavSatFix" ||
-    topic.datatype === "ros.sensor_msgs.NavSatFix" ||
-    topic.datatype === "foxglove.LocationFix"
+    topic.schemaName === "sensor_msgs/NavSatFix" ||
+    topic.schemaName === "sensor_msgs/msg/NavSatFix" ||
+    topic.schemaName === "ros.sensor_msgs.NavSatFix" ||
+    topic.schemaName === "foxglove.LocationFix"
   ) {
     return "navsat";
   }
 
-  if (topic.datatype === "foxglove.GeoJSON") {
+  if (topic.schemaName === "foxglove.GeoJSON") {
     return "geojson";
   }
 
@@ -325,7 +325,7 @@ function MapPanel(props: MapPanelProps): JSX.Element {
     }
 
     return () => {
-      for (const [_topic, featureGroups] of topicLayerEntries) {
+      for (const [, featureGroups] of topicLayerEntries) {
         currentMap.removeLayer(featureGroups.topicGroup);
       }
     };

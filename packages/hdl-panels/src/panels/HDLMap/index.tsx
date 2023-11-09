@@ -4,7 +4,7 @@
 
 import { PanelExtensionContext } from "@foxglove/studio";
 import Panel from "@foxglove/studio-base/components/Panel";
-import PanelExtensionAdapter from "@foxglove/studio-base/components/PanelExtensionAdapter";
+import { PanelExtensionAdapter } from "@foxglove/studio-base/components/PanelExtensionAdapter";
 import ThemeProvider from "@foxglove/studio-base/theme/ThemeProvider";
 import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import L from "leaflet";
@@ -15,7 +15,6 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom";
 
 import MapPanel from "./MapPanel";
-import helpContent from "./index.help.md";
 
 import "leaflet/dist/leaflet.css";
 
@@ -53,7 +52,6 @@ function MapPanelAdapter(props: Props) {
     <PanelExtensionAdapter
       config={props.config}
       saveConfig={props.saveConfig}
-      help={helpContent}
       initPanel={initPanel}
     />
   );
