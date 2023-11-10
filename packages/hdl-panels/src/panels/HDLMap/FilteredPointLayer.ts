@@ -64,7 +64,7 @@ function FilteredPointLayer(args: Args): FeatureGroup {
   const pointToAnnotationMap: Record<number, number> = {};
   // Add the annotation tooltips
   annotations &&
-    annotations.forEach((annotation, index) => {
+    annotations.forEach((annotation, annotationIndex) => {
       // Get indices of points that are in the annotation time range
       const positionIndicesInAnnotation = timesAtPositions
         .map((time, index) =>
@@ -81,7 +81,7 @@ function FilteredPointLayer(args: Args): FeatureGroup {
 
       // Bind the annotation index to the point index
       positionIndicesForAnnotation.forEach((pointIndex) => {
-        pointIndex !== undefined && (pointToAnnotationMap[pointIndex] = index);
+        pointIndex !== undefined && (pointToAnnotationMap[pointIndex] = annotationIndex);
       });
 
       // Add the permanent tooltip to the point
