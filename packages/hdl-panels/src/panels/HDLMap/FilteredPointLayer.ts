@@ -125,8 +125,9 @@ function FilteredPointLayer(args: Args): FeatureGroup {
     marker.addTo(markersLayer);
 
     // Add the annotation tooltip if the point is in the annotation time range
-    if (pointToAnnotationMap[index] !== undefined) {
-      const annotation = annotations?.[pointToAnnotationMap[index]];
+    const annotationIndex = pointToAnnotationMap?.[parseInt(index)];
+    if (annotationIndex !== undefined) {
+      const annotation = annotations?.[annotationIndex];
       annotation &&
         marker.bindTooltip(String(annotation.comment), {
           direction: "top",
