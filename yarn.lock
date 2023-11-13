@@ -2492,6 +2492,7 @@ __metadata:
     "@mui/system": 5.14.10
     "@react-spring/web": 9.6.1
     "@storybook/react": 7.4.5
+    "@storybook/testing-library": 0.2.1
     "@types/flexsearch": 0.7.3
     "@types/react-highlight-words": ^0
     "@types/react-linkify": ^1
@@ -2503,12 +2504,21 @@ __metadata:
     eslint-plugin-react: 7.33.2
     eslint-plugin-react-hooks: 4.6.0
     flexsearch: 0.7.21
+    geojson: 0.5.0
+    immer: 10.0.2
+    leaflet: 1.9.4
+    leaflet-ellipse: 0.9.1
     lodash: 4.17.21
+    lodash-es: 4.17.21
+    mathjs: 11.11.1
+    memoize-weak: 1.0.2
     react: 18.2.0
     react-dom: 18.2.0
     react-highlight-words: 0.18.0
     react-linkify: 1.0.0-alpha
     react-resize-detector: 9.1.0
+    react-use: 17.4.0
+    use-debounce: 9.0.4
     uuid: 9.0.1
     zustand: 4.4.1
   languageName: unknown
