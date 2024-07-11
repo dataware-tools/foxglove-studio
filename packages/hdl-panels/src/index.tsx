@@ -30,4 +30,11 @@ export const getHDLDeveloped: () => PanelInfo[] = () => [
     thumbnail: hdlMapThumbnail,
     module: async () => await import("./panels/HDLMap"),
   },
+  {
+    title: "AnnotatorForCoMLOpsPromptEngineeringEx2",
+    type: "AnnotatorForCoMLOpsPromptEngineeringEx2",
+    description: "CoMLOps のプロンプトエンジニアリング用のアノテーションをつけるパネルです",
+    module: async () =>
+      await import("./panels/AnnotationPanelForCoMLOpsPromptEngineeringEx2/panel"),
+  },
 ];
