@@ -24,7 +24,7 @@ import { useAnnotationsState } from "../stores/annotation";
 import { useIsAdding } from "../stores/isAdding";
 import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
-import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
+import { ConfiguredAuth0Provider } from "../../../components/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
 import { ImageAnnotationCanvas, ImageAnnotationCanvasProps } from "./ImageAnnotationCanvas";
 
