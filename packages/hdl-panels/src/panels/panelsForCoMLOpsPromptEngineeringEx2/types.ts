@@ -1,13 +1,15 @@
 import { annotationStore } from "@hdwlab/api-annotation-store-client";
 
 export type AnnotationPanelForCoMLOpsPromptEngineeringEx2 = {
-  annotation: { tag_type: string; tags: string[] };
+  annotation: { tag_type: string; tags: string[]; note: string };
+  annotation_task_id: string;
 } & annotationStore.Annotation;
 
 export type UserInputAnnotation = {
   timestampFrom: number;
   timestampTo: number;
-  tag_type: string;
+  tagType: string;
+  note: string;
   tags: { label: string; value: string }[];
 };
 

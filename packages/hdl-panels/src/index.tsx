@@ -31,10 +31,21 @@ export const getHDLDeveloped: () => PanelInfo[] = () => [
     module: async () => await import("./panels/HDLMap"),
   },
   {
-    title: "AnnotatorForCoMLOpsPromptEngineeringEx2",
-    type: "AnnotatorForCoMLOpsPromptEngineeringEx2",
-    description: "CoMLOps のプロンプトエンジニアリング用のアノテーションをつけるパネルです",
+    title: "AnnotationListForTagType_PromptEngineeringEx2",
+    type: "AnnotationListForTagType_PromptEngineeringEx2",
+    description:
+      "CoMLOps のプロンプトエンジニアリング用のパネルです 選択したタグの種類のアノテーションを一覧できます。",
     module: async () =>
-      await import("./panels/AnnotationPanelForCoMLOpsPromptEngineeringEx2/panel"),
+      await import("./panels/panelsForCoMLOpsPromptEngineeringEx2/AnnotationListForTagType/panel"),
+  },
+  {
+    title: "AnnotationListForCurrentTimestamp_PromptEngineeringEx2",
+    type: "AnnotationListForCurrentTimestamp_PromptEngineeringEx2",
+    description:
+      "CoMLOps のプロンプトエンジニアリング用のパネルです 現在時刻のアノテーションを一覧できます。",
+    module: async () =>
+      await import(
+        "./panels/panelsForCoMLOpsPromptEngineeringEx2/AnnotationListForCurrentTimeStamp/panel"
+      ),
   },
 ];
