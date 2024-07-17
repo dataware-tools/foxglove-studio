@@ -1,9 +1,9 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { AnnotationTable } from "../components/AnnotationTable";
 import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
+import { AnnotationTable } from "../components/AnnotationTable";
 import { TagTypeSelect } from "./TagTypeSelect";
 
 export const AnnotationListForTagType = () => {
@@ -39,11 +39,11 @@ export const AnnotationListForTagType = () => {
           tagOptionsForEachTagType={tagOptionsForEachTagType}
           onDelete={async (annotation) => {
             await deleteAnnotation(annotation.annotation_id);
-            refetchServerAnnotations();
+            await refetchServerAnnotations();
           }}
           onUpdate={async (annotation) => {
             await updateAnnotation(annotation);
-            refetchServerAnnotations();
+            await refetchServerAnnotations();
           }}
         />
       </Box>

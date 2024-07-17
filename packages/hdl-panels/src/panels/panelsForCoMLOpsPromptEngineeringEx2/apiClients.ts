@@ -111,12 +111,8 @@ export const useServerAnnotations = () => {
     },
   });
 
-  const refetchServerAnnotations = useCallback(() => {
-    mutate();
-  }, [mutate]);
-
   return {
     annotations: data?.data as AnnotationPanelForCoMLOpsPromptEngineeringEx2[] | undefined,
-    refetchServerAnnotations,
+    refetchServerAnnotations: mutate,
   };
 };

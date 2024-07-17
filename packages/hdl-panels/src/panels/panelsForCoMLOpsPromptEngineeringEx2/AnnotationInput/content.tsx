@@ -13,7 +13,7 @@ export const AnnotationInput = () => {
       <AnnotationInputForm
         onSave={async (annotation) => {
           await addAnnotation(annotation);
-          refetchServerAnnotations();
+          await refetchServerAnnotations();
         }}
         tagOptionsForEachTagType={tagOptionsForEachTagType}
       />
