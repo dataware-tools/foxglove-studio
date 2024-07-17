@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { AnnotationInputForm } from "./AnnotationInputForm";
-import { AnnotationPanelForCoMLOpsPromptEngineeringEx2, TagOptions } from "./types";
+import { AnnotationPanelForCoMLOpsPromptEngineeringEx2, TagOptionsForEachTagType } from "./types";
 
 type AnnotationUpdateEventHandler = (
   annotation: AnnotationPanelForCoMLOpsPromptEngineeringEx2,
@@ -17,24 +17,33 @@ type AnnotationUpdateEventHandler = (
 
 const AnnotationTableRow = ({
   annotation,
-  tagOptions,
+  tagOptionsForEachTagType,
   onDelete,
   updating,
+  hideTagType,
   onStartUpdate,
   onCancelUpdate,
   onSaveUpdate,
 }: {
   annotation: AnnotationPanelForCoMLOpsPromptEngineeringEx2;
-  tagOptions: TagOptions;
+  tagOptionsForEachTagType: TagOptionsForEachTagType;
   onDelete: AnnotationUpdateEventHandler;
   updating?: boolean;
+  hideTagType?: boolean;
   onStartUpdate: AnnotationUpdateEventHandler;
   onCancelUpdate: AnnotationUpdateEventHandler;
   onSaveUpdate: AnnotationUpdateEventHandler;
 }) => {
+  const tagOptions = tagOptionsForEachTagType.find(
+    (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
+  )?.tag_options;
+
   const tagsJp = annotation.annotation.tags
-    .map((tag) => tagOptions.find((tagOption) => tagOption.value === tag)?.label)
+    .map((tag) => tagOptions?.find((tagOption) => tagOption.value === tag)?.label)
     .join(", ");
+  const tagTypeJp = tagOptionsForEachTagType.find(
+    (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
+  )?.tag_type.label;
 
   // const timestampFromISOString = new Date((annotation.timestamp_from ?? 0) * 1000).toISOString();
   // const timestampToISOString = new Date((annotation.timestamp_to ?? 0) * 1000).toISOString();
@@ -43,7 +52,7 @@ const AnnotationTableRow = ({
     <TableRow>
       {updating ? (
         <>
-          <TableCell colSpan={5}>
+          <TableCell colSpan={hideTagType ? 5 : 6}>
             <AnnotationInputForm
               onSave={(userInputAnnotation) =>
                 onSaveUpdate({
@@ -58,15 +67,16 @@ const AnnotationTableRow = ({
                 })
               }
               saveButtonLabel="更新"
-              tagOptions={tagOptions}
-              tagType={annotation.annotation.tag_type}
+              tagOptionsForEachTagType={tagOptionsForEachTagType}
               defaultValues={{
-                tags: tagOptions.filter((tagOption) =>
-                  annotation.annotation.tags.includes(tagOption.value),
-                ),
+                tags:
+                  tagOptions?.filter((tagOption) =>
+                    annotation.annotation.tags.includes(tagOption.value),
+                  ) ?? [],
                 timestampFrom: annotation.timestamp_from ?? 0,
                 timestampTo: annotation.timestamp_to ?? 0,
                 note: annotation.annotation.note ?? "",
+                tagType: annotation.annotation.tag_type,
               }}
             />
           </TableCell>
@@ -84,6 +94,7 @@ const AnnotationTableRow = ({
         <>
           <TableCell align="center">{annotation.timestamp_from}</TableCell>
           <TableCell align="center">{annotation.timestamp_to}</TableCell>
+          {!hideTagType && <TableCell align="center">{tagTypeJp}</TableCell>}
           <TableCell align="center">{tagsJp}</TableCell>
           <TableCell align="center">{annotation.annotation.note}</TableCell>
           <TableCell align="center">
@@ -112,17 +123,20 @@ const AnnotationTableRow = ({
 
 export const AnnotationTable = ({
   annotations,
-  tagOptions,
+  tagOptionsForEachTagType,
+  hideTagType,
   onDelete,
   onUpdate,
 }: {
   annotations: AnnotationPanelForCoMLOpsPromptEngineeringEx2[];
-  tagOptions: TagOptions;
+  tagOptionsForEachTagType: TagOptionsForEachTagType;
+  hideTagType?: boolean;
   onDelete: AnnotationUpdateEventHandler;
   onUpdate: AnnotationUpdateEventHandler;
 }) => {
   const [updatingAnnotation, setUpdatingAnnotation] =
     useState<AnnotationPanelForCoMLOpsPromptEngineeringEx2 | null>(null);
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="table for annotations">
@@ -130,6 +144,7 @@ export const AnnotationTable = ({
           <TableRow>
             <TableCell align="center">開始時刻</TableCell>
             <TableCell align="center">終了時刻</TableCell>
+            {!hideTagType && <TableCell align="center">タグの種類</TableCell>}
             <TableCell align="center">タグの値</TableCell>
             <TableCell align="center">備考</TableCell>
             <TableCell align="center" />
@@ -141,7 +156,7 @@ export const AnnotationTable = ({
             <AnnotationTableRow
               key={annotation.annotation_id}
               annotation={annotation}
-              tagOptions={tagOptions}
+              tagOptionsForEachTagType={tagOptionsForEachTagType}
               onDelete={onDelete}
               updating={updatingAnnotation?.annotation_id === annotation.annotation_id}
               onStartUpdate={() => setUpdatingAnnotation(annotation)}
