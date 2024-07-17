@@ -38,14 +38,14 @@ export const getHDLDeveloped: () => PanelInfo[] = () => [
     module: async () =>
       await import("./panels/panelsForCoMLOpsPromptEngineeringEx2/AnnotationListForTagType/panel"),
   },
-  {
-    title: "AnnotationListForCurrentTimestamp_PromptEngineeringEx2",
-    type: "AnnotationListForCurrentTimestamp_PromptEngineeringEx2",
-    description:
-      "CoMLOps のプロンプトエンジニアリング用のパネルです 現在時刻のアノテーションを一覧できます。",
-    module: async () =>
-      await import(
-        "./panels/panelsForCoMLOpsPromptEngineeringEx2/AnnotationListForCurrentTimeStamp/panel"
-      ),
-  },
+  // {
+  //   title: "AnnotationListForCurrentTimestamp_PromptEngineeringEx2",
+  //   type: "AnnotationListForCurrentTimestamp_PromptEngineeringEx2",
+  //   description:
+  //     "CoMLOps のプロンプトエンジニアリング用のパネルです 現在時刻のアノテーションを一覧できます。",
+  //   module: async () =>
+  //     await import(
+  //       "./panels/panelsForCoMLOpsPromptEngineeringEx2/AnnotationListForCurrentTimeStamp/panel"
+  //     ),
+  // },
 ];
