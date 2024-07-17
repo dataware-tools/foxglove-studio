@@ -1,5 +1,5 @@
 import { Delete, Edit } from "@mui/icons-material";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, LinearProgress } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -52,7 +52,14 @@ const AnnotationTableRow = ({
     (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
   )?.tag_type.label;
 
-  return (
+  const [deleting, setDeleting] = useState(false);
+  return deleting ? (
+    <TableRow>
+      <TableCell colSpan={hideTagType ? 6 : 7}>
+        <LinearProgress />
+      </TableCell>
+    </TableRow>
+  ) : (
     <TableRow
       sx={{ backgroundColor: (theme) => (highlight ? theme.palette.action.selected : undefined) }}
     >
@@ -123,6 +130,7 @@ const AnnotationTableRow = ({
           <TableCell align="center">{annotation.annotation.note}</TableCell>
           <TableCell align="center">
             <IconButton
+              disabled={deleting}
               onClick={() => {
                 onStartUpdate(annotation);
               }}
@@ -132,8 +140,11 @@ const AnnotationTableRow = ({
           </TableCell>
           <TableCell align="center">
             <IconButton
-              onClick={() => {
-                onDelete(annotation);
+              disabled={deleting}
+              onClick={async () => {
+                setDeleting(true);
+                await onDelete(annotation);
+                setDeleting(false);
               }}
             >
               <Delete />
@@ -145,8 +156,6 @@ const AnnotationTableRow = ({
   );
 };
 
-// TODO: highlight annotation that is currently being played
-// TODO: seek to the timestamp when clicking on the annotation
 export const AnnotationTable = ({
   annotations,
   tagOptionsForEachTagType,

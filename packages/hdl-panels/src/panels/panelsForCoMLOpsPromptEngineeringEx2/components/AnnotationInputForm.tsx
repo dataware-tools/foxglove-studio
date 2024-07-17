@@ -1,13 +1,13 @@
 import {
   Autocomplete,
   Button,
+  CircularProgress,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import { useState } from "react";
 import { useCurrentTime } from "../../../hooks/useCurrentTime";
 import { TagOptionsForEachTagType, UserInputAnnotation } from "../types";
@@ -42,6 +42,8 @@ export const AnnotationInputForm = ({
     userInputAnnotation.timestampTo &&
     (userInputAnnotation.tags.length > 0 || userInputAnnotation.note);
 
+  const [saving, setSaving] = useState(false);
+
   const tagOptions =
     tagOptionsForEachTagType.find(
       (tagOptions) => tagOptions.tag_type.value === userInputAnnotation.tagType,
@@ -63,6 +65,7 @@ export const AnnotationInputForm = ({
         <Stack direction="row" spacing={1} alignItems="center">
           <Stack flexBasis="50%">
             <TextField
+              disabled={saving}
               label="開始時刻"
               type="number"
               onChange={(e) =>
@@ -78,6 +81,7 @@ export const AnnotationInputForm = ({
           </Stack>
           <Stack flexBasis="50%">
             <TextField
+              disabled={saving}
               label="終了時刻"
               type="number"
               onChange={(e) =>
@@ -93,6 +97,7 @@ export const AnnotationInputForm = ({
           <Stack flexGrow={0} flexShrink={0}>
             <InputLabel id="tag-type-select-label">タグの種類</InputLabel>
             <Select
+              disabled={saving}
               labelId="tag-type-select-label"
               id="tag-type-select"
               value={userInputAnnotation.tagType}
@@ -115,6 +120,7 @@ export const AnnotationInputForm = ({
           <Autocomplete
             sx={{ flexGrow: 1, flexShrink: 0 }}
             multiple
+            disabled={saving}
             filterSelectedOptions
             options={tagOptions}
             renderInput={(params) => <TextField {...params} label="タグの値" />}
@@ -128,6 +134,7 @@ export const AnnotationInputForm = ({
           <TextField
             sx={{ flexGrow: 1, flexShrink: 1 }}
             label="備考"
+            disabled={saving}
             onChange={(e) => setUserInputAnnotation((prev) => ({ ...prev, note: e.target.value }))}
             value={userInputAnnotation.note ?? 0}
             defaultValue={userInputAnnotation.note ?? 0}
@@ -135,9 +142,10 @@ export const AnnotationInputForm = ({
         </Stack>
       </Stack>
       <Button
-        disabled={!userInputAnnotationIsValid}
+        disabled={!userInputAnnotationIsValid || saving}
         variant="contained"
         onClick={async () => {
+          setSaving(true);
           await onSave({ ...userInputAnnotation });
           setUserInputAnnotation((prev) => ({
             ...prev,
@@ -146,9 +154,10 @@ export const AnnotationInputForm = ({
             tags: [],
             note: "",
           }));
+          setSaving(false);
         }}
       >
-        {saveButtonLabel ?? "追加"}
+        {saving ? <CircularProgress /> : saveButtonLabel ?? "追加"}
       </Button>
     </Stack>
   );
