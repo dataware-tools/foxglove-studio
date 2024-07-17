@@ -1,6 +1,7 @@
+import PanelSetup from "@foxglove/studio-base/stories/PanelSetup";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { tagOptionsForEachTagType } from "src/panels/panelsForCoMLOpsPromptEngineeringEx2/_hardCordingValue";
+import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { AnnotationInputForm } from "./AnnotationInputForm";
 
 const meta: Meta<typeof AnnotationInputForm> = {
@@ -14,7 +15,12 @@ type Story = StoryObj<typeof AnnotationInputForm>;
 export const Basic: Story = {
   render: () => {
     return (
-      <AnnotationInputForm onSave={() => {}} tagOptionsForEachTagType={tagOptionsForEachTagType} />
+      <PanelSetup>
+        <AnnotationInputForm
+          onSave={() => {}}
+          tagOptionsForEachTagType={tagOptionsForEachTagType}
+        />
+      </PanelSetup>
     );
   },
 };
