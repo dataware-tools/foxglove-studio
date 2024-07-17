@@ -1,6 +1,6 @@
 import { annotationStore } from "@hdwlab/api-annotation-store-client";
 import { useAPIClient, useAPIClientWithSWR } from "@hdwlab/api-helper-typescript";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useDatabaseRecordId } from "../../hooks/useDatabaseRecordId";
 import { AnnotationPanelForCoMLOpsPromptEngineeringEx2, UserInputAnnotation } from "./types";
 
