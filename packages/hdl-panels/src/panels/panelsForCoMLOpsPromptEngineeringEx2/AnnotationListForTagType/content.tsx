@@ -1,27 +1,16 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { AnnotationInputForm } from "../AnnotationInputForm";
 import { AnnotationTable } from "../AnnotationTable";
 import { TagTypeSelect } from "../TagTypeSelect";
 import { tagOptionsForEachTagType } from "../_hardCordingValue";
-import {
-  useAddAnnotation,
-  useDeleteAnnotation,
-  useServerAnnotations,
-  useUpdateAnnotation,
-} from "../apiClients";
+import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 
 export const AnnotationListForTagType = () => {
   const { annotations, refetchServerAnnotations } = useServerAnnotations();
 
   const [tagType, setTagType] = useState<string>(tagOptionsForEachTagType[0]?.tag_type.value ?? "");
 
-  const tagOptions = tagOptionsForEachTagType
-    .find((tagOptions) => tagOptions.tag_type.value === tagType)
-    ?.tag_options.map((tag) => tag);
-
-  const { request: addAnnotation } = useAddAnnotation();
   const { request: deleteAnnotation } = useDeleteAnnotation();
   const { request: updateAnnotation } = useUpdateAnnotation();
 
@@ -44,8 +33,9 @@ export const AnnotationListForTagType = () => {
       </Box>
       <Box flexGrow={1} flexShrink={1} height="100%" overflow="auto">
         <AnnotationTable
+          hideTagType
           annotations={filteredAnnotations ?? []}
-          tagOptions={tagOptions ?? []}
+          tagOptionsForEachTagType={tagOptionsForEachTagType}
           onDelete={async (annotation) => {
             await deleteAnnotation(annotation.annotation_id);
             refetchServerAnnotations();
@@ -54,16 +44,6 @@ export const AnnotationListForTagType = () => {
             await updateAnnotation(annotation);
             refetchServerAnnotations();
           }}
-        />
-      </Box>
-      <Box flexGrow={0} flexShrink={0}>
-        <AnnotationInputForm
-          onSave={async (annotation) => {
-            await addAnnotation(annotation);
-            refetchServerAnnotations();
-          }}
-          tagType={tagType}
-          tagOptions={tagOptions ?? []}
         />
       </Box>
     </Stack>

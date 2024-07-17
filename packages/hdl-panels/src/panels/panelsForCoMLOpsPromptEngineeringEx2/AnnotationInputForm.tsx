@@ -1,24 +1,28 @@
-import { Autocomplete, Button, Stack, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { UserInputAnnotation } from "./types";
+import { TagOptionsForEachTagType, UserInputAnnotation } from "./types";
 
 export const AnnotationInputForm = ({
-  tagType,
   defaultValues,
-  tagOptions,
+  tagOptionsForEachTagType,
   onSave,
   saveButtonLabel,
 }: {
-  tagType: string;
-  defaultValues?: Omit<UserInputAnnotation, "tagType">;
-  tagOptions: { label: string; value: string }[];
+  defaultValues?: UserInputAnnotation;
+  tagOptionsForEachTagType: TagOptionsForEachTagType;
   onSave: (userInputAnnotation: UserInputAnnotation) => Promise<void> | void;
   saveButtonLabel?: string;
 }) => {
-  const [userInputAnnotation, setUserInputAnnotation] = useState<
-    Omit<UserInputAnnotation, "tagType">
-  >(
+  const [userInputAnnotation, setUserInputAnnotation] = useState<UserInputAnnotation>(
     defaultValues
       ? { ...defaultValues }
       : {
@@ -26,6 +30,7 @@ export const AnnotationInputForm = ({
           timestampTo: 0,
           tags: [],
           note: "",
+          tagType: tagOptionsForEachTagType[0]?.tag_type.value ?? "",
         },
   );
 
@@ -33,6 +38,13 @@ export const AnnotationInputForm = ({
     userInputAnnotation.timestampFrom &&
     userInputAnnotation.timestampTo &&
     (userInputAnnotation.tags.length > 0 || userInputAnnotation.note);
+
+  const tagOptions =
+    tagOptionsForEachTagType.find(
+      (tagOptions) => tagOptions.tag_type.value === userInputAnnotation.tagType,
+    )?.tag_options ?? [];
+
+  const tagTypeOptions = tagOptionsForEachTagType.map((tagOptions) => tagOptions.tag_type);
 
   return (
     <Stack direction="row" spacing={1} justifyContent="space-between" px={1}>
@@ -55,6 +67,24 @@ export const AnnotationInputForm = ({
           value={userInputAnnotation.timestampTo ?? 0}
           defaultValue={userInputAnnotation.timestampTo ?? 0}
         />
+        <Stack>
+          <InputLabel id="tag-type-select-label">タグの種類</InputLabel>
+          <Select
+            labelId="tag-type-select-label"
+            id="tag-type-select"
+            value={userInputAnnotation.tagType}
+            label="タグの種類"
+            onChange={(e) => {
+              setUserInputAnnotation((prev) => ({ ...prev, tagType: e.target.value, tags: [] }));
+            }}
+          >
+            {tagTypeOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </Stack>
         <Autocomplete
           multiple
           filterSelectedOptions
@@ -69,7 +99,6 @@ export const AnnotationInputForm = ({
         />
         <TextField
           label="備考"
-          multiline
           onChange={(e) => setUserInputAnnotation((prev) => ({ ...prev, note: e.target.value }))}
           value={userInputAnnotation.note ?? 0}
           defaultValue={userInputAnnotation.note ?? 0}
@@ -80,7 +109,7 @@ export const AnnotationInputForm = ({
           disabled={!userInputAnnotationIsValid}
           variant="contained"
           onClick={async () => {
-            await onSave({ ...userInputAnnotation, tagType });
+            await onSave({ ...userInputAnnotation });
             setUserInputAnnotation((prev) => ({
               ...prev,
               timestampFrom: 0,

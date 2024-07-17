@@ -48,4 +48,12 @@ export const getHDLDeveloped: () => PanelInfo[] = () => [
         "./panels/panelsForCoMLOpsPromptEngineeringEx2/AnnotationListForCurrentTimeStamp/panel"
       ),
   },
+  {
+    title: "AnnotationInput_PromptEngineeringEx2",
+    type: "AnnotationInput_PromptEngineeringEx2",
+    description:
+      "CoMLOps のプロンプトエンジニアリング用のパネルです 時間幅を持ったアノテーションを追加できます。",
+    module: async () =>
+      await import("./panels/panelsForCoMLOpsPromptEngineeringEx2/AnnotationInput/panel"),
+  },
 ];
