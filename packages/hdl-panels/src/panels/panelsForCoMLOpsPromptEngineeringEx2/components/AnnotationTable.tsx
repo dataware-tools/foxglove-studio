@@ -8,11 +8,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
-import { useCurrentTime } from "../../hooks/useCurrentTime";
-import { useSeekPlayback } from "../../hooks/useSeekPlayback";
-import { unixTimeToFoxgloveTime } from "../../logics/time";
+import { useCurrentTime } from "../../../hooks/useCurrentTime";
+import { useSeekPlayback } from "../../../hooks/useSeekPlayback";
+import { unixTimeToFoxgloveTime } from "../../../logics/time";
+import { AnnotationPanelForCoMLOpsPromptEngineeringEx2, TagOptionsForEachTagType } from "../types";
 import { AnnotationInputForm } from "./AnnotationInputForm";
-import { AnnotationPanelForCoMLOpsPromptEngineeringEx2, TagOptionsForEachTagType } from "./types";
 
 type AnnotationUpdateEventHandler = (
   annotation: AnnotationPanelForCoMLOpsPromptEngineeringEx2,

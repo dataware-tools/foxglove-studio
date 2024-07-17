@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCurrentTime } from "../../../hooks/useCurrentTime";
-import { AnnotationTable } from "../AnnotationTable";
+import { AnnotationTable } from "../components/AnnotationTable";
 import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 

@@ -1,10 +1,10 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { AnnotationTable } from "../AnnotationTable";
-import { TagTypeSelect } from "../TagTypeSelect";
+import { AnnotationTable } from "../components/AnnotationTable";
 import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
+import { TagTypeSelect } from "./TagTypeSelect";
 
 export const AnnotationListForTagType = () => {
   const { annotations, refetchServerAnnotations } = useServerAnnotations();

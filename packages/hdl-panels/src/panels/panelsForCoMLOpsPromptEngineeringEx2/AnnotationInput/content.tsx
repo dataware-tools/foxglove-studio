@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import { AnnotationInputForm } from "../AnnotationInputForm";
+import { AnnotationInputForm } from "../components/AnnotationInputForm";
 import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useAddAnnotation, useServerAnnotations } from "../apiClients";
 
