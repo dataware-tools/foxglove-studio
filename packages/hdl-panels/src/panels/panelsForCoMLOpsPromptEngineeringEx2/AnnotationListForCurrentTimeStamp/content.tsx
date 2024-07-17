@@ -1,19 +1,13 @@
-import {
-  MessagePipelineContext,
-  useMessagePipeline,
-} from "@foxglove/studio-base/components/MessagePipeline";
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
+import { useCurrentTime } from "../../../hooks/useCurrentTime";
 import { AnnotationTable } from "../AnnotationTable";
 import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 
-const selectCurrentTime = (ctx: MessagePipelineContext) => ctx.playerState.activeData?.currentTime;
-
 export const AnnotationListForCurrentTimestamp = () => {
   const { annotations, refetchServerAnnotations } = useServerAnnotations();
-  const currentTime = useMessagePipeline(selectCurrentTime);
-  const currentTimeInNumber = currentTime ? currentTime.sec + currentTime.nsec / 1e9 : 0;
+  const { currentTimeInUnixTime } = useCurrentTime();
 
   const { request: deleteAnnotation } = useDeleteAnnotation();
   const { request: updateAnnotation } = useUpdateAnnotation();
@@ -23,8 +17,9 @@ export const AnnotationListForCurrentTimestamp = () => {
       (annotation) =>
         annotation.timestamp_from &&
         annotation.timestamp_to &&
-        annotation.timestamp_from <= currentTimeInNumber &&
-        currentTimeInNumber <= annotation.timestamp_to,
+        currentTimeInUnixTime &&
+        annotation.timestamp_from <= currentTimeInUnixTime &&
+        currentTimeInUnixTime <= annotation.timestamp_to,
     )
     .sort((a, b) =>
       a.timestamp_from && b.timestamp_from ? a.timestamp_from - b.timestamp_from : 0,

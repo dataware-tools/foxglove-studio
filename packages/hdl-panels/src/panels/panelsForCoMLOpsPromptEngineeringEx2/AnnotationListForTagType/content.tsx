@@ -33,6 +33,7 @@ export const AnnotationListForTagType = () => {
       </Box>
       <Box flexGrow={1} flexShrink={1} height="100%" overflow="auto">
         <AnnotationTable
+          highlightCurrentAnnotation
           hideTagType
           annotations={filteredAnnotations ?? []}
           tagOptionsForEachTagType={tagOptionsForEachTagType}
