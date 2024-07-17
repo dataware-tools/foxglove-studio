@@ -15,3 +15,8 @@ export type UserInputAnnotation = {
 
 export type TagOptions = { value: string; label: string }[];
 export type TagTypeOptions = { value: string; label: string }[];
+
+export type TagOptionsForEachTagType = {
+  tag_type: { label: string; value: string };
+  tag_options: TagOptions;
+}[];

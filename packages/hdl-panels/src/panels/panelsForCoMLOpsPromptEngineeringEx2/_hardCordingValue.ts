@@ -1,399 +1,398 @@
-export const tagOptionsForEachTagType = [
+import { TagOptionsForEachTagType } from "./types";
+
+export const tagOptionsForEachTagType: TagOptionsForEachTagType = [
   {
-    tag_type_en: "time_of_day",
-    tag_type_jp: "時間",
-    tag_list: [
+    tag_type: { value: "time_of_day", label: "時間" },
+    tag_options: [
       {
-        jp: "早朝",
-        en: "early_morning",
+        label: "早朝",
+        value: "early_morning",
       },
       {
-        jp: "昼間",
-        en: "daytime",
+        label: "昼間",
+        value: "daytime",
       },
       {
-        jp: "夕方",
-        en: "evening",
+        label: "夕方",
+        value: "evening",
       },
       {
-        jp: "夜間",
-        en: "night",
+        label: "夜間",
+        value: "night",
       },
       {
-        jp: "不明",
-        en: "unknown",
+        label: "不明",
+        value: "unknown",
       },
     ],
   },
   {
-    tag_type_en: "weather",
-    tag_type_jp: "天候",
-    tag_list: [
+    tag_type: { value: "weather", label: "天候" },
+    tag_options: [
       {
-        jp: "晴れ",
-        en: "sunny",
+        label: "晴れ",
+        value: "sunny",
       },
       {
-        jp: "曇り",
-        en: "cloudy",
+        label: "曇り",
+        value: "cloudy",
       },
       {
-        jp: "雨",
-        en: "rainy",
+        label: "雨",
+        value: "rainy",
       },
       {
-        jp: "雪",
-        en: "snowy",
+        label: "雪",
+        value: "snowy",
       },
       {
-        jp: "不明",
-        en: "unknown",
-      },
-    ],
-  },
-  {
-    tag_type_en: "ego_vehicle_movement",
-    tag_type_jp: "自車両の動き",
-    tag_list: [
-      {
-        jp: "直進",
-        en: "go_straight",
-      },
-      {
-        jp: "左折",
-        en: "turn_left",
-      },
-      {
-        jp: "右折",
-        en: "turn_right",
-      },
-      {
-        jp: "左に車線変更",
-        en: "lane_change_left",
-      },
-      {
-        jp: "右に車線変更",
-        en: "lane_change_right",
-      },
-      {
-        jp: "停車",
-        en: "stop",
-      },
-      {
-        jp: "バック",
-        en: "back",
+        label: "不明",
+        value: "unknown",
       },
     ],
   },
   {
-    tag_type_en: "road_shape",
-    tag_type_jp: "道路形状",
-    tag_list: [
+    tag_type: { value: "ego_vehicle_movement", label: "自車両の動き" },
+    tag_options: [
       {
-        jp: "直線",
-        en: "straight",
+        label: "直進",
+        value: "go_straight",
       },
       {
-        jp: "カーブ",
-        en: "curve",
+        label: "左折",
+        value: "turn_left",
       },
       {
-        jp: "交差点",
-        en: "intersection",
+        label: "右折",
+        value: "turn_right",
       },
       {
-        jp: "上り坂",
-        en: "uphill",
+        label: "左に車線変更",
+        value: "lane_change_left",
       },
       {
-        jp: "下り坂",
-        en: "downhill",
+        label: "右に車線変更",
+        value: "lane_change_right",
       },
       {
-        jp: "環状交差点",
-        en: "roundabout",
+        label: "停車",
+        value: "stop",
       },
       {
-        jp: "車線数減少",
-        en: "lane_reduction",
-      },
-      {
-        jp: "車線数増加",
-        en: "lane_increase",
-      },
-      {
-        jp: "合流",
-        en: "lane_merge",
-      },
-      {
-        jp: "分岐",
-        en: "lane_split",
-      },
-      {
-        jp: "踏切",
-        en: "railroad_crossing",
+        label: "バック",
+        value: "back",
       },
     ],
   },
   {
-    tag_type_en: "road_condition",
-    tag_type_jp: "路面状態",
-    tag_list: [
+    tag_type: { value: "road_shape", label: "道路形状" },
+    tag_options: [
       {
-        jp: "水たまり",
-        en: "puddle",
+        label: "直線",
+        value: "straight",
       },
       {
-        jp: "道路標示のかすれ",
-        en: "faded_road_markings",
+        label: "カーブ",
+        value: "curve",
       },
       {
-        jp: "濡れた路面",
-        en: "wet_road",
+        label: "交差点",
+        value: "intersection",
       },
       {
-        jp: "乾いた路面",
-        en: "dry_road",
+        label: "上り坂",
+        value: "uphill",
       },
       {
-        jp: "積雪",
-        en: "snow_covered_road",
+        label: "下り坂",
+        value: "downhill",
       },
       {
-        jp: "凍結",
-        en: "icy_road",
+        label: "環状交差点",
+        value: "roundabout",
       },
       {
-        jp: "路面の凹凸",
-        en: "bumpy_road",
+        label: "車線数減少",
+        value: "lane_reduction",
       },
       {
-        jp: "路面のひび割れ",
-        en: "pothole",
+        label: "車線数増加",
+        value: "lane_increase",
       },
       {
-        jp: "路面の汚れ",
-        en: "dirty_road",
-      },
-    ],
-  },
-  {
-    tag_type_en: "static_object",
-    tag_type_jp: "静的物体",
-    tag_list: [
-      {
-        jp: "ガードレール",
-        en: "guardrail",
+        label: "合流",
+        value: "lane_merge",
       },
       {
-        jp: "信号機",
-        en: "traffic_light",
+        label: "分岐",
+        value: "lane_split",
       },
       {
-        jp: "標識",
-        en: "traffic_sign",
-      },
-      {
-        jp: "バス停",
-        en: "bus_stop",
-      },
-      {
-        jp: "駐車車両",
-        en: "parked_vehicle",
-      },
-      {
-        jp: "コーン",
-        en: "cone",
-      },
-      {
-        jp: "落下物",
-        en: "road_debris",
-      },
-      {
-        jp: "発煙筒",
-        en: "warning_flare",
-      },
-      {
-        jp: "三角表示板",
-        en: "warning_triangle",
+        label: "踏切",
+        value: "railroad_crossing",
       },
     ],
   },
   {
-    tag_type_en: "dynamic_object",
-    tag_type_jp: "動的物体",
-    tag_list: [
+    tag_type: { value: "road_condition", label: "路面状態" },
+    tag_options: [
       {
-        jp: "歩行者",
-        en: "pedestrian",
+        label: "水たまり",
+        value: "puddle",
       },
       {
-        jp: "自転車",
-        en: "bicycle",
+        label: "道路標示のかすれ",
+        value: "faded_road_markings",
       },
       {
-        jp: "一般車両",
-        en: "car",
+        label: "濡れた路面",
+        value: "wet_road",
       },
       {
-        jp: "工事車両",
-        en: "construction_vehicle",
+        label: "乾いた路面",
+        value: "dry_road",
       },
       {
-        jp: "農業機械",
-        en: "agricultural_vehicle",
+        label: "積雪",
+        value: "snow_covered_road",
       },
       {
-        jp: "パトカー",
-        en: "police_car",
+        label: "凍結",
+        value: "icy_road",
       },
       {
-        jp: "救急車",
-        en: "ambulance",
+        label: "路面の凹凸",
+        value: "bumpy_road",
       },
       {
-        jp: "消防車",
-        en: "fire_truck",
+        label: "路面のひび割れ",
+        value: "pothole",
       },
       {
-        jp: "バス",
-        en: "bus",
+        label: "路面の汚れ",
+        value: "dirty_road",
       },
       {
-        jp: "トラック",
-        en: "truck",
-      },
-      {
-        jp: "バイク",
-        en: "motorcycle",
-      },
-      {
-        jp: "電車",
-        en: "train",
-      },
-      {
-        jp: "その他特殊車両",
-        en: "special_vehicle",
-      },
-      {
-        jp: "動物",
-        en: "animal",
+        label: "未舗装路",
+        value: "unpaved_road",
       },
     ],
   },
   {
-    tag_type_en: "traffic_volume",
-    tag_type_jp: "交通量",
-    tag_list: [
+    tag_type: { value: "static_object", label: "静的物体" },
+    tag_options: [
       {
-        jp: "閑散",
-        en: "light_traffic",
+        label: "ガードレール",
+        value: "guardrail",
       },
       {
-        jp: "通常",
-        en: "moderate_traffic",
+        label: "信号機",
+        value: "traffic_light",
       },
       {
-        jp: "混雑",
-        en: "heavy_traffic",
-      },
-    ],
-  },
-  {
-    tag_type_en: "traffic_event",
-    tag_type_jp: "交通イベント",
-    tag_list: [
-      {
-        jp: "交通事故",
-        en: "traffic_accident",
+        label: "標識",
+        value: "traffic_sign",
       },
       {
-        jp: "工事中",
-        en: "under_construction",
+        label: "バス停",
+        value: "bus_stop",
       },
       {
-        jp: "交通規制",
-        en: "traffic_control",
-      },
-    ],
-  },
-  {
-    tag_type_en: "location",
-    tag_type_jp: "場所",
-    tag_list: [
-      {
-        jp: "住宅街",
-        en: "residential_area",
+        label: "駐車車両",
+        value: "parked_vehicle",
       },
       {
-        jp: "田舎",
-        en: "rural_area",
+        label: "コーン",
+        value: "cone",
       },
       {
-        jp: "都市部",
-        en: "urban_area",
+        label: "落下物",
+        value: "road_debris",
       },
       {
-        jp: "高速道路",
-        en: "highway",
+        label: "発煙筒",
+        value: "warning_flare",
       },
       {
-        jp: "山間部",
-        en: "mountainous_area",
-      },
-      {
-        jp: "海岸",
-        en: "coastal_area",
-      },
-      {
-        jp: "駐車場",
-        en: "parking_lot",
-      },
-      {
-        jp: "トンネル",
-        en: "tunnel",
-      },
-      {
-        jp: "橋",
-        en: "bridge",
-      },
-      {
-        jp: "地下",
-        en: "underground",
+        label: "三角表示板",
+        value: "warning_triangle",
       },
     ],
   },
   {
-    tag_type_en: "visibility",
-    tag_type_jp: "視界",
-    tag_list: [
+    tag_type: { value: "dynamic_object", label: "動的物体" },
+    tag_options: [
       {
-        jp: "良好",
-        en: "clear",
+        label: "歩行者",
+        value: "pedestrian",
       },
       {
-        jp: "逆光",
-        en: "backlit",
+        label: "自転車",
+        value: "bicycle",
       },
       {
-        jp: "水滴",
-        en: "raindrops",
+        label: "乗用車",
+        value: "passenger_car",
       },
       {
-        jp: "霧",
-        en: "foggy",
+        label: "工事車両",
+        value: "construction_vehicle",
       },
       {
-        jp: "暗い",
-        en: "dark",
+        label: "農業機械",
+        value: "agricultural_vehicle",
       },
       {
-        jp: "夜明け/夕暮れ",
-        en: "dawn/dusk",
+        label: "パトカー",
+        value: "police_car",
       },
       {
-        jp: "グレア",
-        en: "glare",
+        label: "救急車",
+        value: "ambulance",
+      },
+      {
+        label: "消防車",
+        value: "fire_truck",
+      },
+      {
+        label: "バス",
+        value: "bus",
+      },
+      {
+        label: "トラック",
+        value: "truck",
+      },
+      {
+        label: "バイク",
+        value: "motorcycle",
+      },
+      {
+        label: "電車",
+        value: "train",
+      },
+      {
+        label: "その他特殊車両",
+        value: "special_vehicle",
+      },
+      {
+        label: "動物",
+        value: "animal",
+      },
+    ],
+  },
+  {
+    tag_type: { value: "traffic_volume", label: "交通量" },
+    tag_options: [
+      {
+        label: "閑散",
+        value: "light_traffic",
+      },
+      {
+        label: "通常",
+        value: "moderate_traffic",
+      },
+      {
+        label: "混雑",
+        value: "heavy_traffic",
+      },
+    ],
+  },
+  {
+    tag_type: { value: "traffic_event", label: "交通イベント" },
+    tag_options: [
+      {
+        label: "交通事故",
+        value: "traffic_accident",
+      },
+      {
+        label: "工事中",
+        value: "under_construction",
+      },
+      {
+        label: "交通規制",
+        value: "traffic_control",
+      },
+    ],
+  },
+  {
+    tag_type: { value: "location", label: "場所" },
+    tag_options: [
+      {
+        label: "住宅街",
+        value: "residential_area",
+      },
+      {
+        label: "田舎",
+        value: "rural_area",
+      },
+      {
+        label: "都市部",
+        value: "urban_area",
+      },
+      {
+        label: "高速道路",
+        value: "highway",
+      },
+      {
+        label: "山間部",
+        value: "mountainous_area",
+      },
+      {
+        label: "海岸",
+        value: "coastal_area",
+      },
+      {
+        label: "駐車場",
+        value: "parking_lot",
+      },
+      {
+        label: "トンネル",
+        value: "tunnel",
+      },
+      {
+        label: "橋",
+        value: "bridge",
+      },
+      {
+        label: "地下",
+        value: "underground",
+      },
+      {
+        label: "不明",
+        value: "unknown",
+      },
+    ],
+  },
+  {
+    tag_type: { value: "visibility", label: "視界" },
+    tag_options: [
+      {
+        label: "良好",
+        value: "clear",
+      },
+      {
+        label: "逆光",
+        value: "backlit",
+      },
+      {
+        label: "水滴",
+        value: "raindrops",
+      },
+      {
+        label: "霧",
+        value: "foggy",
+      },
+      {
+        label: "暗い",
+        value: "dark",
+      },
+      {
+        label: "夜明け/夕暮れ",
+        value: "dawn/dusk",
+      },
+      {
+        label: "グレア",
+        value: "glare",
       },
     ],
   },

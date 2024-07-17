@@ -15,11 +15,11 @@ import {
 export const AnnotationListForTagType = () => {
   const { annotations, refetchServerAnnotations } = useServerAnnotations();
 
-  const [tagType, setTagType] = useState<string>(tagOptionsForEachTagType[0]?.tag_type_en ?? "");
+  const [tagType, setTagType] = useState<string>(tagOptionsForEachTagType[0]?.tag_type.value ?? "");
 
   const tagOptions = tagOptionsForEachTagType
-    .find((tagOptions) => tagOptions.tag_type_en === tagType)
-    ?.tag_list.map((tag) => ({ label: tag.jp, value: tag.en }));
+    .find((tagOptions) => tagOptions.tag_type.value === tagType)
+    ?.tag_options.map((tag) => tag);
 
   const { request: addAnnotation } = useAddAnnotation();
   const { request: deleteAnnotation } = useDeleteAnnotation();
@@ -36,10 +36,7 @@ export const AnnotationListForTagType = () => {
       <Box flexGrow={0} flexShrink={0}>
         <TagTypeSelect
           tagType={tagType}
-          tagTypeOptions={tagOptionsForEachTagType.map((tagType) => ({
-            label: tagType.tag_type_jp,
-            value: tagType.tag_type_en,
-          }))}
+          tagTypeOptions={tagOptionsForEachTagType.map((tagTypeOptions) => tagTypeOptions.tag_type)}
           onChange={(event) => {
             setTagType(event.target.value as string);
           }}
