@@ -8,6 +8,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
+import { useCurrentTime } from "../../hooks/useCurrentTime";
+import { useSeekPlayback } from "../../hooks/useSeekPlayback";
+import { unixTimeToFoxgloveTime } from "../../logics/time";
 import { AnnotationInputForm } from "./AnnotationInputForm";
 import { AnnotationPanelForCoMLOpsPromptEngineeringEx2, TagOptionsForEachTagType } from "./types";
 
@@ -18,21 +21,25 @@ type AnnotationUpdateEventHandler = (
 const AnnotationTableRow = ({
   annotation,
   tagOptionsForEachTagType,
+  highlight,
   onDelete,
   updating,
   hideTagType,
   onStartUpdate,
   onCancelUpdate,
   onSaveUpdate,
+  onSeekToTimestamp,
 }: {
   annotation: AnnotationPanelForCoMLOpsPromptEngineeringEx2;
   tagOptionsForEachTagType: TagOptionsForEachTagType;
   onDelete: AnnotationUpdateEventHandler;
   updating?: boolean;
+  highlight?: boolean;
   hideTagType?: boolean;
   onStartUpdate: AnnotationUpdateEventHandler;
   onCancelUpdate: AnnotationUpdateEventHandler;
   onSaveUpdate: AnnotationUpdateEventHandler;
+  onSeekToTimestamp: (unixTimestamp: number) => void;
 }) => {
   const tagOptions = tagOptionsForEachTagType.find(
     (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
@@ -45,11 +52,10 @@ const AnnotationTableRow = ({
     (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
   )?.tag_type.label;
 
-  // const timestampFromISOString = new Date((annotation.timestamp_from ?? 0) * 1000).toISOString();
-  // const timestampToISOString = new Date((annotation.timestamp_to ?? 0) * 1000).toISOString();
-
   return (
-    <TableRow>
+    <TableRow
+      sx={{ backgroundColor: (theme) => (highlight ? theme.palette.action.selected : undefined) }}
+    >
       {updating ? (
         <>
           <TableCell colSpan={hideTagType ? 5 : 6}>
@@ -92,8 +98,26 @@ const AnnotationTableRow = ({
         </>
       ) : (
         <>
-          <TableCell align="center">{annotation.timestamp_from}</TableCell>
-          <TableCell align="center">{annotation.timestamp_to}</TableCell>
+          <TableCell
+            align="center"
+            onClick={() => onSeekToTimestamp(annotation.timestamp_from ?? 0)}
+            sx={{
+              cursor: "pointer",
+              ":hover": { backgroundColor: (theme) => theme.palette.action.hover },
+            }}
+          >
+            {annotation.timestamp_from}
+          </TableCell>
+          <TableCell
+            sx={{
+              cursor: "pointer",
+              ":hover": { backgroundColor: (theme) => theme.palette.action.hover },
+            }}
+            align="center"
+            onClick={() => onSeekToTimestamp(annotation.timestamp_to ?? 0)}
+          >
+            {annotation.timestamp_to}
+          </TableCell>
           {!hideTagType && <TableCell align="center">{tagTypeJp}</TableCell>}
           <TableCell align="center">{tagsJp}</TableCell>
           <TableCell align="center">{annotation.annotation.note}</TableCell>
@@ -121,21 +145,41 @@ const AnnotationTableRow = ({
   );
 };
 
+// TODO: highlight annotation that is currently being played
+// TODO: seek to the timestamp when clicking on the annotation
 export const AnnotationTable = ({
   annotations,
   tagOptionsForEachTagType,
+  highlightCurrentAnnotation,
   hideTagType,
   onDelete,
   onUpdate,
 }: {
   annotations: AnnotationPanelForCoMLOpsPromptEngineeringEx2[];
   tagOptionsForEachTagType: TagOptionsForEachTagType;
+  highlightCurrentAnnotation?: boolean;
   hideTagType?: boolean;
   onDelete: AnnotationUpdateEventHandler;
   onUpdate: AnnotationUpdateEventHandler;
 }) => {
   const [updatingAnnotation, setUpdatingAnnotation] =
     useState<AnnotationPanelForCoMLOpsPromptEngineeringEx2 | null>(null);
+
+  const { currentTimeInUnixTime } = useCurrentTime();
+  const highlightAnnotationIds = highlightCurrentAnnotation
+    ? annotations
+        ?.filter(
+          (annotation) =>
+            annotation.timestamp_from &&
+            annotation.timestamp_to &&
+            currentTimeInUnixTime &&
+            annotation.timestamp_from <= currentTimeInUnixTime &&
+            currentTimeInUnixTime <= annotation.timestamp_to,
+        )
+        .map((annotation) => annotation.annotation_id)
+    : [];
+
+  const seekPlayback = useSeekPlayback();
 
   return (
     <TableContainer component={Paper}>
@@ -154,7 +198,11 @@ export const AnnotationTable = ({
         <TableBody>
           {annotations.map((annotation) => (
             <AnnotationTableRow
+              onSeekToTimestamp={(unixTimestamp) =>
+                seekPlayback(unixTimeToFoxgloveTime(unixTimestamp))
+              }
               key={annotation.annotation_id}
+              highlight={highlightAnnotationIds.includes(annotation.annotation_id)}
               annotation={annotation}
               tagOptionsForEachTagType={tagOptionsForEachTagType}
               onDelete={onDelete}
