@@ -1,6 +1,5 @@
 import PanelSetup from "@foxglove/studio-base/stories/PanelSetup";
-import { waitFor } from "@storybook/testing-library";
-import { cleanup, fireEvent, render } from "@testing-library/react";
+import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 import { AnnotationInputForm } from "./AnnotationInputForm";
 
 afterEach(cleanup);

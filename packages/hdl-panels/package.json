@@ -19,6 +19,7 @@
     "@react-spring/web": "9.6.1",
     "@storybook/react": "7.4.5",
     "@storybook/testing-library": "0.2.1",
+    "@testing-library/react": "workspace:*",
     "@types/flexsearch": "0.7.3",
     "@types/react-highlight-words": "^0",
     "@types/react-linkify": "^1",
