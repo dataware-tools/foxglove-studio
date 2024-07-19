@@ -1,11 +1,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/
-
-import * as _ from "lodash-es";
-
 import { filterMap } from "@foxglove/den/collection";
 import { SettingsTreeFields, SettingsTreeNodes, Topic } from "@foxglove/studio";
+import * as _ from "lodash-es";
 
 // Persisted panel state
 export type Config = {
