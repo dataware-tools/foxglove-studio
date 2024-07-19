@@ -3,7 +3,11 @@ import { Box } from "@mui/system";
 import { useCurrentTime } from "../../../hooks/useCurrentTime";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 import { AnnotationTable } from "../components/AnnotationTable";
-import { AnnotationListPanelForCurrentTimestampConfig } from "./panel";
+import { TagOptionsForEachTagType } from "../types";
+
+export type AnnotationListPanelForCurrentTimestampConfig = {
+  tagOptionsForEachTagType: TagOptionsForEachTagType;
+};
 
 export const AnnotationListForCurrentTimestamp = ({
   config,

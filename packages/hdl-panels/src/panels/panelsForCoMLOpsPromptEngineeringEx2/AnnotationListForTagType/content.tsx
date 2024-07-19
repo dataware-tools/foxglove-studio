@@ -3,8 +3,12 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 import { AnnotationTable } from "../components/AnnotationTable";
+import { TagOptionsForEachTagType } from "../types";
 import { TagTypeSelect } from "./TagTypeSelect";
-import { AnnotationListPanelForTagTypeConfig } from "./panel";
+
+export type AnnotationListPanelForTagTypeConfig = {
+  tagOptionsForEachTagType: TagOptionsForEachTagType;
+};
 
 export const AnnotationListForTagType = ({
   config,

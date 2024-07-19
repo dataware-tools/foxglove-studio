@@ -1,7 +1,11 @@
 import { Box } from "@mui/system";
 import { useAddAnnotation, useServerAnnotations } from "../apiClients";
 import { AnnotationInputForm } from "../components/AnnotationInputForm";
-import { AnnotationInputPanelConfig } from "./panel";
+import { TagOptionsForEachTagType } from "../types";
+
+export type AnnotationInputPanelConfig = {
+  tagOptionsForEachTagType: TagOptionsForEachTagType;
+};
 
 export const AnnotationInput = ({ config }: { config: AnnotationInputPanelConfig }) => {
   const { tagOptionsForEachTagType } = config;

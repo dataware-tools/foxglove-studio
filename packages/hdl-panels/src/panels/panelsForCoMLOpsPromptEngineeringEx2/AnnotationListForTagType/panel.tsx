@@ -5,12 +5,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { ConfiguredAuth0Provider } from "../../../components/ConfiguredAuth0Provider";
 import { tagOptionsForEachTagType } from "../defaultConfig";
-import { TagOptionsForEachTagType } from "../types";
-import { AnnotationListForTagType } from "./content";
-
-export type AnnotationListPanelForTagTypeConfig = {
-  tagOptionsForEachTagType: TagOptionsForEachTagType;
-};
+import { AnnotationListForTagType, AnnotationListPanelForTagTypeConfig } from "./content";
 
 type AnnotationListPanelForTagTypeProps = {
   config: AnnotationListPanelForTagTypeConfig;

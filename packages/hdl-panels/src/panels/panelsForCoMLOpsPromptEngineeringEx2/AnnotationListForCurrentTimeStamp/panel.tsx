@@ -5,12 +5,10 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { ConfiguredAuth0Provider } from "../../../components/ConfiguredAuth0Provider";
 import { tagOptionsForEachTagType } from "../defaultConfig";
-import { TagOptionsForEachTagType } from "../types";
-import { AnnotationListForCurrentTimestamp } from "./content";
-
-export type AnnotationListPanelForCurrentTimestampConfig = {
-  tagOptionsForEachTagType: TagOptionsForEachTagType;
-};
+import {
+  AnnotationListForCurrentTimestamp,
+  AnnotationListPanelForCurrentTimestampConfig,
+} from "./content";
 
 type AnnotationListPanelForCurrentTimestampProps = {
   config: AnnotationListPanelForCurrentTimestampConfig;

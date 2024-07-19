@@ -5,12 +5,7 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { ConfiguredAuth0Provider } from "../../../components/ConfiguredAuth0Provider";
 import { tagOptionsForEachTagType } from "../defaultConfig";
-import { TagOptionsForEachTagType } from "../types";
-import { AnnotationInput } from "./content";
-
-export type AnnotationInputPanelConfig = {
-  tagOptionsForEachTagType: TagOptionsForEachTagType;
-};
+import { AnnotationInput, AnnotationInputPanelConfig } from "./content";
 
 type AnnotationInputPanelProps = {
   config: AnnotationInputPanelConfig;
