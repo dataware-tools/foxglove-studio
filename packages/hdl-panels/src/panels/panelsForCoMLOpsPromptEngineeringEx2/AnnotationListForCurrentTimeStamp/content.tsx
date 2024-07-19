@@ -1,6 +1,8 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCurrentTime } from "../../../hooks/useCurrentTime";
+import { useSeekPlayback } from "../../../hooks/useSeekPlayback";
+import { unixTimeToFoxgloveTime } from "../../../logics/time";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 import { AnnotationTable } from "../components/AnnotationTable";
 import { TagOptionsForEachTagType } from "../types";
@@ -20,7 +22,10 @@ export const AnnotationListForCurrentTimestamp = ({
   const { request: deleteAnnotation } = useDeleteAnnotation();
   const { request: updateAnnotation } = useUpdateAnnotation();
   const { currentTimeInUnixTime } = useCurrentTime();
+  const seekPlayback = useSeekPlayback();
 
+  const seekToTimestamp = (unixTimestamp: number) =>
+    seekPlayback(unixTimeToFoxgloveTime(unixTimestamp));
   const filteredAnnotations = annotations
     ?.filter(
       (annotation) =>
@@ -48,6 +53,7 @@ export const AnnotationListForCurrentTimestamp = ({
             await updateAnnotation(annotation);
             await refetchServerAnnotations();
           }}
+          onSeekToTimestamp={seekToTimestamp}
         />
       </Box>
     </Stack>

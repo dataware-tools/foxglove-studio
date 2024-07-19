@@ -1,6 +1,8 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { useSeekPlayback } from "../../../hooks/useSeekPlayback";
+import { unixTimeToFoxgloveTime } from "../../../logics/time";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 import { AnnotationTable } from "../components/AnnotationTable";
 import { TagOptionsForEachTagType } from "../types";
@@ -20,6 +22,7 @@ export const AnnotationListForTagType = ({
   const { annotations, refetchServerAnnotations } = useServerAnnotations();
   const { request: deleteAnnotation } = useDeleteAnnotation();
   const { request: updateAnnotation } = useUpdateAnnotation();
+  const seekPlayback = useSeekPlayback();
 
   const [tagType, setTagType] = useState<string>(tagOptionsForEachTagType[0]?.tag_type.value ?? "");
   const filteredAnnotations = annotations
@@ -27,6 +30,9 @@ export const AnnotationListForTagType = ({
     .sort((a, b) =>
       a.timestamp_from && b.timestamp_from ? a.timestamp_from - b.timestamp_from : 0,
     );
+
+  const seekToTimestamp = (unixTimestamp: number) =>
+    seekPlayback(unixTimeToFoxgloveTime(unixTimestamp));
 
   return (
     <Stack overflow="hidden" height="100%">
@@ -53,6 +59,7 @@ export const AnnotationListForTagType = ({
             await updateAnnotation(annotation);
             await refetchServerAnnotations();
           }}
+          onSeekToTimestamp={seekToTimestamp}
         />
       </Box>
     </Stack>

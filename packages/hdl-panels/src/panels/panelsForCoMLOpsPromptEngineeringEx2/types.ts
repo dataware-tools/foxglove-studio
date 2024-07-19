@@ -1,6 +1,6 @@
 import { annotationStore } from "@hdwlab/api-annotation-store-client";
 
-export type AnnotationPanelForCoMLOpsPromptEngineeringEx2 = {
+export type AnnotationForCoMLOpsPromptEngineeringEx2 = {
   annotation: { tag_type: string; tags: string[]; note: string };
   annotation_task_id: string;
 } & annotationStore.Annotation;

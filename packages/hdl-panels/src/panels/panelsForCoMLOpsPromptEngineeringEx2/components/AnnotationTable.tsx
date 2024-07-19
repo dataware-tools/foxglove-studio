@@ -9,13 +9,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import { useCurrentTime } from "../../../hooks/useCurrentTime";
-import { useSeekPlayback } from "../../../hooks/useSeekPlayback";
-import { unixTimeToFoxgloveTime } from "../../../logics/time";
-import { AnnotationPanelForCoMLOpsPromptEngineeringEx2, TagOptionsForEachTagType } from "../types";
+import { AnnotationForCoMLOpsPromptEngineeringEx2, TagOptionsForEachTagType } from "../types";
 import { AnnotationInputForm } from "./AnnotationInputForm";
 
 type AnnotationUpdateEventHandler = (
-  annotation: AnnotationPanelForCoMLOpsPromptEngineeringEx2,
+  annotation: AnnotationForCoMLOpsPromptEngineeringEx2,
 ) => Promise<void> | void;
 
 const AnnotationTableRow = ({
@@ -30,7 +28,7 @@ const AnnotationTableRow = ({
   onSaveUpdate,
   onSeekToTimestamp,
 }: {
-  annotation: AnnotationPanelForCoMLOpsPromptEngineeringEx2;
+  annotation: AnnotationForCoMLOpsPromptEngineeringEx2;
   tagOptionsForEachTagType: TagOptionsForEachTagType;
   onDelete: AnnotationUpdateEventHandler;
   updating?: boolean;
@@ -132,6 +130,7 @@ const AnnotationTableRow = ({
           <TableCell align="center">{annotation.annotation.note}</TableCell>
           <TableCell align="center">
             <IconButton
+              aria-label="update"
               disabled={deleting}
               onClick={() => {
                 onStartUpdate(annotation);
@@ -142,6 +141,7 @@ const AnnotationTableRow = ({
           </TableCell>
           <TableCell align="center">
             <IconButton
+              aria-label="delete"
               disabled={deleting}
               onClick={async () => {
                 setDeleting(true);
@@ -165,16 +165,18 @@ export const AnnotationTable = ({
   hideTagType,
   onDelete,
   onUpdate,
+  onSeekToTimestamp,
 }: {
-  annotations: AnnotationPanelForCoMLOpsPromptEngineeringEx2[];
+  annotations: AnnotationForCoMLOpsPromptEngineeringEx2[];
   tagOptionsForEachTagType: TagOptionsForEachTagType;
   highlightCurrentAnnotation?: boolean;
   hideTagType?: boolean;
   onDelete: AnnotationUpdateEventHandler;
   onUpdate: AnnotationUpdateEventHandler;
+  onSeekToTimestamp: (unixTimestamp: number) => void;
 }) => {
   const [updatingAnnotation, setUpdatingAnnotation] =
-    useState<AnnotationPanelForCoMLOpsPromptEngineeringEx2 | null>(null);
+    useState<AnnotationForCoMLOpsPromptEngineeringEx2 | null>(null);
 
   const { currentTimeInUnixTime } = useCurrentTime();
   const highlightAnnotationIds = highlightCurrentAnnotation
@@ -189,8 +191,6 @@ export const AnnotationTable = ({
         )
         .map((annotation) => annotation.annotation_id)
     : [];
-
-  const seekPlayback = useSeekPlayback();
 
   return (
     <TableContainer component={Paper}>
@@ -209,9 +209,7 @@ export const AnnotationTable = ({
         <TableBody>
           {annotations.map((annotation) => (
             <AnnotationTableRow
-              onSeekToTimestamp={(unixTimestamp) =>
-                seekPlayback(unixTimeToFoxgloveTime(unixTimestamp))
-              }
+              onSeekToTimestamp={onSeekToTimestamp}
               key={annotation.annotation_id}
               highlight={highlightAnnotationIds.includes(annotation.annotation_id)}
               annotation={annotation}
