@@ -51,14 +51,15 @@ export const AnnotationInputForm = ({
 
   const tagTypeOptions = tagOptionsForEachTagType.map((tagOptions) => tagOptions.tag_type);
 
-  const useCurrentTimeAsTimestampFrom = () => {
+  const setCurrentTimeAsTimestampFrom = () => {
     currentTimeInUnixTime &&
       setUserInputAnnotation((prev) => ({ ...prev, timestampFrom: currentTimeInUnixTime }));
   };
-  const useCurrentTimeAsTimestampTo = () => {
+  const setCurrentTimeAsTimestampTo = () => {
     currentTimeInUnixTime &&
       setUserInputAnnotation((prev) => ({ ...prev, timestampTo: currentTimeInUnixTime }));
   };
+
   return (
     <Stack direction="row" spacing={1} justifyContent="space-between" px={1} overflow="hidden">
       <Stack direction="column" spacing={1} flexShrink={1} flexGrow={1}>
@@ -75,9 +76,8 @@ export const AnnotationInputForm = ({
                 }))
               }
               value={userInputAnnotation.timestampFrom ?? 0}
-              defaultValue={userInputAnnotation.timestampFrom ?? 0}
             />
-            <Button onClick={useCurrentTimeAsTimestampFrom}>再生中の時刻を開始時刻に入力</Button>
+            <Button onClick={setCurrentTimeAsTimestampFrom}>再生中の時刻を開始時刻に入力</Button>
           </Stack>
           <Stack flexBasis="50%">
             <TextField
@@ -88,9 +88,8 @@ export const AnnotationInputForm = ({
                 setUserInputAnnotation((prev) => ({ ...prev, timestampTo: Number(e.target.value) }))
               }
               value={userInputAnnotation.timestampTo ?? 0}
-              defaultValue={userInputAnnotation.timestampTo ?? 0}
             />
-            <Button onClick={useCurrentTimeAsTimestampTo}>再生中の時刻を終了時刻に入力</Button>
+            <Button onClick={setCurrentTimeAsTimestampTo}>再生中の時刻を終了時刻に入力</Button>
           </Stack>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
@@ -128,7 +127,6 @@ export const AnnotationInputForm = ({
               setUserInputAnnotation((prev) => ({ ...prev, tags: value }));
             }}
             value={userInputAnnotation.tags ?? []}
-            defaultValue={userInputAnnotation.tags ?? []}
             isOptionEqualToValue={(option, value) => option.value === value.value}
           />
           <TextField
@@ -136,8 +134,7 @@ export const AnnotationInputForm = ({
             label="備考"
             disabled={saving}
             onChange={(e) => setUserInputAnnotation((prev) => ({ ...prev, note: e.target.value }))}
-            value={userInputAnnotation.note ?? 0}
-            defaultValue={userInputAnnotation.note ?? 0}
+            value={userInputAnnotation.note ?? ""}
           />
         </Stack>
       </Stack>
