@@ -117,7 +117,7 @@ export const AnnotationInputForm = ({
             </Select>
           </Stack>
           <Autocomplete
-            sx={{ flexGrow: 1, flexShrink: 0 }}
+            sx={{ flexGrow: 1, flexShrink: 1 }}
             multiple
             disabled={saving}
             filterSelectedOptions
