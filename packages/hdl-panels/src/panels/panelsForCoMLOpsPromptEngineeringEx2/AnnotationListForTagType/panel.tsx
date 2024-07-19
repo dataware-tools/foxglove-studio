@@ -4,33 +4,39 @@ import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { ConfiguredAuth0Provider } from "../../../components/ConfiguredAuth0Provider";
+import { tagOptionsForEachTagType } from "../defaultConfig";
+import { TagOptionsForEachTagType } from "../types";
 import { AnnotationListForTagType } from "./content";
 
-type AnnotationListPanelForOneTagTypeConfig = Record<string, never>;
-
-type AnnotationListPanelForOneTagTypeProps = {
-  config: AnnotationListPanelForOneTagTypeConfig;
-  saveConfig: SaveConfig<AnnotationListPanelForOneTagTypeConfig>;
+export type AnnotationListPanelForTagTypeConfig = {
+  tagOptionsForEachTagType: TagOptionsForEachTagType;
 };
 
-const AnnotationListPanelForOneTagType = (_props: AnnotationListPanelForOneTagTypeProps) => {
+type AnnotationListPanelForTagTypeProps = {
+  config: AnnotationListPanelForTagTypeConfig;
+  saveConfig: SaveConfig<AnnotationListPanelForTagTypeConfig>;
+};
+
+const AnnotationListPanelForTagType = ({ config }: AnnotationListPanelForTagTypeProps) => {
   return (
     <ConfiguredAuth0Provider>
       <Stack flex="auto" width="100%" height="100%" overflow="hidden">
         <PanelToolbar />
         <Box overflow="hidden" height={"100%"}>
-          <AnnotationListForTagType />
+          <AnnotationListForTagType config={config} />
         </Box>
       </Stack>
     </ConfiguredAuth0Provider>
   );
 };
 
-const defaultConfig: AnnotationListPanelForOneTagTypeConfig = {};
+const defaultConfig: AnnotationListPanelForTagTypeConfig = {
+  tagOptionsForEachTagType: tagOptionsForEachTagType,
+};
 
 export default Panel(
-  Object.assign(AnnotationListPanelForOneTagType, {
-    panelType: "AnnotationListPanelForOneTagType",
+  Object.assign(AnnotationListPanelForTagType, {
+    panelType: "AnnotationListPanelForTagType",
     defaultConfig,
   }),
 );

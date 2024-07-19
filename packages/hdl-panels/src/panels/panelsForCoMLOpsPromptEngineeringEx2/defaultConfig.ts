@@ -198,8 +198,8 @@ export const tagOptionsForEachTagType: TagOptionsForEachTagType = [
         value: "bus_stop",
       },
       {
-        label: "駐車車両",
-        value: "parked_vehicle",
+        label: "路上駐車車両",
+        value: "street_parked_vehicle",
       },
       {
         label: "コーン",

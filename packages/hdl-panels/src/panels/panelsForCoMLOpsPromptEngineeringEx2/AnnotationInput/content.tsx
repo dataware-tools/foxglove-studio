@@ -1,11 +1,12 @@
 import { Box } from "@mui/system";
-import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useAddAnnotation, useServerAnnotations } from "../apiClients";
 import { AnnotationInputForm } from "../components/AnnotationInputForm";
+import { AnnotationInputPanelConfig } from "./panel";
 
-export const AnnotationInput = () => {
+export const AnnotationInput = ({ config }: { config: AnnotationInputPanelConfig }) => {
+  const { tagOptionsForEachTagType } = config;
+
   const { refetchServerAnnotations } = useServerAnnotations();
-
   const { request: addAnnotation } = useAddAnnotation();
 
   return (

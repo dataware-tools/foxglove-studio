@@ -1,19 +1,23 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 import { AnnotationTable } from "../components/AnnotationTable";
 import { TagTypeSelect } from "./TagTypeSelect";
+import { AnnotationListPanelForTagTypeConfig } from "./panel";
 
-export const AnnotationListForTagType = () => {
+export const AnnotationListForTagType = ({
+  config,
+}: {
+  config: AnnotationListPanelForTagTypeConfig;
+}) => {
+  const { tagOptionsForEachTagType } = config;
+
   const { annotations, refetchServerAnnotations } = useServerAnnotations();
-
-  const [tagType, setTagType] = useState<string>(tagOptionsForEachTagType[0]?.tag_type.value ?? "");
-
   const { request: deleteAnnotation } = useDeleteAnnotation();
   const { request: updateAnnotation } = useUpdateAnnotation();
 
+  const [tagType, setTagType] = useState<string>(tagOptionsForEachTagType[0]?.tag_type.value ?? "");
   const filteredAnnotations = annotations
     ?.filter((annotation) => annotation.annotation?.tag_type === tagType)
     .sort((a, b) =>

@@ -45,12 +45,14 @@ const AnnotationTableRow = ({
     (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
   )?.tag_options;
 
-  const tagsJp = annotation.annotation.tags
-    .map((tag) => tagOptions?.find((tagOption) => tagOption.value === tag)?.label)
+  const tags = annotation.annotation.tags
+    .map((tag) => tagOptions?.find((tagOption) => tagOption.value === tag)?.label || tag)
     .join(", ");
-  const tagTypeJp = tagOptionsForEachTagType.find(
-    (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
-  )?.tag_type.label;
+
+  const tagType =
+    tagOptionsForEachTagType.find(
+      (tagOptions) => tagOptions.tag_type.value === annotation.annotation.tag_type,
+    )?.tag_type.label || annotation.annotation.tag_type;
 
   const [deleting, setDeleting] = useState(false);
   return deleting ? (
@@ -125,8 +127,8 @@ const AnnotationTableRow = ({
           >
             {annotation.timestamp_to}
           </TableCell>
-          {!hideTagType && <TableCell align="center">{tagTypeJp}</TableCell>}
-          <TableCell align="center">{tagsJp}</TableCell>
+          {!hideTagType && <TableCell align="center">{tagType}</TableCell>}
+          <TableCell align="center">{tags}</TableCell>
           <TableCell align="center">{annotation.annotation.note}</TableCell>
           <TableCell align="center">
             <IconButton

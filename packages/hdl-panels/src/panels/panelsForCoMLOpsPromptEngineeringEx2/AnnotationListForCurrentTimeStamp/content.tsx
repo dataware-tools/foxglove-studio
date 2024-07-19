@@ -1,16 +1,21 @@
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCurrentTime } from "../../../hooks/useCurrentTime";
-import { tagOptionsForEachTagType } from "../_hardCordingValue";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
 import { AnnotationTable } from "../components/AnnotationTable";
+import { AnnotationListPanelForCurrentTimestampConfig } from "./panel";
 
-export const AnnotationListForCurrentTimestamp = () => {
+export const AnnotationListForCurrentTimestamp = ({
+  config,
+}: {
+  config: AnnotationListPanelForCurrentTimestampConfig;
+}) => {
+  const { tagOptionsForEachTagType } = config;
+
   const { annotations, refetchServerAnnotations } = useServerAnnotations();
-  const { currentTimeInUnixTime } = useCurrentTime();
-
   const { request: deleteAnnotation } = useDeleteAnnotation();
   const { request: updateAnnotation } = useUpdateAnnotation();
+  const { currentTimeInUnixTime } = useCurrentTime();
 
   const filteredAnnotations = annotations
     ?.filter(

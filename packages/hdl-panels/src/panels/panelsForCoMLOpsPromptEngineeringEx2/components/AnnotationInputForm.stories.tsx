@@ -1,7 +1,7 @@
 import PanelSetup from "@foxglove/studio-base/stories/PanelSetup";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { tagOptionsForEachTagType } from "../_hardCordingValue";
+import { tagOptionsForEachTagType } from "../defaultConfig";
 import { AnnotationInputForm } from "./AnnotationInputForm";
 
 const meta: Meta<typeof AnnotationInputForm> = {
