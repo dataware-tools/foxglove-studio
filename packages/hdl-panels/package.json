@@ -47,5 +47,8 @@
     "use-debounce": "9.0.4",
     "uuid": "9.0.1",
     "zustand": "4.4.1"
+  },
+  "dependencies": {
+    "@testing-library/react": "16.0.0"
   }
 }

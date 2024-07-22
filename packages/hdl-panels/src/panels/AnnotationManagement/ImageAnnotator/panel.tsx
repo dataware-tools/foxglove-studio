@@ -16,6 +16,7 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { ConfiguredAuth0Provider } from "../../../components/ConfiguredAuth0Provider";
 import { TopicDropdown } from "../ImageView/components/TopicDropdown";
 import { useImagePanelMessages } from "../ImageView/hooks/useImagePanelMessages";
 import { NORMALIZABLE_IMAGE_DATATYPES } from "../ImageView/lib/normalizeMessage";
@@ -24,7 +25,6 @@ import { useAnnotationsState } from "../stores/annotation";
 import { useIsAdding } from "../stores/isAdding";
 import { usePlayerState } from "../stores/player";
 import { useCameraTopicState } from "../stores/topic";
-import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
 import { ImageAnnotationCanvas, ImageAnnotationCanvasProps } from "./ImageAnnotationCanvas";
 

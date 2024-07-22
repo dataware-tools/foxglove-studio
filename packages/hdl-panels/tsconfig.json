@@ -10,12 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext",
-      "WebWorker"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -34,18 +29,9 @@
     "downlevelIteration": true,
     "strictBindCallApply": true,
     "paths": {
-      "@foxglove/studio-base/*": [
-        "../studio-base/src/*"
-      ]
-    },
-    "baseUrl": "."
+      "@foxglove/studio-base/*": ["../studio-base/src/*"]
+    }
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "example"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "example"]
 }

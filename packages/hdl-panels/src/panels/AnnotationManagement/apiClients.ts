@@ -6,17 +6,10 @@ import {
 } from "@hdwlab/api-annotation-store-client/dist/browser/client";
 import { useAPIClient, useAPIClientWithSWR } from "@hdwlab/api-helper-typescript";
 import { useCallback, useMemo } from "react";
+import { useDatabaseRecordId } from "../../hooks/useDatabaseRecordId";
 import { API_VERSION } from "./ImageAnnotator/constants";
 import { useAnnotationsState } from "./stores/annotation";
 import { Annotation, AnnotationForImageOnTimePoint, Point } from "./types";
-
-const useDatabaseRecordId = () => {
-  const queryStrings = new URLSearchParams(window.location.search);
-  const databaseId = queryStrings.get("database-id") ?? "unknownDatabase";
-  const recordId = queryStrings.get("record-id") ?? "unknownDatabase";
-
-  return { databaseId, recordId };
-};
 
 export const useAddAnnotation = () => {
   const { databaseId, recordId } = useDatabaseRecordId();

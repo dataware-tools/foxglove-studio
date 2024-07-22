@@ -3,7 +3,7 @@ import PanelToolbar from "@foxglove/studio-base/components/PanelToolbar";
 import { SaveConfig } from "@foxglove/studio-base/types/panels";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import { ConfiguredAuth0Provider } from "../utilComponents/ConfiguredAuth0Provider";
+import { ConfiguredAuth0Provider } from "../../../components/ConfiguredAuth0Provider";
 import { ServerAnnotationSync } from "../utilComponents/ServerAnnotationSync";
 import { AnnotationList } from "./content";
 
