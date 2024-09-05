@@ -4,7 +4,7 @@ import {
 } from "@foxglove/studio-base/components/MessagePipeline";
 import { Stack } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSeekPlayback } from "../../../hooks/useSeekPlayback";
 import { foxgloveTimeToUnixTime, unixTimeToFoxgloveTime } from "../../../logics/time";
 import { useDeleteAnnotation, useServerAnnotations, useUpdateAnnotation } from "../apiClients";
@@ -36,6 +36,11 @@ export const AnnotationListForTagType = ({
 
   const [tagType, setTagType] = useState<string>(tagOptionsForEachTagType[0]?.tag_type.value ?? "");
   const [tagValue, setTagValue] = useState<string>("all");
+
+  useEffect(() => {
+    setTagValue("all");
+  }, [tagType, tagOptionsForEachTagType]);
+
   const filteredAnnotations = annotations
     ?.filter((annotation) => {
       const matchTagType = annotation.annotation?.tag_type === tagType;
