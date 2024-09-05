@@ -77,11 +77,11 @@ export const AnnotationListForTagType = ({
         />
         <TagValueSelect
           tagValue={tagValue}
-          tagOptions={(
+          tagOptions={[{ label: "全て", value: "all" }].concat(
             tagOptionsForEachTagType.find(
               (tagTypeOptions) => tagTypeOptions.tag_type.value === tagType,
-            )?.tag_options ?? []
-          ).concat({ label: "全て", value: "all" })}
+            )?.tag_options ?? [],
+          )}
           onChange={(event) => {
             setTagValue(event.target.value as string);
           }}
